@@ -1,0 +1,3 @@
+alias fixt="bin/console doctrine:fixtures:load -n --purger my_purger"
+alias sync="bin/console doctrine:schema:update --force"
+alias drop="bin/console doctrine:schema:drop --force"

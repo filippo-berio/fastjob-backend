@@ -1,0 +1,45 @@
+version: "3.7"
+
+services:
+    php:
+        build:
+            context: .
+        restart: always
+        ports:
+            - '6050:8000'
+        volumes: &volumes
+            - ./:/app/
+            - ./docker/php/aliases:/root/.bashrc
+        command: symfony server:start
+        environment:
+            DATABASE_URL: "postgresql://${PG_USER}:${PG_PASS}@fastjob-postgres:5432/${PG_DB}?serverVersion=14&charset=utf8"
+        container_name: fastjob-php
+        depends_on:
+            - postgres
+            - redis
+        networks:
+            - authistic_network
+            - default
+
+    postgres:
+        image: postgres:14.6-alpine
+        container_name: fastjob-postgres
+        ports:
+            - '6060:5432'
+        environment:
+            POSTGRES_DB: ${PG_DB}
+            POSTGRES_PASSWORD: ${PG_PASS}
+            POSTGRES_USER: ${PG_USER}
+        volumes:
+          - ./docker/postgres/data:/var/lib/postgresql/data:rw
+
+    redis:
+        image: redis:7.0.5-alpine
+        restart: always
+        volumes:
+            - ./docker/redis/data:/data
+        container_name: fastjob-redis
+
+networks:
+    authistic_network:
+        external: true

@@ -26,7 +26,7 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
             $this->getReference(ProfileFixtures::PROFILE_1, Profile::class),
             [$this->getReference(CategoryFixtures::FISH, Category::class)]
         );
-        $task2->archive();
+        $task2->delete();
 
         $this->save([
             $task1 = new Task(

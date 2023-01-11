@@ -27,8 +27,11 @@ abstract class BaseFixtures extends Fixture
 
     public function getReference($name, ?string $class = null): object
     {
-        $parts = explode('\\', $class);
-        $prefix = array_pop($parts);
+        $prefix = '';
+        if ($class) {
+            $parts = explode('\\', $class);
+            $prefix = array_pop($parts);
+        }
         return parent::getReference($prefix . $name, $class);
     }
 }

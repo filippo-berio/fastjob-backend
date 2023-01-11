@@ -11,22 +11,30 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToOne;
 
 #[Entity]
 class Task
 {
+    const STATUS_WAIT = 'wait';
+    const STATUS_IN_PROGRESS = 'in_progress';
+    const STATUS_CLOSED = 'closed';
+    const STATUS_DELETED = 'deleted';
+
     #[Id]
     #[GeneratedValue]
     #[Column]
     private ?int $id = null;
 
-    #[Column(length: 255)]
+    #[Column]
     private string $title;
+
+    #[Column]
+    private string $status = self::STATUS_WAIT;
 
     #[ManyToOne]
     private Profile $employer;
 
+    #[Column]
     private DateTimeImmutable $createdAt;
 
     #[ManyToMany(targetEntity: Category::class)]
@@ -35,9 +43,6 @@ class Task
 
     #[Column(nullable: true)]
     private ?int $price;
-
-    #[Column(options: ['default' => 0])]
-    private bool $archived = false;
 
     public function __construct(
         string $title,
@@ -80,18 +85,35 @@ class Task
         return $this->employer;
     }
 
-    public function restore()
-    {
-        $this->archived = false;
-    }
-
-    public function archive()
-    {
-        $this->archived = true;
-    }
-
     public function getPrice(): ?int
     {
         return $this->price;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function transferProgress()
+    {
+        $this->status = self::STATUS_IN_PROGRESS;
+    }
+
+    public function close()
+    {
+        $this->status = self::STATUS_CLOSED;
+    }
+
+    public function delete()
+    {
+        $this->status = self::STATUS_DELETED;
+    }
+
+    public function restore()
+    {
+        if ($this->status === self::STATUS_DELETED) {
+            $this->status = self::STATUS_WAIT;
+        }
     }
 }

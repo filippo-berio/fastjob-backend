@@ -33,6 +33,15 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
             $this->getReference(CategoryFixtures::PLUMBING, Category::class)
         ]);
 
+        $profile5 = new Profile(
+            5,
+            '85554443322',
+            'Анатолий',
+            'Шляпин'
+        );
+        $profile5->setCategories([
+            $this->getReference(CategoryFixtures::CPLUS, Category::class)
+        ]);
 
         $this->save([
             $profile1 = new Profile(
@@ -53,12 +62,7 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
                 'Миктор',
                 'Штамповский'
             ),
-            $profile5 = new Profile(
-                5,
-                '85554443322',
-                'Анатолий',
-                'Шляпин'
-            ),
+            $profile5,
         ], $manager);
 
         $this->addReference(self::PROFILE_1, $profile1);

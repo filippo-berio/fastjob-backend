@@ -29,9 +29,11 @@ services:
         $host: '%env(AUTHISTIC_URL)%'
         $key: '%env(AUTHISTIC_API_KEY)%'
 
-    App\CQRS\Manager:
-        $queryHandlers: !tagged_iterator 'cqrs.query_handler'
+    App\CQRS\Bus\CommandBus:
         $commandHandlers: !tagged_iterator 'cqrs.command_handler'
+
+    App\CQRS\Bus\QueryBus:
+        $queryHandlers: !tagged_iterator 'cqrs.query_handler'
 
     App\DataFixtures\Purger\PurgerFactory:
         tags:

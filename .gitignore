@@ -20,4 +20,5 @@
 ###< phpunit/phpunit ###
 
 /docker/postgres/data/
+/docker/redis/data/
 /.idea/

@@ -4,7 +4,6 @@ services:
     php:
         build:
             context: .
-        restart: always
         ports:
             - '6050:8000'
         volumes: &volumes

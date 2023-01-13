@@ -4,9 +4,9 @@ namespace App\Core\Controller;
 
 use App\Core\DTO\Request\Swipe\CreateExecutorSwipeRequest;
 use App\Core\DTO\Request\Swipe\CreateTaskSwipeRequest;
-use App\Core\Security\UserInterface;
-use App\Core\UseCase\Swipe\CreateExecutorSwipe\CreateExecutorSwipeUseCase;
-use App\Core\UseCase\Swipe\CreateTaskSwipe\CreateTaskSwipeUseCase;
+use App\Core\Entity\User;
+use App\Core\UseCase\Swipe\CreateExecutorSwipeUseCase;
+use App\Core\UseCase\Swipe\CreateTaskSwipeUseCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -16,10 +16,11 @@ class SwipeController extends BaseController
 {
     #[Route('/executor', methods: ['POST'])]
     public function createExecutorSwipe(
-        #[CurrentUser] UserInterface $user,
+        #[CurrentUser] User $user,
         CreateExecutorSwipeUseCase $useCase,
         CreateExecutorSwipeRequest $body,
     ): JsonResponse {
+        $this->validator->validate($body);
         $executorSwipe = $useCase($user->getProfile(), $body->taskId, $body->executorId, $body->type);
         return $this->json(
             [
@@ -33,10 +34,11 @@ class SwipeController extends BaseController
 
     #[Route('/task', methods: ['POST'])]
     public function createTaskSwipe(
-        #[CurrentUser] UserInterface $user,
+        #[CurrentUser] User $user,
         CreateTaskSwipeUseCase $useCase,
         CreateTaskSwipeRequest $body,
     ): JsonResponse {
+        $this->validator->validate($body);
         $taskSwipe = $useCase($user->getProfile(), $body->taskId, $body->type, $body->customPrice);
         return $this->json(
             [

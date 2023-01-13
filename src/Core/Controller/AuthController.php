@@ -2,27 +2,33 @@
 
 namespace App\Core\Controller;
 
-use App\Core\DTO\Request\Auth\LoginRequest;
-use App\Core\UseCase\Auth\LoginUseCase;
+use App\Core\DTO\Request\Auth\ConfirmCodeRequest;
+use App\Core\DTO\Request\Auth\SendConfirmCodeRequest;
+use App\Core\UseCase\Auth\ConfirmCodeUseCase;
+use App\Core\UseCase\Auth\SendConfirmationCodeUseCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('auth')]
 class AuthController extends BaseController
 {
-    #[Route('/login', methods: ['POST'])]
-    public function login(
-        LoginRequest $data,
-        LoginUseCase $useCase,
+    #[Route('/send-code', methods: ['POST'])]
+    public function sendConfirmationCode(
+        SendConfirmCodeRequest $body,
+        SendConfirmationCodeUseCase $useCase,
     ): JsonResponse {
-        $this->validator->validate($data);
-        $tokens = $useCase($data->login, $data->password);
-        return $this->json($tokens);
+        $this->validator->validate($body);
+        $useCase->send($body->phone);
+        return $this->json([
+            'success' => true
+        ]);
     }
 
-    #[Route('/register', methods: ['POST'])]
-    public function register()
-    {
-
+    #[Route('/confirm-code', methods: ['POST'])]
+    public function confirmCode(
+        ConfirmCodeRequest $body,
+        ConfirmCodeUseCase $useCase,
+    ): JsonResponse {
+        $tokens = $useCase->confirm($body->phone, $body->code);
+        return $this->json($tokens);
     }
 }

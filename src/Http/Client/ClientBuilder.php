@@ -13,7 +13,7 @@ class ClientBuilder
 
     public function build(string $host, array $options = []): ClientInterface
     {
-        return new Client($this->httpClient->withOptions([
+        return new JsonClient($this->httpClient->withOptions([
             'base_uri' => $host,
             ...$options
         ]));

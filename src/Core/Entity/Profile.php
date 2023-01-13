@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 
 #[Entity]
 class Profile
@@ -21,11 +22,8 @@ class Profile
     #[Column]
     private ?int $id = null;
 
-    #[Column(unique: true)]
-    private int $authisticId;
-
-    #[Column(unique: true)]
-    private string $phone;
+    #[OneToOne]
+    private User $user;
 
     #[Column]
     private string $firstName;
@@ -50,13 +48,11 @@ class Profile
     private ?City $city = null;
 
     public function __construct(
-        int $authisticId,
-        string $phone,
+        User $user,
         string $firstName,
         ?string $lastName = null,
     ) {
-        $this->authisticId = $authisticId;
-        $this->phone = $phone;
+        $this->user = $user;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->categories = new ArrayCollection();
@@ -83,9 +79,9 @@ class Profile
         return $this->id;
     }
 
-    public function getAuthisticId(): int
+    public function getUser(): User
     {
-        return $this->authisticId;
+        return $this->user;
     }
 
     public function getBirthDate(): ?DateTimeImmutable
@@ -106,11 +102,6 @@ class Profile
     public function getLastName(): ?string
     {
         return $this->lastName;
-    }
-
-    public function getPhone(): string
-    {
-        return $this->phone;
     }
 
     public function setDescription(?string $description): void

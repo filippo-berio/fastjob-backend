@@ -2,21 +2,24 @@
 
 namespace App\Tests\Application;
 
-use App\Authistic\DTO\TokenPair;
-use App\Core\Entity\Profile;
-use App\Core\Security\Authistic\User;
+use App\Core\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class ApplicationTest extends WebTestCase
 {
-    protected function setUser(int $profileId, KernelBrowser $client)
+    protected function notAuthorizedTest(KernelBrowser $client, string $method, string $uri, array $parameters)
+    {
+        $client->request($method, $uri, $parameters);
+        $this->assertResponseStatusCodeSame(401);
+    }
+
+    protected function setUser(KernelBrowser $client, int $userId)
     {
         /** @var EntityManagerInterface $em */
         $em = static::getContainer()->get(EntityManagerInterface::class);
-        $profile = $em->getRepository(Profile::class)->find($profileId);
-        $user = new User($profile, new TokenPair('accessToken', 'refreshToken'));
+        $user = $em->getRepository(User::class)->find($userId);
         $client->loginUser($user);
     }
 }

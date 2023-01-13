@@ -10,6 +10,8 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+#        bind:
+#            $var: 'value'
 
     _instanceof:
         App\CQRS\QueryHandlerInterface:
@@ -17,17 +19,15 @@ services:
         App\CQRS\CommandHandlerInterface:
             tags: ['cqrs.command_handler']
         App\Core\Service\Task\TaskStack\Generator\TaskStackGeneratorInterface:
-            tags: ['task_stack_generator']
+            tags: ['core.task_stack_generator']
+        App\Sms\Service\Provider\SmsProviderInterface:
+            tags: ['sms.provider']
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
         exclude: '../src/*/Entity/'
-
-    App\Authistic\Adapter\AuthisticClient:
-        $host: '%env(AUTHISTIC_URL)%'
-        $key: '%env(AUTHISTIC_API_KEY)%'
 
     App\CQRS\Bus\CommandBus:
         $commandHandlers: !tagged_iterator 'cqrs.command_handler'
@@ -40,7 +40,25 @@ services:
             - { name: 'doctrine.fixtures.purger_factory', alias: 'my_purger' }
 
     App\Core\Service\Task\TaskStack\Generator\TaskStackGeneratorFactory:
-        $generators: !tagged_iterator 'task_stack_generator'
+        $generators: !tagged_iterator 'core.task_stack_generator'
+
+    App\Core\Service\Auth\Token\RedisTokenService:
+        $accessTokenLifeTime: '%env(ACCESS_TOKEN_LIFETIME)%'
+
+    Predis\Client:
+        arguments:
+            - '%env(REDIS_HOST)%'
+
+    App\Sms\Service\SmsService:
+        $provider: '%env(SMS_PROVIDER)%'
+
+    App\Sms\Service\Provider\SmsProviderFactory:
+        $providers: !tagged_iterator 'sms.provider'
+
+    App\Sms\Service\Provider\TelegramSmsProvider:
+        $botToken: '%env(TELEGRAM_BOT_TOKEN)%'
+        $host: '%env(TELEGRAM_BOT_URL)%'
+        $chatId: '%env(TELEGRAM_CHAT_ID)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

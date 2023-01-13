@@ -2,7 +2,7 @@
 
 namespace App\Core\Controller;
 
-use App\Core\Security\UserInterface;
+use App\Core\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -13,7 +13,7 @@ abstract class BaseController extends AbstractController
     ) {
     }
 
-    protected function makeResponseTokenHeaders(UserInterface $user): array
+    protected function makeResponseTokenHeaders(User $user): array
     {
         return [
             'x-access-token' => $user->getAccessToken(),

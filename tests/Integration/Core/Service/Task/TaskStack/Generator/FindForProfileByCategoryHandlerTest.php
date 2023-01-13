@@ -5,8 +5,8 @@ namespace App\Tests\Integration\Core\Service\Task\TaskStack\Generator;
 use App\Core\Data\Query\Task\FindForProfileByCategory;
 use App\Core\Data\Query\Task\FindForProfileByCategoryHandler;
 use App\Core\Entity\Profile;
-use App\DataFixtures\ProfileFixtures;
-use App\DataFixtures\TaskFixtures;
+use App\DataFixtures\Core\ProfileFixtures;
+use App\DataFixtures\Core\TaskFixtures;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

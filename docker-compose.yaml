@@ -30,15 +30,20 @@ services:
             POSTGRES_PASSWORD: ${PG_PASS}
             POSTGRES_USER: ${PG_USER}
         volumes:
-          - ./docker/postgres/data:/var/lib/postgresql/data:rw
+          - postgres_data:/var/lib/postgresql/data:rw
 
     redis:
         image: redis:7.0.5-alpine
         restart: always
         volumes:
-            - ./docker/redis/data:/data
+            - redis_data:/data
         container_name: fastjob-redis
 
 networks:
     authistic_network:
         external: true
+
+volumes:
+    postgres_data:
+    redis_data:
+

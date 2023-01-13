@@ -9,9 +9,9 @@ use App\Core\Exception\ExecutorSwipe\ExecutorSwipeExistsException;
 use App\Core\Exception\ExecutorSwipe\ExecutorSwipeSelfAssignException;
 use App\Core\Exception\Profile\ProfileNotFoundException;
 use App\Core\Exception\Task\TaskNotFoundException;
-use App\Core\UseCase\Swipe\CreateExecutorSwipe\CreateExecutorSwipeUseCase;
-use App\DataFixtures\ProfileFixtures;
-use App\DataFixtures\TaskFixtures;
+use App\Core\UseCase\Swipe\CreateExecutorSwipeUseCase;
+use App\DataFixtures\Core\ProfileFixtures;
+use App\DataFixtures\Core\TaskFixtures;
 use App\Tests\Integration\IntegrationTest;
 use Doctrine\ORM\EntityManagerInterface;
 

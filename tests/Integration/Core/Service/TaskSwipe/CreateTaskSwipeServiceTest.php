@@ -8,8 +8,8 @@ use App\Core\Entity\Task;
 use App\Core\Entity\TaskSwipe;
 use App\Core\Exception\TaskSwipe\TaskSwipeExistsException;
 use App\Core\Service\TaskSwipe\CreateTaskSwipeService;
-use App\DataFixtures\ProfileFixtures;
-use App\DataFixtures\TaskFixtures;
+use App\DataFixtures\Core\ProfileFixtures;
+use App\DataFixtures\Core\TaskFixtures;
 use App\Tests\Integration\IntegrationTest;
 use Doctrine\ORM\EntityManagerInterface;
 

@@ -1,0 +1,93 @@
+<?php
+
+namespace App\Tests\Integration\Core\UseCase\Profile;
+
+use App\Core\Entity\Profile;
+use App\Core\Entity\User;
+use App\Core\Exception\FutureDateException;
+use App\Core\Exception\Profile\ProfileCreatedException;
+use App\Core\Exception\Profile\ProfileTooYoungException;
+use App\Core\Exception\ValidationException;
+use App\Core\UseCase\Profile\CreateProfileUseCase;
+use App\DataFixtures\Core\UserFixtures;
+use App\Tests\Integration\IntegrationTest;
+use DateTimeImmutable;
+
+class CreateProfileUseCaseTest extends IntegrationTest
+{
+    /**
+     * @dataProvider successData
+     */
+    public function testSuccess(int $userId, string $firstName, string $birthDate)
+    {
+        $this->bootContainer();
+        $useCase = $this->getDependency(CreateProfileUseCase::class);
+        $user = $this->getEntity(User::class, $userId);
+        $profile = $useCase->create($user, $firstName, $birthDate);
+        $this->assertNotNull($user->getProfile()->getId());
+        $this->assertEquals($user->getProfile()->getId(), $profile->getId());
+    }
+
+    /**
+     * @dataProvider errorData
+     */
+    public function testError(string $exception, int $userId, string $firstName, DateTimeImmutable $birthDate)
+    {
+        $this->bootContainer();
+        $useCase = $this->getDependency(CreateProfileUseCase::class);
+        $user = $this->getEntity(User::class, $userId);
+        $this->expectException($exception);
+        $useCase->create($user, $firstName, $birthDate->format('Y-m-d'));
+    }
+
+    private function errorData()
+    {
+        return [
+            [
+                ProfileCreatedException::class,
+                UserFixtures::USER_1,
+                'Name',
+                new DateTimeImmutable('14.12.2000'),
+            ],
+            [
+                ValidationException::class,
+                UserFixtures::USER_6,
+                'Name',
+                new DateTimeImmutable('-' . Profile::MINIMAL_AGE - 1 . ' years'),
+            ],
+            [
+                ValidationException::class,
+                UserFixtures::USER_6,
+                'Name',
+                new DateTimeImmutable('+' . Profile::MINIMAL_AGE + 1 . ' years'),
+            ],
+            [
+                ValidationException::class,
+                UserFixtures::USER_6,
+                'Name',
+                new DateTimeImmutable('+1 day'),
+            ],
+        ];
+    }
+
+    private function successData()
+    {
+        return [
+            [
+                UserFixtures::USER_6,
+                'Имя',
+                '2000-12-14',
+            ],
+            [
+                UserFixtures::USER_6,
+                'Name',
+                '2000-12-14',
+            ],
+            [
+                UserFixtures::USER_6,
+                'Name-имя',
+                '2000-12-14',
+            ],
+        ];
+    }
+}

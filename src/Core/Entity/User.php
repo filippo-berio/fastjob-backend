@@ -25,8 +25,8 @@ class User implements UserInterface
     #[OneToOne(mappedBy: 'user', cascade: ['persist'])]
     private RefreshToken $refreshToken;
 
-    #[OneToOne(mappedBy: 'user')]
-    private Profile $profile;
+    #[OneToOne(mappedBy: 'user', cascade: ['persist'])]
+    private ?Profile $profile = null;
 
     private string $accessToken;
 
@@ -65,7 +65,12 @@ class User implements UserInterface
         return $this->refreshToken;
     }
 
-    public function getProfile(): Profile
+    public function setProfile(Profile $profile)
+    {
+        $this->profile = $profile;
+    }
+
+    public function getProfile(): ?Profile
     {
         return $this->profile;
     }

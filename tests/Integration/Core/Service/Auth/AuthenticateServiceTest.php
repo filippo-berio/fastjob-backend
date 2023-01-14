@@ -36,6 +36,17 @@ class AuthenticateServiceTest extends IntegrationTest
         $this->assertEquals(UserFixtures::USER_2, $user->getId());
     }
 
+    public function testActualAccessInvalidRefreshToken()
+    {
+        $this->bootContainer();
+        $accessToken = $this->setAccessTokenInRedis(UserFixtures::USER_1);
+        $service = $this->getDependency(AuthenticateService::class);
+        $user = $service->authenticate($accessToken);
+        $this->assertEquals($accessToken, $user->getAccessToken());
+        $this->assertEquals(RefreshTokenFixtures::REFRESH_TOKEN_1, $user->getRefreshToken()->getToken());
+        $this->assertEquals(UserFixtures::USER_1, $user->getId());
+    }
+
     public function testRottenAccessOtherRefreshToken()
     {
         $this->bootContainer();
@@ -65,6 +76,16 @@ class AuthenticateServiceTest extends IntegrationTest
         $service = $this->getDependency(AuthenticateService::class);
         $this->expectException(AuthenticationException::class);
         $service->authenticate($accessToken, RefreshTokenFixtures::REFRESH_TOKEN_3);
+    }
+
+    public function testUserWithoutProfileAndRefreshToken()
+    {
+        $this->bootContainer();
+        $accessToken = $this->setAccessTokenInRedis(UserFixtures::USER_6);
+        $service = $this->getDependency(AuthenticateService::class);
+        $user = $service->authenticate($accessToken);
+        $this->assertEquals($accessToken, $user->getAccessToken());
+        $this->assertEquals(UserFixtures::USER_6, $user->getId());
     }
 
     private function setAccessTokenInRedis(int $userId): string

@@ -9,8 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class ApplicationTest extends WebTestCase
 {
-    protected function notAuthorizedTest(KernelBrowser $client, string $method, string $uri, array $parameters)
-    {
+    protected function notAuthorizedTest(
+        KernelBrowser $client,
+        string        $method,
+        string        $uri,
+        array         $parameters = []
+    ) {
         $client->request($method, $uri, $parameters);
         $this->assertResponseStatusCodeSame(401);
     }

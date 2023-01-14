@@ -20,11 +20,14 @@ class AuthenticateService
     ) {
     }
 
-    public function authenticate(string $accessToken, string $refreshToken): User
+    public function authenticate(string $accessToken, ?string $refreshToken = null): User
     {
         $user = $this->getUser($accessToken);
         $actualToken = $this->redisTokenService->getAccessToken($user);
         if ($actualToken !== $accessToken) {
+            if (!$refreshToken) {
+                $this->throwException();
+            }
             $accessToken = $this->refreshAccessToken($user, $refreshToken);
         }
         $user->setAccessToken($accessToken);

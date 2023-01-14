@@ -6,6 +6,7 @@ use App\Core\Entity\Category;
 use App\Core\Entity\Profile;
 use App\Core\Entity\User;
 use App\DataFixtures\BaseFixtures;
+use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -27,7 +28,7 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
         $profile2 = new Profile(
             $this->getReference(UserFixtures::USER_2, User::class),
             'Алексей',
-            'Романов'
+            new DateTimeImmutable('14.12.2000')
         );
 
         $profile2->setCategories([
@@ -37,7 +38,7 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
         $profile5 = new Profile(
             $this->getReference(UserFixtures::USER_5, User::class),
             'Анатолий',
-            'Шляпин'
+            new DateTimeImmutable('18.02.2002')
         );
         $profile5->setCategories([
             $this->getReference(CategoryFixtures::CPLUS, Category::class)
@@ -47,17 +48,18 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
             $profile1 = new Profile(
                 $this->getReference(UserFixtures::USER_1, User::class),
                 'Викидий',
-                'Алемасов'
+                new DateTimeImmutable('14.12.2000')
             ),
             $profile2,
             $profile3 = new Profile(
                 $this->getReference(UserFixtures::USER_3, User::class),
                 'Шайа',
+                new DateTimeImmutable('18.02.2002'),
             ),
             $profile4 = new Profile(
                 $this->getReference(UserFixtures::USER_4, User::class),
                 'Миктор',
-                'Штамповский'
+                new DateTimeImmutable('14.12.2000')
             ),
             $profile5,
         ], $manager);

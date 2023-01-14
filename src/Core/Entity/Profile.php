@@ -13,10 +13,13 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
+use function Symfony\Component\Translation\t;
 
 #[Entity]
 class Profile
 {
+    const MINIMAL_AGE = 16;
+
     #[Id]
     #[GeneratedValue]
     #[Column]
@@ -28,11 +31,11 @@ class Profile
     #[Column]
     private string $firstName;
 
-    #[Column(nullable: true)]
-    private ?string $lastName;
+    #[Column]
+    private DateTimeImmutable $birthDate;
 
     #[Column(nullable: true)]
-    private ?DateTimeImmutable $birthDate = null;
+    private ?string $lastName;
 
     #[Column(nullable: true)]
     private ?string $description = null;
@@ -50,11 +53,10 @@ class Profile
     public function __construct(
         User $user,
         string $firstName,
-        ?string $lastName = null,
+        DateTimeImmutable $birthDate,
     ) {
         $this->user = $user;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $this->update($firstName, $birthDate);
         $this->categories = new ArrayCollection();
     }
 
@@ -74,6 +76,16 @@ class Profile
         $this->categories = new ArrayCollection($categories);
     }
 
+    public function update(
+        ?string $firstName = null,
+        ?DateTimeImmutable $birthDate = null,
+        ?string $lastName = null,
+    ) {
+        $this->firstName = $firstName ?? $this->firstName;
+        $this->lastName = $lastName;
+        $this->birthDate = $birthDate ?? $this->birthDate;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -84,12 +96,12 @@ class Profile
         return $this->user;
     }
 
-    public function getBirthDate(): ?DateTimeImmutable
+    public function getBirthDate(): DateTimeImmutable
     {
         return $this->birthDate;
     }
 
-    public function setBirthDate(?DateTimeImmutable $birthDate): void
+    public function setBirthDate(DateTimeImmutable $birthDate): void
     {
         $this->birthDate = $birthDate;
     }

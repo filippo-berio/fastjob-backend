@@ -26,7 +26,6 @@ abstract class IntegrationTest extends KernelTestCase
         return $this->container->get($id);
     }
 
-
     /**
      * @template T
      * @param class-string<T> $class

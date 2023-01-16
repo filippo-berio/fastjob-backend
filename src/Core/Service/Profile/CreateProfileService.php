@@ -6,8 +6,8 @@ use App\Core\Data\Command\User\SaveUser;
 use App\Core\DTO\Profile\CreateProfileDTO;
 use App\Core\Entity\Profile;
 use App\Core\Exception\Profile\ProfileCreatedException;
-use App\Core\Exception\ValidationException;
 use App\CQRS\Bus\CommandBusInterface;
+use App\Validation\Exception\ValidationException;
 use App\Validation\ValidatorInterface;
 
 class CreateProfileService
@@ -39,9 +39,6 @@ class CreateProfileService
             throw new ProfileCreatedException();
         }
 
-        $errors = $this->validator->validate($createProfileDTO);
-        if (count($errors)) {
-            throw new ValidationException(implode(', ', $errors));
-        }
+        $this->validator->validate($createProfileDTO);
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Core\Exception;
+namespace App\Validation\Exception;
+
+use App\Core\Exception\BaseException;
 
 class ValidationException extends BaseException
 {

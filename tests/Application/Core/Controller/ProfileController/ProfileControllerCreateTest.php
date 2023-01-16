@@ -7,26 +7,23 @@ use App\Tests\Application\ApplicationTest;
 
 class ProfileControllerCreateTest extends ApplicationTest
 {
-    public function testNotAuthorized()
+    /**
+     * @dataProvider validData
+     */
+    public function testNotAuthorized(int $userId, array $data)
     {
         $client = $this->createClient();
-        $this->notAuthorizedTest($client, 'POST', '/api/profile', [
-            'firstName' => 'Имя',
-            'birthDate' => '2000-14-12'
-        ]);
+        $this->notAuthorizedTest($client, 'POST', '/api/profile', $data);
     }
 
     /**
      * @dataProvider validData
      */
-    public function testSuccess(int $userId, string $firstName, string $birthDate)
+    public function testSuccess(int $userId, array $data)
     {
         $client = $this->createClient();
         $this->setUser($client, $userId);
-        $client->request('POST', '/api/profile', [
-            'firstName' => $firstName,
-            'birthDate' => $birthDate,
-        ]);
+        $client->request('POST', '/api/profile', $data);
         $this->assertResponseStatusCodeSame(200);
     }
 
@@ -35,8 +32,10 @@ class ProfileControllerCreateTest extends ApplicationTest
         return [
             [
                 UserFixtures::USER_6,
-                'Имя',
-                '2000-12-14'
+                [
+                    'firstName' => 'Имя',
+                    'birthDate' => '2000-12-14',
+                ],
             ]
         ];
     }

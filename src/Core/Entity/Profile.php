@@ -2,6 +2,7 @@
 
 namespace App\Core\Entity;
 
+use App\Core\DTO\Profile\UpdateProfileDTO;
 use App\Location\Entity\City;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -35,7 +36,7 @@ class Profile
     private DateTimeImmutable $birthDate;
 
     #[Column(nullable: true)]
-    private ?string $lastName;
+    private ?string $lastName = null;
 
     #[Column(nullable: true)]
     private ?string $description = null;
@@ -56,7 +57,8 @@ class Profile
         DateTimeImmutable $birthDate,
     ) {
         $this->user = $user;
-        $this->update($firstName, $birthDate);
+        $this->firstName = $firstName;
+        $this->birthDate = $birthDate;
         $this->categories = new ArrayCollection();
     }
 
@@ -76,14 +78,11 @@ class Profile
         $this->categories = new ArrayCollection($categories);
     }
 
-    public function update(
-        ?string $firstName = null,
-        ?DateTimeImmutable $birthDate = null,
-        ?string $lastName = null,
-    ) {
-        $this->firstName = $firstName ?? $this->firstName;
-        $this->lastName = $lastName;
-        $this->birthDate = $birthDate ?? $this->birthDate;
+    public function update(UpdateProfileDTO $updateProfileDTO) {
+        $this->firstName = $updateProfileDTO->firstName ?? $this->firstName;
+        $this->lastName = $updateProfileDTO->lastName;
+        $this->description = $updateProfileDTO->description;
+        $this->city = $updateProfileDTO->city;
     }
 
     public function getId(): ?int
@@ -101,11 +100,6 @@ class Profile
         return $this->birthDate;
     }
 
-    public function setBirthDate(DateTimeImmutable $birthDate): void
-    {
-        $this->birthDate = $birthDate;
-    }
-
     public function getFirstName(): string
     {
         return $this->firstName;
@@ -114,11 +108,6 @@ class Profile
     public function getLastName(): ?string
     {
         return $this->lastName;
-    }
-
-    public function setDescription(?string $description): void
-    {
-        $this->description = $description;
     }
 
     public function getDescription(): ?string
@@ -134,10 +123,5 @@ class Profile
     public function getCity(): ?City
     {
         return $this->city;
-    }
-
-    public function setCity(?City $city): void
-    {
-        $this->city = $city;
     }
 }

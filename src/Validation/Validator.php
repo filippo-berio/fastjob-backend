@@ -2,6 +2,7 @@
 
 namespace App\Validation;
 
+use App\Validation\Exception\ValidationException;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface as SymfonyValidatorInterface;
 
@@ -11,17 +12,17 @@ class Validator implements ValidatorInterface
     {
     }
 
-    public function validate($object): array
+    public function validate($object): void
     {
-        $validationErrors = [];
-        $errors           = $this->validator->validate($object);
+        $errors = $this->validator->validate($object);
         if ($errors->count() > 0) {
+            $validationErrors = [];
             /** @var ConstraintViolation $error */
             foreach ($errors as $error) {
                 $validationErrors[$error->getPropertyPath()] = $error->getMessage();
             }
-        }
 
-        return $validationErrors;
+            throw new ValidationException(implode(', ', $validationErrors));
+        }
     }
 }

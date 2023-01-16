@@ -13,13 +13,13 @@ class CreateTaskSwipeRequest implements RequestInterface
 {
     #[NotBlank]
     #[Type('integer')]
-    public ?string $taskId;
+    public ?string $taskId = null;
 
     #[NotBlank]
     #[Choice(Swipe::TYPES)]
-    public ?string $type;
+    public ?string $type = null;
 
     #[Type('integer')]
     #[GreaterThan(0)]
-    public ?string $customPrice;
+    public ?string $customPrice = null;
 }

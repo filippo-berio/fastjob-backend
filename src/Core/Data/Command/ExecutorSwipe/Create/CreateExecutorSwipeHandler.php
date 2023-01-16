@@ -14,9 +14,12 @@ class CreateExecutorSwipeHandler implements CommandHandlerInterface
     ) {
     }
 
+    /**
+     * @param CreateExecutorSwipe $command
+     * @return ExecutorSwipe
+     */
     public function handle(CommandInterface $command): ExecutorSwipe
     {
-        /** @var CreateExecutorSwipe $command */
         $this->em->persist($command->executorSwipe);
         $this->em->flush();
         return $command->executorSwipe;

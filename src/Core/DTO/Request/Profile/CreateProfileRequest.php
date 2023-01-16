@@ -9,9 +9,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class CreateProfileRequest implements RequestInterface
 {
     #[NotBlank]
-    public ?string $firstName;
+    public ?string $firstName = null;
 
     #[NotBlank]
     #[Date]
-    public ?string $birthDate;
+    public ?string $birthDate = null;
 }

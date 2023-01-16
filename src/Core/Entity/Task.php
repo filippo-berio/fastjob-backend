@@ -2,6 +2,7 @@
 
 namespace App\Core\Entity;
 
+use App\Location\Entity\Address;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,6 +12,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 
 #[Entity]
 class Task
@@ -44,17 +46,27 @@ class Task
     #[Column(nullable: true)]
     private ?int $price;
 
+    #[OneToOne]
+    private ?Address $address;
+
     public function __construct(
         string $title,
         Profile $employer,
         array $categories,
         ?int $price = null,
+        ?Address $address = null,
     ) {
         $this->title = $title;
         $this->employer = $employer;
         $this->createdAt = new DateTimeImmutable();
         $this->categories = new ArrayCollection($categories);
         $this->price = $price;
+        $this->address = $address;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
     }
 
     public function getTitle(): string

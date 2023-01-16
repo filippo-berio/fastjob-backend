@@ -4,5 +4,7 @@ namespace App\Validation;
 
 interface ValidatorInterface
 {
-    public function validate($object): array;
+    public function validate($object): void;
+
+
 }

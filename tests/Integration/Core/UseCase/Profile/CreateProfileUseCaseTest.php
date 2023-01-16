@@ -4,17 +4,27 @@ namespace App\Tests\Integration\Core\UseCase\Profile;
 
 use App\Core\Entity\Profile;
 use App\Core\Entity\User;
-use App\Core\Exception\FutureDateException;
 use App\Core\Exception\Profile\ProfileCreatedException;
-use App\Core\Exception\Profile\ProfileTooYoungException;
-use App\Core\Exception\ValidationException;
 use App\Core\UseCase\Profile\CreateProfileUseCase;
 use App\DataFixtures\Core\UserFixtures;
 use App\Tests\Integration\IntegrationTest;
+use App\Validation\Exception\ValidationException;
 use DateTimeImmutable;
 
 class CreateProfileUseCaseTest extends IntegrationTest
 {
+    /**
+     * @dataProvider errorData
+     */
+    public function testError(string $exception, int $userId, string $firstName, DateTimeImmutable $birthDate)
+    {
+        $this->bootContainer();
+        $useCase = $this->getDependency(CreateProfileUseCase::class);
+        $user = $this->getEntity(User::class, $userId);
+        $this->expectException($exception);
+        $useCase->create($user, $firstName, $birthDate->format('Y-m-d'));
+    }
+
     /**
      * @dataProvider successData
      */
@@ -26,18 +36,6 @@ class CreateProfileUseCaseTest extends IntegrationTest
         $profile = $useCase->create($user, $firstName, $birthDate);
         $this->assertNotNull($user->getProfile()->getId());
         $this->assertEquals($user->getProfile()->getId(), $profile->getId());
-    }
-
-    /**
-     * @dataProvider errorData
-     */
-    public function testError(string $exception, int $userId, string $firstName, DateTimeImmutable $birthDate)
-    {
-        $this->bootContainer();
-        $useCase = $this->getDependency(CreateProfileUseCase::class);
-        $user = $this->getEntity(User::class, $userId);
-        $this->expectException($exception);
-        $useCase->create($user, $firstName, $birthDate->format('Y-m-d'));
     }
 
     private function errorData()
@@ -66,6 +64,12 @@ class CreateProfileUseCaseTest extends IntegrationTest
                 UserFixtures::USER_6,
                 'Name',
                 new DateTimeImmutable('+1 day'),
+            ],
+            [
+                ValidationException::class,
+                UserFixtures::USER_6,
+                'Имя123',
+                new DateTimeImmutable('2000-12-14'),
             ],
         ];
     }

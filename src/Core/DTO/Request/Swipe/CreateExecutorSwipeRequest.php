@@ -12,13 +12,13 @@ class CreateExecutorSwipeRequest implements RequestInterface
 {
     #[NotBlank]
     #[Type('integer')]
-    public ?string $taskId;
+    public ?string $taskId = null;
 
     #[NotBlank]
     #[Type('integer')]
-    public ?string $executorId;
+    public ?string $executorId = null;
 
     #[NotBlank]
     #[Choice(Swipe::TYPES)]
-    public ?string $type;
+    public ?string $type = null;
 }

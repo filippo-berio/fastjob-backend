@@ -26,4 +26,10 @@ abstract class ApplicationTest extends WebTestCase
         $user = $em->getRepository(User::class)->find($userId);
         $client->loginUser($user);
     }
+
+    protected function getResponse(KernelBrowser $client): array
+    {
+//        dd($client->getResponse());
+        return json_decode($client->getResponse()->getContent(), true);
+    }
 }

@@ -6,6 +6,7 @@ use App\Core\DTO\Request\Profile\CreateProfileRequest;
 use App\Core\DTO\Request\Profile\UpdateProfileRequest;
 use App\Core\Entity\User;
 use App\Core\UseCase\Profile\CreateProfileUseCase;
+use App\Core\UseCase\Profile\GetProfileUseCase;
 use App\Core\UseCase\Profile\UpdateProfileUseCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,6 +15,19 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 #[Route('/profile')]
 class ProfileController extends BaseController
 {
+    #[Route(methods: ['GET'])]
+    public function get(
+        #[CurrentUser] User $user,
+        GetProfileUseCase $useCase,
+    ): JsonResponse {
+        $profile = $useCase->get($user);
+        return $this->json($profile, context: [
+            'profile_full',
+            'category_full',
+            'city_full'
+        ]);
+    }
+
     #[Route(methods: ['POST'])]
     public function create(
         #[CurrentUser] User $user,

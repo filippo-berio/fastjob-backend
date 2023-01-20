@@ -14,9 +14,12 @@ class FindUserByPhoneHandler implements QueryHandlerInterface
     ) {
     }
 
+    /**
+     * @param FindUserByPhone $query
+     * @return User|null
+     */
     public function handle(QueryInterface $query): ?User
     {
-        /** @var FindUserByPhone $query */
         return $this->em->getRepository(User::class)
             ->createQueryBuilder('u')
             ->andWhere('u.phone = :phone')

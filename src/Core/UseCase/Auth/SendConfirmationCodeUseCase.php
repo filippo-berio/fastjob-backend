@@ -13,7 +13,6 @@ class SendConfirmationCodeUseCase
 
     public function send(string $phone)
     {
-        $code = rand(1111, 9999);
-        $this->sendConfirmationCodeService->send($phone, $code);
+        $this->sendConfirmationCodeService->send($phone);
     }
 }

@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\OneToOne;
 class CategoryBranch
 {
     #[Id]
-    #[OneToOne(inversedBy: 'id', cascade: ['persist'])]
+    #[OneToOne(inversedBy: 'categoryBranch', cascade: ['persist'])]
     #[JoinColumn(name: 'id', referencedColumnName: 'id')]
     private Category $category;
 

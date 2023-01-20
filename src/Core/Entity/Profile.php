@@ -11,10 +11,11 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
-use function Symfony\Component\Translation\t;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[Entity]
 class Profile
@@ -26,29 +27,37 @@ class Profile
     #[Column]
     private ?int $id = null;
 
-    #[OneToOne]
+    #[OneToOne(inversedBy: 'profile')]
+    #[JoinColumn]
     private User $user;
 
     #[Column]
+    #[Groups(['profile_full'])]
     private string $firstName;
 
     #[Column]
+    #[Groups(['profile_full'])]
     private DateTimeImmutable $birthDate;
 
     #[Column(nullable: true)]
+    #[Groups(['profile_full'])]
     private ?string $lastName = null;
 
     #[Column(nullable: true)]
+    #[Groups(['profile_full'])]
     private ?string $description = null;
 
     #[Column(nullable: true)]
-    private ?string $photo = null;
+    #[Groups(['profile_full'])]
+    private ?string $photoPath = null;
 
     #[ManyToMany(targetEntity: Category::class)]
+    #[Groups(['profile_full'])]
     /** @var Collection<Category> $categories */
     private Collection $categories;
 
     #[ManyToOne]
+    #[Groups(['profile_full'])]
     private ?City $city = null;
 
     public function __construct(
@@ -60,6 +69,12 @@ class Profile
         $this->firstName = $firstName;
         $this->birthDate = $birthDate;
         $this->categories = new ArrayCollection();
+    }
+
+    #[Groups(['profile_full'])]
+    public function getPhone(): string
+    {
+        return $this->user->getPhone();
     }
 
     /**
@@ -115,9 +130,9 @@ class Profile
         return $this->description;
     }
 
-    public function getPhoto(): ?string
+    public function getPhotoPath(): ?string
     {
-        return $this->photo;
+        return $this->photoPath;
     }
 
     public function getCity(): ?City

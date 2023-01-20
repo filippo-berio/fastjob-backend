@@ -2,10 +2,13 @@
 
 namespace App\DataFixtures\Core;
 
+use App\Core\DTO\Profile\UpdateProfileDTO;
 use App\Core\Entity\Category;
 use App\Core\Entity\Profile;
 use App\Core\Entity\User;
 use App\DataFixtures\BaseFixtures;
+use App\DataFixtures\Location\CityFixtures;
+use App\Location\Entity\City;
 use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -25,13 +28,19 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $profile2 = new Profile(
-            $this->getReference(UserFixtures::USER_2, User::class),
-            'Алексей',
-            new DateTimeImmutable('14.12.2000')
+        $profile1 = new Profile(
+            $this->getReference(UserFixtures::USER_1, User::class),
+            'Викидий',
+            new DateTimeImmutable('14.12.2000'),
         );
 
-        $profile2->setCategories([
+        $profile1->update(new UpdateProfileDTO(
+            'Викидий',
+            description: 'Описание',
+            city: $this->getReference(CityFixtures::CITY_1, City::class))
+        );
+
+        $profile1->setCategories([
             $this->getReference(CategoryFixtures::PLUMBING, Category::class)
         ]);
 
@@ -45,12 +54,12 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
         ]);
 
         $this->save([
-            $profile1 = new Profile(
-                $this->getReference(UserFixtures::USER_1, User::class),
-                'Викидий',
+            $profile1,
+            $profile2 = new Profile(
+                $this->getReference(UserFixtures::USER_2, User::class),
+                'Алексей',
                 new DateTimeImmutable('14.12.2000')
             ),
-            $profile2,
             $profile3 = new Profile(
                 $this->getReference(UserFixtures::USER_3, User::class),
                 'Шайа',
@@ -76,6 +85,7 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
         return [
             CategoryFixtures::class,
             UserFixtures::class,
+            CityFixtures::class,
         ];
     }
 }

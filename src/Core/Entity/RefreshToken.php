@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\OneToOne;
 class RefreshToken
 {
     #[Id]
-    #[OneToOne(inversedBy: 'id')]
+    #[OneToOne(inversedBy: 'refreshToken')]
     #[JoinColumn(name: 'id', referencedColumnName: 'id')]
     private User $user;
 

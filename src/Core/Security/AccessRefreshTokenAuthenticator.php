@@ -22,7 +22,7 @@ class AccessRefreshTokenAuthenticator extends AbstractAuthenticator
 
     public function supports(Request $request): ?bool
     {
-        return $this->getAccessToken($request) && $this->getRefreshToken($request);
+        return !!$this->getAccessToken($request);
     }
 
     public function authenticate(Request $request): Passport
@@ -62,7 +62,7 @@ class AccessRefreshTokenAuthenticator extends AbstractAuthenticator
         return $accessToken;
     }
 
-    private function getRefreshToken(Request $request): string
+    private function getRefreshToken(Request $request): ?string
     {
         return $request->headers->get('x-refresh-token');
     }

@@ -3,8 +3,10 @@
 namespace App\Core\Events\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 
 class ExceptionListener implements EventSubscriberInterface
 {
@@ -23,19 +25,18 @@ class ExceptionListener implements EventSubscriberInterface
 
     public function onKernelException(ExceptionEvent $event)
     {
-//        $exception = $event->getThrowable();
-//
-//        if (!$exception instanceof \Exception) {
-//            return;
-//        }
-//        // todo response code
-//        $code     = $exception instanceof HttpException ? $exception->getStatusCode() : $exception->getCode();
-//        dd($exception);
-//        $response = new JsonResponse([
-//            'success' => false,
-//            'error'   => $exception->getMessage(),
-//        ], $code ?? 500);
-//        $event->setResponse($response);
+        $exception = $event->getThrowable();
+
+        if ($exception instanceof HttpExceptionInterface) {
+            $code = $exception->getStatusCode();
+        } else {
+            $code = $exception->getCode() ?: 500;
+        }
+
+        $event->setResponse(new JsonResponse([
+            'success' => false,
+            'error' => $exception->getMessage(),
+        ], $code));
     }
 
 }

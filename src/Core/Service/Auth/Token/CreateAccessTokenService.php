@@ -16,7 +16,7 @@ class CreateAccessTokenService
     public function create(User $user): string
     {
         $token = $this->JWTEncoder->encode([
-            'userId' => $user->getId(),0
+            'userId' => $user->getId(),
         ]);
         $this->redisTokenService->setAccessToken($token, $user);
         return $token;

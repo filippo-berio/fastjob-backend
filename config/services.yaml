@@ -29,6 +29,11 @@ services:
         resource: '../src/'
         exclude: '../src/*/Entity/'
 
+#    App\Core\Events\EventListener\ExceptionListener:
+#        tags: [kernel.event_listener]
+#        tags:
+#            - {name: kernel.event_listener, event: kernel.exception}
+
     App\CQRS\Bus\CommandBus:
         $commandHandlers: !tagged_iterator 'cqrs.command_handler'
 
@@ -44,6 +49,8 @@ services:
 
     App\Core\Service\Auth\Token\RedisTokenService:
         $accessTokenLifeTime: '%env(ACCESS_TOKEN_LIFETIME)%'
+        $phoneBanTime: '%env(BAN_PHONE_TIME)%'
+        $confirmationTokenLifeTime: '%env(CONFIRMATION_TOKEN_LIFETIME)%'
 
     Predis\Client:
         arguments:

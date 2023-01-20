@@ -52,6 +52,7 @@ class ProfileController extends BaseController
         $useCase->update(
             $user,
             $body->firstName,
+            $body->categoryIds,
             $body->lastName,
             $body->description,
             $body->cityId,

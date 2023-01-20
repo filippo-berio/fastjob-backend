@@ -86,16 +86,9 @@ class Profile
         return $this->categories->toArray();
     }
 
-    /**
-     * @param Category[] $categories
-     */
-    public function setCategories(array $categories)
-    {
-        $this->categories = new ArrayCollection($categories);
-    }
-
     public function update(UpdateProfileDTO $updateProfileDTO) {
         $this->firstName = $updateProfileDTO->firstName ?? $this->firstName;
+        $this->setCategories($updateProfileDTO->categories);
         $this->lastName = $updateProfileDTO->lastName;
         $this->description = $updateProfileDTO->description;
         $this->city = $updateProfileDTO->city;
@@ -139,5 +132,13 @@ class Profile
     public function getCity(): ?City
     {
         return $this->city;
+    }
+
+    /**
+     * @param Category[] $categories
+     */
+    private function setCategories(array $categories)
+    {
+        $this->categories = new ArrayCollection($categories);
     }
 }

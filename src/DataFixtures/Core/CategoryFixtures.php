@@ -20,6 +20,8 @@ class CategoryFixtures extends BaseFixtures
     const PETS = 8;
     const FISH = 9;
 
+    const NOT_EXIST_CATEGORY = 999;
+
     protected function getEntity(): string
     {
         return Category::class;

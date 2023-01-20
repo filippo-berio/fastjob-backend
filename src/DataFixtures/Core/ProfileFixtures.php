@@ -36,22 +36,25 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
 
         $profile1->update(new UpdateProfileDTO(
             'Викидий',
+                [
+                    $this->getReference(CategoryFixtures::PLUMBING, Category::class)
+                ],
             description: 'Описание',
             city: $this->getReference(CityFixtures::CITY_1, City::class))
         );
-
-        $profile1->setCategories([
-            $this->getReference(CategoryFixtures::PLUMBING, Category::class)
-        ]);
 
         $profile5 = new Profile(
             $this->getReference(UserFixtures::USER_5, User::class),
             'Анатолий',
             new DateTimeImmutable('18.02.2002')
         );
-        $profile5->setCategories([
-            $this->getReference(CategoryFixtures::CPLUS, Category::class)
-        ]);
+
+        $profile5->update(new UpdateProfileDTO(
+                'Анатолий',
+                [
+                    $this->getReference(CategoryFixtures::CPLUS, Category::class)
+                ],
+        ));
 
         $this->save([
             $profile1,

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Location\Data\Query;
+namespace App\Location\Query;
 
 use App\CQRS\BaseQuery;
 

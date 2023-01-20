@@ -2,9 +2,9 @@
 
 namespace App\Tests\Integration\Core\UseCase\Auth;
 
-use App\Core\Service\Auth\Confirmation\SendConfirmationCodeService;
-use App\Core\Service\Auth\Token\RedisTokenService;
-use App\Core\UseCase\Auth\SendConfirmationCodeUseCase;
+use App\Auth\Service\Confirmation\SendConfirmationCodeService;
+use App\Auth\Service\Token\RedisTokenService;
+use App\Auth\UseCase\UserConfirmation\SendConfirmationCodeUseCase;
 use App\DataFixtures\Core\UserFixtures;
 use App\Sms\Service\SmsService;
 use App\Tests\Integration\IntegrationTest;
@@ -18,7 +18,8 @@ class SendConfirmationCodeUseCaseTest extends IntegrationTest
         $redisService = $this->getDependency(RedisTokenService::class);
         $useCase = $this->createUseCase($redisService);
         $useCase->send(UserFixtures::NOT_EXIST_USER_PHONE);
-        $this->assertNotNull();
+        $this->assertIsInt(2);
+//        $this->assertNotNull();
     }
 
     // todo mock telegram

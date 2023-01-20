@@ -2,12 +2,13 @@
 
 namespace App\Core\Service\Profile;
 
-use App\Core\Data\Command\User\SaveUser;
+use App\Core\Command\Profile\Save\SaveProfile;
 use App\Core\DTO\Profile\CreateProfileDTO;
 use App\Core\Entity\Profile;
 use App\Core\Exception\Profile\ProfileCreatedException;
+use App\Core\Query\Profile\FindByUser\FindProfileByUser;
 use App\CQRS\Bus\CommandBusInterface;
-use App\Validation\Exception\ValidationException;
+use App\CQRS\Bus\QueryBusInterface;
 use App\Validation\ValidatorInterface;
 
 class CreateProfileService
@@ -15,6 +16,7 @@ class CreateProfileService
     public function __construct(
         private CommandBusInterface $commandBus,
         private ValidatorInterface $validator,
+        private QueryBusInterface $queryBus,
     ) {
     }
 
@@ -28,14 +30,13 @@ class CreateProfileService
             $createProfileDTO->firstName,
             $createProfileDTO->birthDate,
         );
-        $user->setProfile($profile);
-        $this->commandBus->handle(new SaveUser($user));
-        return $user->getProfile();
+        $this->commandBus->handle(new SaveProfile($profile));
+        return $profile;
     }
 
     private function validate(CreateProfileDTO $createProfileDTO)
     {
-        if ($createProfileDTO->user->getProfile()) {
+        if ($this->queryBus->handle(new FindProfileByUser($createProfileDTO->user))) {
             throw new ProfileCreatedException();
         }
 

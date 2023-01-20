@@ -2,6 +2,7 @@
 
 namespace App\Core\Entity;
 
+use App\Auth\Entity\User;
 use App\Core\DTO\Profile\UpdateProfileDTO;
 use App\Location\Entity\City;
 use DateTimeImmutable;
@@ -27,7 +28,7 @@ class Profile
     #[Column]
     private ?int $id = null;
 
-    #[OneToOne(inversedBy: 'profile')]
+    #[OneToOne]
     #[JoinColumn]
     private User $user;
 

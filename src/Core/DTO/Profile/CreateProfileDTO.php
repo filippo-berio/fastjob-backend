@@ -2,8 +2,8 @@
 
 namespace App\Core\DTO\Profile;
 
+use App\Auth\Entity\User;
 use App\Core\Entity\Profile;
-use App\Core\Entity\User;
 use App\Validation\Constraints\Name;
 use App\Validation\Constraints\OldDate;
 use App\Validation\Constraints\YearsPassed;

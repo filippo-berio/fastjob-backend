@@ -2,12 +2,12 @@
 
 namespace App\Core\Service\TaskSwipe;
 
-use App\Core\Data\Command\TaskSwipe\Create\CreateTaskSwipe;
-use App\Core\Data\Query\TaskSwipe\FindByProfileTask\FindByProfileTask;
+use App\Core\Command\TaskSwipe\Create\CreateTaskSwipe;
 use App\Core\Entity\Profile;
 use App\Core\Entity\Task;
 use App\Core\Entity\TaskSwipe;
 use App\Core\Exception\TaskSwipe\TaskSwipeExistsException;
+use App\Core\Query\TaskSwipe\FindByProfileTask\FindByProfileTask;
 use App\CQRS\Bus\CommandBusInterface;
 use App\CQRS\Bus\QueryBusInterface;
 

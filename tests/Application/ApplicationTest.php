@@ -2,7 +2,7 @@
 
 namespace App\Tests\Application;
 
-use App\Core\Entity\User;
+use App\Auth\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

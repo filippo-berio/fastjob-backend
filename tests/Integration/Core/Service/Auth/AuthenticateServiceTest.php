@@ -2,9 +2,9 @@
 
 namespace App\Tests\Integration\Core\Service\Auth;
 
-use App\Core\Entity\User;
-use App\Core\Service\Auth\AuthenticateService;
-use App\Core\Service\Auth\Token\RedisTokenService;
+use App\Auth\Entity\User;
+use App\Auth\Service\AuthenticateService;
+use App\Auth\Service\Token\RedisTokenService;
 use App\DataFixtures\Core\RefreshTokenFixtures;
 use App\DataFixtures\Core\UserFixtures;
 use App\Tests\Integration\IntegrationTest;

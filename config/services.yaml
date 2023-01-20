@@ -29,10 +29,16 @@ services:
         resource: '../src/'
         exclude: '../src/*/Entity/'
 
-#    App\Core\Events\EventListener\ExceptionListener:
-#        tags: [kernel.event_listener]
+    App\Api\EventListener\ExceptionListener:
 #        tags:
 #            - {name: kernel.event_listener, event: kernel.exception}
+
+
+    App\Auth\Service\Token\RedisTokenService:
+        $accessTokenLifeTime: '%env(ACCESS_TOKEN_LIFETIME)%'
+        $phoneBanTime: '%env(BAN_PHONE_TIME)%'
+        $confirmationTokenLifeTime: '%env(CONFIRMATION_TOKEN_LIFETIME)%'
+
 
     App\CQRS\Bus\CommandBus:
         $commandHandlers: !tagged_iterator 'cqrs.command_handler'
@@ -40,24 +46,19 @@ services:
     App\CQRS\Bus\QueryBus:
         $queryHandlers: !tagged_iterator 'cqrs.query_handler'
 
+
     App\DataFixtures\Purger\PurgerFactory:
         tags:
             - { name: 'doctrine.fixtures.purger_factory', alias: 'my_purger' }
 
+
     App\Core\Service\Task\TaskStack\Generator\TaskStackGeneratorFactory:
         $generators: !tagged_iterator 'core.task_stack_generator'
 
-    App\Core\Service\Auth\Token\RedisTokenService:
-        $accessTokenLifeTime: '%env(ACCESS_TOKEN_LIFETIME)%'
-        $phoneBanTime: '%env(BAN_PHONE_TIME)%'
-        $confirmationTokenLifeTime: '%env(CONFIRMATION_TOKEN_LIFETIME)%'
-
-    Predis\Client:
-        arguments:
-            - '%env(REDIS_HOST)%'
 
     App\Sms\Service\SmsService:
         $provider: '%env(SMS_PROVIDER)%'
+
 
     App\Sms\Service\Provider\SmsProviderFactory:
         $providers: !tagged_iterator 'sms.provider'
@@ -66,6 +67,12 @@ services:
         $botToken: '%env(TELEGRAM_BOT_TOKEN)%'
         $host: '%env(TELEGRAM_BOT_URL)%'
         $chatId: '%env(TELEGRAM_CHAT_ID)%'
+
+
+    Predis\Client:
+        arguments:
+            - '%env(REDIS_HOST)%'
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

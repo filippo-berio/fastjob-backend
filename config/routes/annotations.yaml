@@ -1,17 +1,17 @@
 api:
     prefix: '/api'
-    resource: ../../src/Core/Controller
+    resource: ../../src/Api/Controller
     type: annotation
 
 ping:
-    resource: '../../src/Core/Controller/PingController.php'
+    resource: '../../src/Api/Controller/PingController.php'
     type: annotation
 
 auth:
     prefix: '/auth-api'
-    resource: '../../src/Core/Controller/AuthController.php'
+    resource: '../../src/Api/Controller/Auth/AuthController.php'
     type: annotation
 
 admin:
-    resource: ../../src/Admin/Controller
+    resource: ../../src/Api/Controller/Admin
     type: annotation

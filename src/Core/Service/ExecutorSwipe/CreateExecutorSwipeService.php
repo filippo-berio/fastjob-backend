@@ -2,14 +2,14 @@
 
 namespace App\Core\Service\ExecutorSwipe;
 
-use App\Core\Data\Command\ExecutorSwipe\Create\CreateExecutorSwipe;
-use App\Core\Data\Query\ExecutorSwipe\FindByProfileTask\FindExecutorSwipeByProfileTask;
+use App\Core\Command\ExecutorSwipe\Create\CreateExecutorSwipe;
 use App\Core\Entity\ExecutorSwipe;
 use App\Core\Entity\Profile;
 use App\Core\Entity\Task;
 use App\Core\Exception\ExecutorSwipe\ExecutorSwipeExistsException;
 use App\Core\Exception\ExecutorSwipe\ExecutorSwipeSelfAssignException;
 use App\Core\Exception\Task\TaskNotFoundException;
+use App\Core\Query\ExecutorSwipe\FindByProfileTask\FindExecutorSwipeByProfileTask;
 use App\CQRS\Bus\CommandBusInterface;
 use App\CQRS\Bus\QueryBusInterface;
 

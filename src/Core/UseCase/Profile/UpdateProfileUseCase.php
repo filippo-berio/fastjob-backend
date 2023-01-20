@@ -2,10 +2,11 @@
 
 namespace App\Core\UseCase\Profile;
 
+use App\Auth\Entity\User;
 use App\Core\DTO\Profile\UpdateProfileDTO;
 use App\Core\Entity\Profile;
-use App\Core\Entity\User;
 use App\Core\Exception\Profile\ProfileNotFoundException;
+use App\Core\Query\Profile\FindByUser\FindProfileByUser;
 use App\Core\Service\Profile\UpdateProfileService;
 use App\CQRS\Bus\QueryBusInterface;
 use App\Location\Data\Query\FindCityById;
@@ -26,7 +27,7 @@ class UpdateProfileUseCase
         ?string $description = null,
         ?int $cityId = null,
     ): Profile {
-        if (!$user->getProfile()) {
+        if (!$profile = $this->queryBus->handle(new FindProfileByUser($user))) {
             throw new ProfileNotFoundException();
         }
 
@@ -38,7 +39,7 @@ class UpdateProfileUseCase
         }
 
         return $this->updateProfileService->update(
-            $user->getProfile(),
+            $profile,
             new UpdateProfileDTO(
                 $firstName,
                 $lastName,

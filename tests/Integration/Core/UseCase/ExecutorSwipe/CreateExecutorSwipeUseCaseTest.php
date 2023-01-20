@@ -2,8 +2,8 @@
 
 namespace App\Tests\Integration\Core\UseCase\ExecutorSwipe;
 
+use App\Auth\Entity\User;
 use App\Core\Entity\ExecutorSwipe;
-use App\Core\Entity\Profile;
 use App\Core\Entity\Swipe;
 use App\Core\Exception\ExecutorSwipe\ExecutorSwipeExistsException;
 use App\Core\Exception\ExecutorSwipe\ExecutorSwipeSelfAssignException;
@@ -33,7 +33,7 @@ class CreateExecutorSwipeUseCaseTest extends IntegrationTest
         $this->expectException($exception);
 
         $em = $this->getEm();
-        $user = $em->getRepository(Profile::class)->find($userId);
+        $user = $em->getRepository(User::class)->find($userId);
         $useCase($user, $taskId, $executorId,  $type);
     }
     /**
@@ -53,7 +53,7 @@ class CreateExecutorSwipeUseCaseTest extends IntegrationTest
 
         $useCase = $this->getUseCase();
 
-        $user = $em->getRepository(Profile::class)->find($userId);
+        $user = $em->getRepository(User::class)->find($userId);
         $useCase($user, $taskId, $executorId,  $type);
 
         $after = $repo->findAll();

@@ -2,10 +2,10 @@
 
 namespace App\DataFixtures\Core;
 
+use App\Auth\Entity\User;
 use App\Core\DTO\Profile\UpdateProfileDTO;
 use App\Core\Entity\Category;
 use App\Core\Entity\Profile;
-use App\Core\Entity\User;
 use App\DataFixtures\BaseFixtures;
 use App\DataFixtures\Location\CityFixtures;
 use App\Location\Entity\City;

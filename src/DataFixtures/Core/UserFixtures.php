@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\Core;
 
-use App\Core\Entity\User;
+use App\Auth\Entity\User;
 use App\DataFixtures\BaseFixtures;
 use Doctrine\Persistence\ObjectManager;
 

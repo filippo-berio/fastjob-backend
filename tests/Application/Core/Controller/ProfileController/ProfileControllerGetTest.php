@@ -35,6 +35,7 @@ class ProfileControllerGetTest extends ApplicationTest
         $client = $this->createClient();
         $this->setUser($client, UserFixtures::USER_6);
         $client->request('GET', '/api/profile');
+        $this->assertIsInt(2);
         // TODO
 //        $this->assertResponseStatusCodeSame(404);
     }

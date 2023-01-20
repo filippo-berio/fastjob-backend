@@ -2,7 +2,7 @@
 
 namespace App\Tests\Integration\Core\UseCase\Profile;
 
-use App\Core\Entity\User;
+use App\Auth\Entity\User;
 use App\Core\Exception\Profile\ProfileNotFoundException;
 use App\Core\UseCase\Profile\UpdateProfileUseCase;
 use App\DataFixtures\Core\UserFixtures;

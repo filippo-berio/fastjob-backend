@@ -2,8 +2,8 @@
 
 namespace App\Tests\Integration\Core\UseCase\Profile;
 
+use App\Auth\Entity\User;
 use App\Core\Entity\Profile;
-use App\Core\Entity\User;
 use App\Core\Exception\Profile\ProfileCreatedException;
 use App\Core\UseCase\Profile\CreateProfileUseCase;
 use App\DataFixtures\Core\UserFixtures;
@@ -34,8 +34,7 @@ class CreateProfileUseCaseTest extends IntegrationTest
         $useCase = $this->getDependency(CreateProfileUseCase::class);
         $user = $this->getEntity(User::class, $userId);
         $profile = $useCase->create($user, $firstName, $birthDate);
-        $this->assertNotNull($user->getProfile()->getId());
-        $this->assertEquals($user->getProfile()->getId(), $profile->getId());
+        $this->assertEquals($user->getId(), $profile->getUser()->getId());
     }
 
     private function errorData()

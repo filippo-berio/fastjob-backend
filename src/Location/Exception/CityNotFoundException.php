@@ -2,9 +2,8 @@
 
 namespace App\Location\Exception;
 
-use Exception;
 
-class CityNotFoundException extends Exception
+class CityNotFoundException extends BaseException
 {
     public function __construct()
     {

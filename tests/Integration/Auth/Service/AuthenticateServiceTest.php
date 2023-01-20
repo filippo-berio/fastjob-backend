@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Integration\Core\Service\Auth;
+namespace App\Tests\Integration\Auth\Service;
 
 use App\Auth\Entity\User;
 use App\Auth\Service\AuthenticateService;

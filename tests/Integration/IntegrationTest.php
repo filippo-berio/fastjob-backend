@@ -30,11 +30,23 @@ abstract class IntegrationTest extends KernelTestCase
      * @template T
      * @param class-string<T> $class
      * @param mixed $id
-     * @return T
+     * @return T|null
      */
     protected function getEntity(string $class, mixed $id)
     {
         $em = $this->getDependency(EntityManagerInterface::class);
         return $em->getRepository($class)->find($id);
+    }
+
+    /**
+     * @template T
+     * @param class-string<T> $class
+     * @param array $criteria
+     * @return T[]
+     */
+    protected function getEntityBy(string $class, array $criteria)
+    {
+        $em = $this->getDependency(EntityManagerInterface::class);
+        return $em->getRepository($class)->findBy($criteria);
     }
 }

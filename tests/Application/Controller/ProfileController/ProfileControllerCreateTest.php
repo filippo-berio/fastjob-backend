@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests\Application\Core\Controller\ProfileController;
+namespace App\Tests\Application\Controller\ProfileController;
 
-use App\DataFixtures\Core\UserFixtures;
+use App\Auth\Entity\User;
+use App\DataFixtures\Auth\UserFixtures;
 use App\Tests\Application\ApplicationTest;
 
 class ProfileControllerCreateTest extends ApplicationTest
@@ -22,7 +23,7 @@ class ProfileControllerCreateTest extends ApplicationTest
     public function testSuccess(int $userId, array $data)
     {
         $client = $this->createClient();
-        $this->setUser($client, $userId);
+        $this->setUser($client, $userId, User::class);
         $client->request('POST', '/api/profile', $data);
         $this->assertResponseStatusCodeSame(200);
     }

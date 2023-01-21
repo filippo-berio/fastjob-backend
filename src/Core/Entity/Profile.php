@@ -16,10 +16,11 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[Entity]
-class Profile
+class Profile implements UserInterface
 {
     const MINIMAL_AGE = 16;
 
@@ -140,5 +141,20 @@ class Profile
     private function setCategories(array $categories)
     {
         $this->categories = new ArrayCollection($categories);
+    }
+
+    public function getRoles(): array
+    {
+        return $this->user->getRoles();
+    }
+
+    public function eraseCredentials()
+    {
+        $this->user->eraseCredentials();
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->user->getUserIdentifier();
     }
 }

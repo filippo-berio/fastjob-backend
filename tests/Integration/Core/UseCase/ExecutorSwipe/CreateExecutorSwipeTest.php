@@ -15,7 +15,7 @@ use App\DataFixtures\Core\TaskFixtures;
 use App\Tests\Integration\IntegrationTest;
 use Doctrine\ORM\EntityManagerInterface;
 
-class CreateExecutorSwipeUseCaseTest extends IntegrationTest
+class CreateExecutorSwipeTest extends IntegrationTest
 {
     /**
      * @dataProvider errorData

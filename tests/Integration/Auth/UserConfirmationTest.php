@@ -9,7 +9,7 @@ use App\Auth\Service\Confirmation\SendConfirmationCodeService;
 use App\Auth\Service\Token\RedisTokenService;
 use App\Auth\UseCase\UserConfirmation\ConfirmCodeUseCase;
 use App\Auth\UseCase\UserConfirmation\SendConfirmationCodeUseCase;
-use App\DataFixtures\Core\UserFixtures;
+use App\DataFixtures\Auth\UserFixtures;
 use App\Sms\Service\SmsService;
 use App\Tests\Integration\IntegrationTest;
 

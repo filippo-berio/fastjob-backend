@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Location\Query;
+namespace App\Location\Query\City;
 
 use App\CQRS\QueryHandlerInterface;
 use App\CQRS\QueryInterface;

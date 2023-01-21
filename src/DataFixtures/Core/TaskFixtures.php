@@ -6,6 +6,9 @@ use App\Core\Entity\Category;
 use App\Core\Entity\Profile;
 use App\Core\Entity\Task;
 use App\DataFixtures\BaseFixtures;
+use App\DataFixtures\Location\AddressFixtures;
+use App\Location\Entity\Address;
+use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -34,14 +37,16 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 'Научить языку с++',
                 $this->getReference(ProfileFixtures::PROFILE_3, Profile::class),
                 [$this->getReference(CategoryFixtures::CPLUS, Category::class)],
-                1500
+                1500,
             ),
             $task2,
             $task3 = new Task(
                 'Починить кран',
                 $this->getReference(ProfileFixtures::PROFILE_1, Profile::class),
                 [$this->getReference(CategoryFixtures::PLUMBING, Category::class)],
-                3000
+                3000,
+                $this->getReference(AddressFixtures::ADDRESS_1, Address::class),
+                deadline: (new DateTimeImmutable())->modify('+1 day')
             ),
         ], $manager);
 

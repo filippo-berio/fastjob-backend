@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Tests\Application\Core\Controller\ProfileController;
+namespace App\Tests\Application\Controller\ProfileController;
 
+use App\Auth\Entity\User;
+use App\DataFixtures\Auth\UserFixtures;
 use App\DataFixtures\Core\CategoryFixtures;
-use App\DataFixtures\Core\UserFixtures;
 use App\Tests\Application\ApplicationTest;
 
 class ProfileControllerGetTest extends ApplicationTest
@@ -17,7 +18,7 @@ class ProfileControllerGetTest extends ApplicationTest
     public function testStructure()
     {
         $client = $this->createClient();
-        $this->setUser($client, UserFixtures::USER_1);
+        $this->setUser($client, UserFixtures::USER_1, User::class);
         $client->request('GET', '/api/profile');
         $profile = $this->getResponse($client);
         $this->assertEquals('Викидий', $profile['firstName']);
@@ -33,7 +34,7 @@ class ProfileControllerGetTest extends ApplicationTest
     public function testNoProfile()
     {
         $client = $this->createClient();
-        $this->setUser($client, UserFixtures::USER_6);
+        $this->setUser($client, UserFixtures::USER_6, User::class);
         $client->request('GET', '/api/profile');
         $this->assertIsInt(2);
         // TODO

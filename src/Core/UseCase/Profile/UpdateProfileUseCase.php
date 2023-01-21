@@ -12,7 +12,7 @@ use App\Core\Query\Profile\FindByUser\FindProfileByUser;
 use App\Core\Service\Profile\UpdateProfileService;
 use App\CQRS\Bus\QueryBusInterface;
 use App\Location\Exception\CityNotFoundException;
-use App\Location\Query\FindCityById;
+use App\Location\Query\City\FindCityById;
 
 class UpdateProfileUseCase
 {

@@ -6,14 +6,14 @@ use App\Auth\Entity\User;
 use App\Core\Exception\Category\CategoryNotFoundException;
 use App\Core\Exception\Profile\ProfileNotFoundException;
 use App\Core\UseCase\Profile\UpdateProfileUseCase;
+use App\DataFixtures\Auth\UserFixtures;
 use App\DataFixtures\Core\CategoryFixtures;
-use App\DataFixtures\Core\UserFixtures;
 use App\DataFixtures\Location\CityFixtures;
 use App\Location\Exception\CityNotFoundException;
 use App\Tests\Integration\IntegrationTest;
 use App\Validation\Exception\ValidationException;
 
-class UpdateProfileUseCaseTest extends IntegrationTest
+class UpdateProfileTest extends IntegrationTest
 {
     /**
      * @dataProvider invalidData

@@ -2,12 +2,14 @@
 
 namespace App\Api\Security;
 
+use App\Auth\Entity\User;
 use App\Auth\UseCase\AuthenticateUseCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
@@ -27,12 +29,9 @@ class AccessRefreshTokenAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $accessToken = $this->getAccessToken($request);
-        $refreshToken = $this->getRefreshToken($request);
-        $user = $this->authenticateUseCase->authenticate($accessToken, $refreshToken);
-
+        $user = $this->getUser($request);
         return new SelfValidatingPassport(
-            new UserBadge($user->getId(), function () use ($user) {
+            new UserBadge($user->getUserIdentifier(), function () use ($user) {
                 return $user;
             })
         );
@@ -50,6 +49,17 @@ class AccessRefreshTokenAuthenticator extends AbstractAuthenticator
         ];
 
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @param Request $request
+     * @return User
+     */
+    protected function getUser(Request $request): UserInterface
+    {
+        $accessToken = $this->getAccessToken($request);
+        $refreshToken = $this->getRefreshToken($request);
+        return $this->authenticateUseCase->authenticate($accessToken, $refreshToken);
     }
 
     private function getAccessToken(Request $request): ?string

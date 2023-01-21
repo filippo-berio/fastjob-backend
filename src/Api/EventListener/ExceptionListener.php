@@ -12,7 +12,7 @@ class ExceptionListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {
-        return [];
+//        return [];
         return [
             // the priority must be greater than the Security HTTP
             // ExceptionListener, to make sure it's called before

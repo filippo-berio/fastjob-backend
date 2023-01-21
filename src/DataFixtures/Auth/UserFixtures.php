@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures\Core;
+namespace App\DataFixtures\Auth;
 
 use App\Auth\Entity\User;
 use App\DataFixtures\BaseFixtures;

@@ -6,12 +6,12 @@ use App\Auth\Entity\User;
 use App\Core\Entity\Profile;
 use App\Core\Exception\Profile\ProfileCreatedException;
 use App\Core\UseCase\Profile\CreateProfileUseCase;
-use App\DataFixtures\Core\UserFixtures;
+use App\DataFixtures\Auth\UserFixtures;
 use App\Tests\Integration\IntegrationTest;
 use App\Validation\Exception\ValidationException;
 use DateTimeImmutable;
 
-class CreateProfileUseCaseTest extends IntegrationTest
+class CreateProfileTest extends IntegrationTest
 {
     /**
      * @dataProvider errorData

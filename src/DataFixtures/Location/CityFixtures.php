@@ -14,6 +14,7 @@ class CityFixtures extends BaseFixtures implements DependentFixtureInterface
     const CITY_2 = 2;
     const CITY_3 = 3;
     const CITY_4 = 4;
+    const CITY_NOT_EXIST = 400;
 
     protected function getEntity(): string
     {

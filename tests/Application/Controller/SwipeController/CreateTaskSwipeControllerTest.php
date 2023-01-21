@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Tests\Application\Core\Controller\SwipeController;
+namespace App\Tests\Application\Controller\SwipeController;
 
 use App\Core\Entity\Swipe;
-use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Core\TaskFixtures;
 use App\Tests\Application\ApplicationTest;
 

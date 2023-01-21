@@ -4,17 +4,15 @@ namespace App\Validation\Constraints;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use Exception;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class OldDateValidator extends ConstraintValidator
+class FutureDateValidator extends ConstraintValidator
 {
+
     /**
      * @param DateTimeInterface $value
-     * @param OldDate $constraint
-     * @return void
-     * @throws Exception
+     * @param FutureDate $constraint
      */
     public function validate(mixed $value, Constraint $constraint)
     {
@@ -22,7 +20,7 @@ class OldDateValidator extends ConstraintValidator
             return;
         }
 
-        if (new DateTimeImmutable() < $value) {
+        if (new DateTimeImmutable() > $value) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value->format('d.m.Y'))
                 ->addViolation();

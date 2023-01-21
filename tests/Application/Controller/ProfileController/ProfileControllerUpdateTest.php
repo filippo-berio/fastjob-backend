@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests\Application\Core\Controller\ProfileController;
+namespace App\Tests\Application\Controller\ProfileController;
 
-use App\DataFixtures\Core\UserFixtures;
+use App\Core\Entity\Profile;
+use App\DataFixtures\Auth\UserFixtures;
 use App\Tests\Application\ApplicationTest;
 
 class ProfileControllerUpdateTest extends ApplicationTest
@@ -22,7 +23,7 @@ class ProfileControllerUpdateTest extends ApplicationTest
     public function testSuccess(int $userId, array $data)
     {
         $client = $this->createClient();
-        $this->setUser($client, $userId);
+        $this->setUser($client, $userId, Profile::class);
         $client->request('PUT', '/api/profile', $data);
         $this->assertResponseStatusCodeSame(200);
     }
@@ -33,7 +34,7 @@ class ProfileControllerUpdateTest extends ApplicationTest
     public function testError(int $userId, array $data, int $code)
     {
         $client = $this->createClient();
-        $this->setUser($client, $userId);
+        $this->setUser($client, $userId, Profile::class);
         $client->request('PUT', '/api/profile', $data);
         $this->assertResponseStatusCodeSame($code);
     }

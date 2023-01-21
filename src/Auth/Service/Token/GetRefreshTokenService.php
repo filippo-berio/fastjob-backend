@@ -2,7 +2,7 @@
 
 namespace App\Auth\Service\Token;
 
-use App\Auth\Command\RefreshToken\SaveRefreshToken;
+use App\Auth\Command\RefreshToken\Save\SaveRefreshToken;
 use App\Auth\Entity\RefreshToken;
 use App\Auth\Entity\User;
 use App\Auth\Query\RefreshToken\FindByUser\FindRefreshTokenByUser;

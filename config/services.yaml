@@ -34,9 +34,13 @@ services:
 #            - {name: kernel.event_listener, event: kernel.exception}
 
 
-    App\Auth\Service\Token\RedisTokenService:
+    App\Auth\Repository\AccessTokenRepository:
         $accessTokenLifeTime: '%env(ACCESS_TOKEN_LIFETIME)%'
+
+    App\Auth\Repository\BannedPhoneRepository:
         $phoneBanTime: '%env(BAN_PHONE_TIME)%'
+
+    App\Auth\Repository\ConfirmationTokenRepository:
         $confirmationTokenLifeTime: '%env(CONFIRMATION_TOKEN_LIFETIME)%'
 
 

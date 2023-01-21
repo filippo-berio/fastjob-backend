@@ -2,7 +2,7 @@
 
 namespace App\Auth\Service\Token;
 
-use App\Auth\Command\RefreshToken\SaveRefreshToken;
+use App\Auth\Command\RefreshToken\Save\SaveRefreshToken;
 use App\Auth\Entity\User;
 use App\Core\Service\UuidGenerator;
 use App\CQRS\Bus\CommandBusInterface;

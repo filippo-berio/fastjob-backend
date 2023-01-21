@@ -5,7 +5,9 @@ namespace App\Tests\Integration\Auth;
 use App\Auth\Entity\User;
 use App\Auth\Exception\InvalidConfirmationCodeException;
 use App\Auth\Exception\PhoneBannedException;
-use App\Auth\Service\Token\RedisTokenService;
+use App\Auth\Repository\AccessTokenRepository;
+use App\Auth\Repository\BannedPhoneRepository;
+use App\Auth\Repository\ConfirmationTokenRepository;
 use App\Auth\UseCase\UserConfirmation\ConfirmCodeUseCase;
 use App\Auth\UseCase\UserConfirmation\SendConfirmationCodeUseCase;
 use App\DataFixtures\Auth\UserFixtures;
@@ -20,24 +22,26 @@ class UserConfirmationTest extends IntegrationTest
     public function testRottenConfirmation()
     {
         $this->bootContainer();
-        $redisService = $this->getDependency(RedisTokenService::class);
+        $confirmationTokenRepository = $this->getDependency(ConfirmationTokenRepository::class);
 
         $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
         $sendCodeUseCase->send(UserFixtures::USER_5_PHONE);
-        $confirmData = $redisService->getConfirmationCode(UserFixtures::USER_5_PHONE);
+        $confirmData = $confirmationTokenRepository->findByPhone(UserFixtures::USER_5_PHONE);
 
         sleep(3);
 
-        $this->assertNull($redisService->getConfirmationCode(UserFixtures::USER_5_PHONE));
+        $this->assertNull($confirmationTokenRepository->findByPhone(UserFixtures::USER_5_PHONE));
         $confirmCodeUseCase = $this->getDependency(ConfirmCodeUseCase::class);
         $this->expectException(InvalidConfirmationCodeException::class);
-        $confirmCodeUseCase->confirm(UserFixtures::USER_5_PHONE, $confirmData->confirmationCode);
+        $confirmCodeUseCase->confirm(UserFixtures::USER_5_PHONE, $confirmData->getConfirmationCode());
     }
 
     public function testBanUser()
     {
         $this->bootContainer();
-        $redisService = $this->getDependency(RedisTokenService::class);
+
+        $bannedPhoneRepo = $this->getDependency(BannedPhoneRepository::class);
+        $confirmationTokenRepository = $this->getDependency(ConfirmationTokenRepository::class);
         $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
         $sendCodeUseCase->send(UserFixtures::USER_4_PHONE);
 
@@ -48,11 +52,11 @@ class UserConfirmationTest extends IntegrationTest
             try {
                 $confirmCodeUseCase->confirm(UserFixtures::USER_4_PHONE, 999);
             } finally {}
-            $confirmData = $redisService->getConfirmationCode(UserFixtures::USER_4_PHONE);
+            $confirmData = $confirmationTokenRepository->findByPhone(UserFixtures::USER_4_PHONE);
             $this->assertEquals(5 - $i, $confirmData->retries);
         }
 
-        $this->assertTrue($redisService->isPhoneBanned(UserFixtures::USER_4_PHONE));
+        $this->assertTrue($bannedPhoneRepo->isPhoneBanned(UserFixtures::USER_4_PHONE));
 
         $this->expectException(PhoneBannedException::class);
         try {
@@ -62,18 +66,18 @@ class UserConfirmationTest extends IntegrationTest
 
         sleep(3);
 
-        $this->assertFalse($redisService->isPhoneBanned(UserFixtures::USER_4_PHONE));
+        $this->assertFalse($bannedPhoneRepo->isPhoneBanned(UserFixtures::USER_4_PHONE));
 
         $sendCodeUseCase->send(UserFixtures::USER_4_PHONE);
-        $confirmData = $redisService->getConfirmationCode(UserFixtures::USER_4_PHONE);
+        $confirmData = $confirmationTokenRepository->findByPhone(UserFixtures::USER_4_PHONE);
         $this->assertEquals(5, $confirmData->retries);
-        $confirmCodeUseCase->confirm(UserFixtures::USER_4_PHONE, $confirmData->confirmationCode);
+        $confirmCodeUseCase->confirm(UserFixtures::USER_4_PHONE, $confirmData->getConfirmationCode());
     }
 
     public function testWrongCode()
     {
         $this->bootContainer();
-        $redisService = $this->getDependency(RedisTokenService::class);
+        $confirmationTokenRepository = $this->getDependency(ConfirmationTokenRepository::class);
         $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
         $sendCodeUseCase->send(UserFixtures::USER_3_PHONE);
 
@@ -82,7 +86,7 @@ class UserConfirmationTest extends IntegrationTest
         try {
             $confirmCodeUseCase->confirm(UserFixtures::USER_3_PHONE, 999);
         } finally {}
-        $confirmData = $redisService->getConfirmationCode(UserFixtures::USER_3_PHONE);
+        $confirmData = $confirmationTokenRepository->findByPhone(UserFixtures::USER_3_PHONE);
         $this->assertEquals(4, $confirmData->retries);
     }
 
@@ -92,27 +96,27 @@ class UserConfirmationTest extends IntegrationTest
     public function testExistingUser(string $phone)
     {
         $this->bootContainer();
-        $redisService = $this->getDependency(RedisTokenService::class);
+        $confirmationTokenRepository = $this->getDependency(ConfirmationTokenRepository::class);
 
         $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
         $sendCodeUseCase->send($phone);
 
-        $confirmData = $redisService->getConfirmationCode($phone);
-        $this->assertNotNull($confirmData->confirmationCode);
+        $confirmData = $confirmationTokenRepository->findByPhone($phone);
+        $this->assertNotNull($confirmData->getConfirmationCode());
         $this->assertEquals(5, $confirmData->retries);
 
         $confirmCodeUseCase = $this->getDependency(ConfirmCodeUseCase::class);
-        $tokens = $confirmCodeUseCase->confirm($phone, $confirmData->confirmationCode);
+        $tokens = $confirmCodeUseCase->confirm($phone, $confirmData->getConfirmationCode());
         $user = $this->getEntityBy(User::class, [
             'phone' => $phone
         ])[0];
-        $this->assertEquals($tokens->accessToken, $redisService->getAccessToken($user));
+        $this->assertEquals($tokens->accessToken, $this->getAccessToken($user));
     }
 
     public function testNewUser()
     {
         $this->bootContainer();
-        $redisService = $this->getDependency(RedisTokenService::class);
+        $confirmationTokenRepository = $this->getDependency(ConfirmationTokenRepository::class);
 
         $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
         $sendCodeUseCase->send(UserFixtures::NOT_EXIST_USER_PHONE);
@@ -122,18 +126,25 @@ class UserConfirmationTest extends IntegrationTest
             'phone' => UserFixtures::NOT_EXIST_USER_PHONE
         ]));
 
-        $confirmData = $redisService->getConfirmationCode(UserFixtures::NOT_EXIST_USER_PHONE);
-        $this->assertNotNull($confirmData->confirmationCode);
+        $confirmData = $confirmationTokenRepository->findByPhone(UserFixtures::NOT_EXIST_USER_PHONE);
+        $this->assertNotNull($confirmData->getConfirmationCode());
         $this->assertEquals(5, $confirmData->retries);
 
         $confirmCodeUseCase = $this->getDependency(ConfirmCodeUseCase::class);
-        $tokens = $confirmCodeUseCase->confirm(UserFixtures::NOT_EXIST_USER_PHONE, $confirmData->confirmationCode);
+        $tokens = $confirmCodeUseCase->confirm(UserFixtures::NOT_EXIST_USER_PHONE, $confirmData->getConfirmationCode());
         $users = $this->getEntityBy(User::class, [
             'phone' => UserFixtures::NOT_EXIST_USER_PHONE
         ]);
         $this->assertCount(1, $users);
         $user = $users[0];
-        $this->assertEquals($tokens->accessToken, $redisService->getAccessToken($user));
+        $this->assertEquals($tokens->accessToken, $this->getAccessToken($user));
+    }
+
+    private function getAccessToken(User $user): ?string
+    {
+        return $this->getDependency(AccessTokenRepository::class)
+            ->findByUser($user)
+            ?->getValue();
     }
 
     private function existingUserData()

@@ -2,26 +2,30 @@
 
 namespace App\Auth\EventListener;
 
-use App\Auth\DTO\ConfirmationData;
+use App\Auth\Entity\BannedPhone;
 use App\Auth\Event\WrongConfirmationCodeEvent;
-use App\Auth\Service\Token\RedisTokenService;
+use App\Auth\Repository\BannedPhoneRepository;
+use App\Auth\Repository\ConfirmationTokenRepository;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener]
 class WrongConfirmationCodeEventListener
 {
     public function __construct(
-        private RedisTokenService $redisTokenService,
+        private ConfirmationTokenRepository $confirmationTokenRepository,
+        private BannedPhoneRepository $bannedPhoneRepository,
     ) {
     }
 
     public function __invoke(WrongConfirmationCodeEvent $event)
     {
-        if ($event->data->retries === 0) {
-            $this->redisTokenService->banPhone($event->phone);
+        if ($event->confirmationToken->getRetries() === 0) {
+            $this->bannedPhoneRepository->save(
+                new BannedPhone($event->confirmationToken->getPhone())
+            );
             return;
         }
-        $data = new ConfirmationData($event->data->confirmationCode, $event->data->retries - 1);
-        $this->redisTokenService->setConfirmationCode($data, $event->phone);
+        $event->confirmationToken->decreaseRetries();
+        $this->confirmationTokenRepository->save($event->confirmationToken);
     }
 }

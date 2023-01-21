@@ -2,9 +2,10 @@
 
 namespace App\Auth\Service\Confirmation;
 
-use App\Auth\DTO\ConfirmationData;
+use App\Auth\Entity\ConfirmationToken;
 use App\Auth\Exception\PhoneBannedException;
-use App\Auth\Service\Token\RedisTokenService;
+use App\Auth\Repository\BannedPhoneRepository;
+use App\Auth\Repository\ConfirmationTokenRepository;
 use App\Sms\UseCase\SendSmsUseCase;
 
 class SendConfirmationCodeService
@@ -13,21 +14,23 @@ class SendConfirmationCodeService
 
     public function __construct(
         private SendSmsUseCase $sendSmsUseCase,
-        private RedisTokenService $redisTokenService,
+        private ConfirmationTokenRepository $confirmationTokenRepository,
+        private BannedPhoneRepository $bannedPhoneRepository,
     ) {
     }
 
     public function send(string $phone)
     {
-        if ($this->redisTokenService->isPhoneBanned($phone)) {
+        if ($this->bannedPhoneRepository->isPhoneBanned($phone)) {
             throw new PhoneBannedException();
         }
-        $current = $this->redisTokenService->getConfirmationCode($phone);
+        $current = $this->confirmationTokenRepository->findByPhone($phone);
         $code = rand(1111, 9999);
-        $this->redisTokenService->setConfirmationCode(
-            new ConfirmationData($code, $current?->retries ?? self::RETRIES),
-            $phone
+
+        $this->confirmationTokenRepository->save(
+            $current?->setConfirmationCode($code) ?? new ConfirmationToken($phone, $code, self::RETRIES)
         );
+
         $this->sendSmsUseCase->send($phone, $code);
     }
 }

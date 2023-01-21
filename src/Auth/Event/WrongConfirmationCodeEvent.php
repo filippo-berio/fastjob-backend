@@ -2,13 +2,12 @@
 
 namespace App\Auth\Event;
 
-use App\Auth\DTO\ConfirmationData;
+use App\Auth\Entity\ConfirmationToken;
 
 class WrongConfirmationCodeEvent
 {
     public function __construct(
-        public string $phone,
-        public ConfirmationData $data,
+        public ConfirmationToken $confirmationToken,
     ) {
     }
 }

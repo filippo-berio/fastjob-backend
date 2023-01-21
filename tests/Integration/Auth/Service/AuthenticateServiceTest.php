@@ -2,9 +2,10 @@
 
 namespace App\Tests\Integration\Auth\Service;
 
+use App\Auth\Entity\AccessToken;
 use App\Auth\Entity\User;
+use App\Auth\Repository\AccessTokenRepository;
 use App\Auth\Service\AuthenticateService;
-use App\Auth\Service\Token\RedisTokenService;
 use App\DataFixtures\Auth\RefreshTokenFixtures;
 use App\DataFixtures\Auth\UserFixtures;
 use App\Tests\Integration\IntegrationTest;
@@ -92,8 +93,8 @@ class AuthenticateServiceTest extends IntegrationTest
     {
         $user = $this->getEntity(User::class, $userId);
         $token = $this->createAccessToken($userId);
-        $redisService = $this->getDependency(RedisTokenService::class);
-        $redisService->setAccessToken($token, $user);
+        $repo = $this->getDependency(AccessTokenRepository::class);
+        $repo->save(new AccessToken($user, $token));
         return $token;
     }
 

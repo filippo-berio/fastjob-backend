@@ -2,7 +2,7 @@
 
 namespace App\Auth\Service\User;
 
-use App\Auth\Command\User\SaveUser;
+use App\Auth\Command\User\Save\SaveUser;
 use App\Auth\Entity\User;
 use App\CQRS\Bus\CommandBusInterface;
 

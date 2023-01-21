@@ -6,8 +6,9 @@ use App\Auth\DTO\TokenPair;
 use App\Auth\Event\WrongConfirmationCodeEvent;
 use App\Auth\Exception\InvalidConfirmationCodeException;
 use App\Auth\Exception\PhoneBannedException;
-use App\Auth\Query\User\FindUserByPhone;
-use App\Auth\Service\Token\RedisTokenService;
+use App\Auth\Query\User\FindByPhone\FindUserByPhone;
+use App\Auth\Repository\BannedPhoneRepository;
+use App\Auth\Repository\ConfirmationTokenRepository;
 use App\Auth\Service\User\LoginUserService;
 use App\Auth\Service\User\RegisterUserService;
 use App\CQRS\Bus\QueryBusInterface;
@@ -20,7 +21,8 @@ class ConfirmCodeService
         private EventDispatcherInterface $eventDispatcher,
         private RegisterUserService $registerUserService,
         private LoginUserService $loginUserService,
-        private RedisTokenService $redisTokenService,
+        private ConfirmationTokenRepository $confirmationTokenRepository,
+        private BannedPhoneRepository $bannedPhoneRepository,
     ) {
     }
 
@@ -28,7 +30,7 @@ class ConfirmCodeService
     {
         $this->validateCode($phone, $code);
 
-        $this->redisTokenService->deleteConfirmationCode($phone);
+        $this->confirmationTokenRepository->delete($phone);
 
         $user = $this->queryBus->handle(new FindUserByPhone($phone));
         if (!$user) {
@@ -40,14 +42,14 @@ class ConfirmCodeService
 
     private function validateCode(string $phone, string $code)
     {
-        if ($this->redisTokenService->isPhoneBanned($phone)) {
+        if ($this->bannedPhoneRepository->isPhoneBanned($phone)) {
             throw new PhoneBannedException();
         }
 
-        $actualCode = $this->redisTokenService->getConfirmationCode($phone);
-        if ($actualCode?->confirmationCode !== $code) {
+        $actualCode = $this->confirmationTokenRepository->findByPhone($phone);
+        if ($actualCode?->getConfirmationCode() !== $code) {
             if ($actualCode) {
-                $this->eventDispatcher->dispatch(new WrongConfirmationCodeEvent($phone, $actualCode));
+                $this->eventDispatcher->dispatch(new WrongConfirmationCodeEvent($actualCode));
             }
             throw new InvalidConfirmationCodeException();
         }

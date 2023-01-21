@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Query\User;
+namespace App\Auth\Query\User\FindByPhone;
 
 use App\Auth\Entity\User;
 use App\CQRS\QueryHandlerInterface;

@@ -2,14 +2,16 @@
 
 namespace App\Auth\Service\Token;
 
+use App\Auth\Entity\AccessToken;
 use App\Auth\Entity\User;
+use App\Auth\Repository\AccessTokenRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 
 class CreateAccessTokenService
 {
     public function __construct(
-        private RedisTokenService   $redisTokenService,
         private JWTEncoderInterface $JWTEncoder,
+        private AccessTokenRepository $accessTokenRepository,
     ) {
     }
 
@@ -18,7 +20,7 @@ class CreateAccessTokenService
         $token = $this->JWTEncoder->encode([
             'userId' => $user->getId(),
         ]);
-        $this->redisTokenService->setAccessToken($token, $user);
+        $this->accessTokenRepository->save(new AccessToken($user, $token));
         return $token;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Command\User;
+namespace App\Auth\Command\User\Save;
 
 use App\Auth\Entity\User;
 use App\CQRS\CommandHandlerInterface;

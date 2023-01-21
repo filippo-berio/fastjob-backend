@@ -3,9 +3,9 @@
 namespace App\Auth\Service;
 
 use App\Auth\Entity\User;
-use App\Auth\Query\User\FindUserById;
+use App\Auth\Query\User\FindById\FindUserById;
+use App\Auth\Repository\AccessTokenRepository;
 use App\Auth\Service\Token\GetRefreshTokenService;
-use App\Auth\Service\Token\RedisTokenService;
 use App\Auth\Service\Token\RefreshAccessTokenService;
 use App\CQRS\Bus\QueryBusInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -14,17 +14,17 @@ class AuthenticateService
 {
     public function __construct(
         private QueryBusInterface $queryBus,
-        private RedisTokenService $redisTokenService,
         private GetRefreshTokenService $refreshTokenService,
         private RefreshAccessTokenService $refreshAccessTokenService,
+        private AccessTokenRepository $accessTokenRepository,
     ) {
     }
 
     public function authenticate(string $accessToken, ?string $refreshToken = null): User
     {
         $user = $this->getUser($accessToken);
-        $actualToken = $this->redisTokenService->getAccessToken($user);
-        if ($actualToken !== $accessToken) {
+        $actualToken = $this->accessTokenRepository->findByUser($user);
+        if ($actualToken?->getValue() !== $accessToken) {
             if (!$refreshToken) {
                 $this->throwException();
             }

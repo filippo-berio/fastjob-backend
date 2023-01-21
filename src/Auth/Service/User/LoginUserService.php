@@ -12,7 +12,6 @@ class LoginUserService
     public function __construct(
         private CreateAccessTokenService $accessTokenService,
         private GetRefreshTokenService $refreshTokenService,
-
     ) {
     }
 

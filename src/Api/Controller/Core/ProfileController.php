@@ -6,8 +6,8 @@ use App\Api\Controller\BaseController;
 use App\Api\Request\Profile\CreateProfileRequest;
 use App\Api\Request\Profile\UpdateProfileRequest;
 use App\Auth\Entity\User;
+use App\Core\Entity\Profile;
 use App\Core\UseCase\Profile\CreateProfileUseCase;
-use App\Core\UseCase\Profile\GetProfileUseCase;
 use App\Core\UseCase\Profile\UpdateProfileUseCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,10 +18,8 @@ class ProfileController extends BaseController
 {
     #[Route(methods: ['GET'])]
     public function get(
-        #[CurrentUser] User $user,
-        GetProfileUseCase $useCase,
+        #[CurrentUser] Profile $profile,
     ): JsonResponse {
-        $profile = $useCase->get($user);
         return $this->json($profile, context: [
             'profile_full',
             'category_full',
@@ -29,7 +27,7 @@ class ProfileController extends BaseController
         ]);
     }
 
-    #[Route(methods: ['POST'])]
+    #[Route('/create', methods: ['POST'])]
     public function create(
         #[CurrentUser] User $user,
         CreateProfileRequest $body,

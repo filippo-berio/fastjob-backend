@@ -4,6 +4,7 @@ namespace App\Api\Security;
 
 use App\Auth\Entity\User;
 use App\Auth\UseCase\AuthenticateUseCase;
+use App\Core\Entity\Profile;
 use App\Core\Exception\Profile\ProfileNotFoundException;
 use App\Core\Query\Profile\FindByUser\FindProfileByUser;
 use App\CQRS\Bus\QueryBusInterface;
@@ -22,6 +23,7 @@ class UserWithProfileAuthenticator extends AccessRefreshTokenAuthenticator
     protected function getUser(Request $request): UserInterface
     {
         $user = parent::getUser($request);
+        /** @var Profile $profile */
         $profile = $this->queryBus->handle(new FindProfileByUser($user));
         if (!$profile) {
             throw new ProfileNotFoundException();

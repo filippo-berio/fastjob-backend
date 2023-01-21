@@ -14,7 +14,7 @@ class ProfileControllerCreateTest extends ApplicationTest
     public function testNotAuthorized(int $userId, array $data)
     {
         $client = $this->createClient();
-        $this->notAuthorizedTest($client, 'POST', '/api/profile', $data);
+        $this->notAuthorizedTest($client, 'POST', '/api/profile/create', $data);
     }
 
     /**
@@ -24,7 +24,7 @@ class ProfileControllerCreateTest extends ApplicationTest
     {
         $client = $this->createClient();
         $this->setUser($client, $userId, User::class);
-        $client->request('POST', '/api/profile', $data);
+        $client->request('POST', '/api/profile/create', $data);
         $this->assertResponseStatusCodeSame(200);
     }
 

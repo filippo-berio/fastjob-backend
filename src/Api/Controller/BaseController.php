@@ -38,7 +38,7 @@ abstract class BaseController extends AbstractController
     {
         return [
             'x-access-token' => $user->getAccessToken(),
-            'x-refresh-token' => $user->getRefreshToken(),
+            'x-refresh-token' => $user->getRefreshToken()->getToken(),
         ];
     }
 }

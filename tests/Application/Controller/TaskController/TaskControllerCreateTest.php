@@ -3,7 +3,6 @@
 namespace App\Tests\Application\Controller\TaskController;
 
 use App\Core\Entity\Profile;
-use App\DataFixtures\Auth\UserFixtures;
 use App\DataFixtures\Core\CategoryFixtures;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Location\CityFixtures;
@@ -12,6 +11,17 @@ use DateTimeImmutable;
 
 class TaskControllerCreateTest extends ApplicationTest
 {
+    /**
+     * @dataProvider validData
+     */
+    public function testSuccess(int $userId, array $data)
+    {
+        $client = $this->createClient();
+        $this->setUser($client, $userId, Profile::class);
+        $client->request('POST', '/api/task', $data);
+        $this->assertResponseStatusCodeSame(200);
+    }
+
     /**
      * @dataProvider validData
      */
@@ -28,17 +38,6 @@ class TaskControllerCreateTest extends ApplicationTest
     {
         $client = $this->createClient();
         $this->notAuthorizedTest($client, 'POST', '/api/task', $data);
-    }
-
-    /**
-     * @dataProvider validData
-     */
-    public function testSuccess(int $userId, array $data)
-    {
-        $client = $this->createClient();
-        $this->setUser($client, $userId, Profile::class);
-        $client->request('POST', '/api/task', $data);
-        $this->assertResponseStatusCodeSame(200);
     }
 
     /**

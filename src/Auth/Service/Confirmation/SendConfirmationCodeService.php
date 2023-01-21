@@ -5,15 +5,14 @@ namespace App\Auth\Service\Confirmation;
 use App\Auth\DTO\ConfirmationData;
 use App\Auth\Exception\PhoneBannedException;
 use App\Auth\Service\Token\RedisTokenService;
-use App\Sms\Service\SmsService;
+use App\Sms\UseCase\SendSmsUseCase;
 
 class SendConfirmationCodeService
 {
     const RETRIES = 5;
 
     public function __construct(
-        // TODO async
-        private SmsService $smsService,
+        private SendSmsUseCase $sendSmsUseCase,
         private RedisTokenService $redisTokenService,
     ) {
     }
@@ -29,6 +28,6 @@ class SendConfirmationCodeService
             new ConfirmationData($code, $current?->retries ?? self::RETRIES),
             $phone
         );
-        $this->smsService->sendSms($phone, $code);
+        $this->sendSmsUseCase->send($phone, $code);
     }
 }

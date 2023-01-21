@@ -39,7 +39,9 @@ class JsonClient implements ClientInterface
             $response = $exception->getResponse();
             throw $this->buildException($response);
         }
-        return json_decode($response->getContent(), true);
+        return $response->getContent() ?
+            json_decode($response->getContent(), true)
+            : [];
     }
 
     public function buildException(ResponseInterface $response): HttpException

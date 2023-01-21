@@ -3,10 +3,10 @@
 namespace App\Tests\Unit\Core\Service;
 
 use App\Core\Service\AgeService;
-use App\Tests\Unit\BaseUnitTest;
+use App\Tests\Unit\UnitTest;
 use DateTimeImmutable;
 
-class AgeServiceTest extends BaseUnitTest
+class AgeServiceTest extends UnitTest
 {
     /**
      * @dataProvider data

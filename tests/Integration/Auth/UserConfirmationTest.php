@@ -5,22 +5,24 @@ namespace App\Tests\Integration\Auth;
 use App\Auth\Entity\User;
 use App\Auth\Exception\InvalidConfirmationCodeException;
 use App\Auth\Exception\PhoneBannedException;
-use App\Auth\Service\Confirmation\SendConfirmationCodeService;
 use App\Auth\Service\Token\RedisTokenService;
 use App\Auth\UseCase\UserConfirmation\ConfirmCodeUseCase;
 use App\Auth\UseCase\UserConfirmation\SendConfirmationCodeUseCase;
 use App\DataFixtures\Auth\UserFixtures;
-use App\Sms\Service\SmsService;
+use App\Sms\Message\SmsMessage;
 use App\Tests\Integration\IntegrationTest;
+use Zenstruck\Messenger\Test\InteractsWithMessenger;
 
 class UserConfirmationTest extends IntegrationTest
 {
+    use InteractsWithMessenger;
+
     public function testRottenConfirmation()
     {
         $this->bootContainer();
         $redisService = $this->getDependency(RedisTokenService::class);
 
-        $sendCodeUseCase = $this->createSendCodeUseCase($redisService);
+        $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
         $sendCodeUseCase->send(UserFixtures::USER_5_PHONE);
         $confirmData = $redisService->getConfirmationCode(UserFixtures::USER_5_PHONE);
 
@@ -36,7 +38,7 @@ class UserConfirmationTest extends IntegrationTest
     {
         $this->bootContainer();
         $redisService = $this->getDependency(RedisTokenService::class);
-        $sendCodeUseCase = $this->createSendCodeUseCase($redisService);
+        $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
         $sendCodeUseCase->send(UserFixtures::USER_4_PHONE);
 
         $confirmCodeUseCase = $this->getDependency(ConfirmCodeUseCase::class);
@@ -72,7 +74,7 @@ class UserConfirmationTest extends IntegrationTest
     {
         $this->bootContainer();
         $redisService = $this->getDependency(RedisTokenService::class);
-        $sendCodeUseCase = $this->createSendCodeUseCase($redisService);
+        $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
         $sendCodeUseCase->send(UserFixtures::USER_3_PHONE);
 
         $confirmCodeUseCase = $this->getDependency(ConfirmCodeUseCase::class);
@@ -92,7 +94,7 @@ class UserConfirmationTest extends IntegrationTest
         $this->bootContainer();
         $redisService = $this->getDependency(RedisTokenService::class);
 
-        $sendCodeUseCase = $this->createSendCodeUseCase($redisService);
+        $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
         $sendCodeUseCase->send($phone);
 
         $confirmData = $redisService->getConfirmationCode($phone);
@@ -112,8 +114,9 @@ class UserConfirmationTest extends IntegrationTest
         $this->bootContainer();
         $redisService = $this->getDependency(RedisTokenService::class);
 
-        $sendCodeUseCase = $this->createSendCodeUseCase($redisService);
+        $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
         $sendCodeUseCase->send(UserFixtures::NOT_EXIST_USER_PHONE);
+        $this->messenger()->queue()->assertContains(SmsMessage::class, 1);
 
         $this->assertEmpty($this->getEntityBy(User::class, [
             'phone' => UserFixtures::NOT_EXIST_USER_PHONE
@@ -143,12 +146,5 @@ class UserConfirmationTest extends IntegrationTest
                 UserFixtures::USER_6_PHONE,
             ],
         ];
-    }
-
-    // todo mock telegram
-    private function createSendCodeUseCase(RedisTokenService $redisService): SendConfirmationCodeUseCase
-    {
-        $smsService = $this->createMock(SmsService::class);
-        return new SendConfirmationCodeUseCase(new SendConfirmationCodeService($smsService, $redisService));
     }
 }

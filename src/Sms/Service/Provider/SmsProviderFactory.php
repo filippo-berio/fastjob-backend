@@ -3,6 +3,8 @@
 namespace App\Sms\Service\Provider;
 
 
+use RuntimeException;
+
 class SmsProviderFactory
 {
     /** @var SmsProviderInterface[] */
@@ -21,6 +23,9 @@ class SmsProviderFactory
 
     public function create(string $provider): SmsProviderInterface
     {
+        if (!isset($this->providers[$provider])) {
+            throw new RuntimeException("Несуществующий провайдер $provider");
+        }
         return $this->providers[$provider];
     }
 }

@@ -2,17 +2,14 @@ version: "3.7"
 
 services:
     php:
-        build:
+        build: &php-build
             context: .
-            target: soft
         ports:
             - '6050:8000'
         volumes: &volumes
             - ./:/app/
             - ./docker/php/aliases:/root/.bashrc
         command: symfony server:start
-#        environment:
-#            DATABASE_URL: "postgresql://${PG_USER}:${PG_PASS}@fastjob-postgres:5432/${PG_DB}?serverVersion=14&charset=utf8"
         container_name: fastjob-php
         depends_on:
             - postgres
@@ -36,6 +33,18 @@ services:
         volumes:
             - redis_data:/data
         container_name: fastjob-redis
+
+    redis-test:
+        image: redis:7.0.5-alpine
+        restart: always
+        container_name: fastjob-redis-test
+
+    async-consumer:
+        build: *php-build
+        volumes: *volumes
+        container_name: fastjob-async-consumer
+        restart: always
+        command: bin/console messenger:consume async --limit 10 -vv
 
 
 volumes:

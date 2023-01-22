@@ -5,16 +5,10 @@ namespace App\Auth\Entity;
 class ConfirmationToken
 {
     public function __construct(
-        public string $phone,
-        public string $confirmationCode,
-        public int $retries,
+        private string $phone,
+        private string $confirmationCode,
+        private int $retries,
     ) {
-    }
-
-    public static function fromString(string $str)
-    {
-        $parts = explode('-', $str);
-        return new static($parts[0], $parts[1]);
     }
 
     public function setConfirmationCode(string $confirmationCode): self

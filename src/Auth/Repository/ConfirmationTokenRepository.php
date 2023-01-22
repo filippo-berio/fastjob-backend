@@ -17,7 +17,7 @@ class ConfirmationTokenRepository
     {
         $phone = str_replace('+', '', $token->getPhone());
         $this->redis->set(
-            'confirm-token-' . $phone,
+            'confirm-token:' . $phone,
             $token->getConfirmationCode() . ':' . $token->getRetries(),
             'EX',
             $this->confirmationTokenLifeTime
@@ -28,7 +28,7 @@ class ConfirmationTokenRepository
     public function findByPhone(string $phone): ?ConfirmationToken
     {
         $phone = str_replace('+', '', $phone);
-        $data = $this->redis->get('confirm-token-' . $phone);
+        $data = $this->redis->get('confirm-token:' . $phone);
         if (!$data) {
             return null;
         }
@@ -43,6 +43,6 @@ class ConfirmationTokenRepository
     public function delete(string $phone)
     {
         $phone = str_replace('+', '', $phone);
-        $this->redis->del('confirm-token-' . $phone);
+        $this->redis->del('confirm-token:' . $phone);
     }
 }

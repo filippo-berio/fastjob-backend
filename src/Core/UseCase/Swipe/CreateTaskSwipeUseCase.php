@@ -10,7 +10,7 @@ use App\Core\Exception\Task\TaskNotFoundException;
 use App\Core\Exception\TaskSwipe\TaskSwipeExistsException;
 use App\Core\Query\ExecutorSwipe\FindByProfileTask\FindExecutorSwipeByProfileTask;
 use App\Core\Query\Profile\FindByUser\FindProfileByUser;
-use App\Core\Query\Task\FindTaskById;
+use App\Core\Query\Task\FindById\FindTaskById;
 use App\Core\Service\TaskSwipe\CreateTaskSwipeService;
 use App\CQRS\Bus\QueryBusInterface;
 

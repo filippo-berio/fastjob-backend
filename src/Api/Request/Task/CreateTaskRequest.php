@@ -37,4 +37,7 @@ class CreateTaskRequest implements RequestInterface
 
     #[Date]
     public ?string $deadline = null;
+
+    #[NotBlank]
+    public ?bool $remote = null;
 }

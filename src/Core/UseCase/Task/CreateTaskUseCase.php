@@ -23,6 +23,7 @@ class CreateTaskUseCase
     public function create(
         Profile $profile,
         string $title,
+        bool $remote,
         array $categoryIds = [],
         ?string $description = null,
         ?int $price = null,
@@ -37,6 +38,7 @@ class CreateTaskUseCase
         return $this->createTaskService->create(new CreateTaskDTO(
             $profile,
             $title,
+            $remote,
             $categories,
             $description,
             $price,

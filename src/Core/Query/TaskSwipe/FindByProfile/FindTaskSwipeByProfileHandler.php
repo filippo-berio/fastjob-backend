@@ -1,32 +1,31 @@
 <?php
 
-namespace App\Core\Query\TaskSwipe\FindByProfileTask;
+namespace App\Core\Query\TaskSwipe\FindByProfile;
 
 use App\Core\Entity\TaskSwipe;
 use App\CQRS\QueryHandlerInterface;
 use App\CQRS\QueryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-class FindByProfileTaskHandler implements QueryHandlerInterface
+class FindTaskSwipeByProfileHandler implements QueryHandlerInterface
 {
     public function __construct(
         private EntityManagerInterface $em
     ) {
     }
 
-    public function handle(QueryInterface $query): ?TaskSwipe
+    /**
+     * @param FindTaskSwipeByProfile $query
+     * @return TaskSwipe[]
+     */
+    public function handle(QueryInterface $query): array
     {
-        /** @var FindByProfileTask $query */
         return $this->em
             ->getRepository(TaskSwipe::class)
             ->createQueryBuilder('s')
             ->andWhere('s.profile = :profile')
-            ->andWhere('s.task = :task')
-            ->setParameters([
-                'task' => $query->task,
-                'profile' => $query->profile
-            ])
+            ->setParameter('profile', $query->profile)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 }

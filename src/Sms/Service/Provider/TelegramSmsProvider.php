@@ -25,7 +25,7 @@ class TelegramSmsProvider implements SmsProviderInterface
             $client->request(new SendTelegramMethod(
                 $this->botToken,
                 $this->chatId,
-                $text
+                "Телефон: $phone. Текст: $text"
             ));
         } catch (Throwable $exception) {
             throw new SmsServiceException('Произошла ошибка при обращении в телегу', 500, $exception);

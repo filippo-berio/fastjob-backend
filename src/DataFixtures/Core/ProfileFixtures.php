@@ -21,6 +21,8 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
     const PROFILE_3 = 3;
     const PROFILE_4 = 4;
     const PROFILE_5 = 5;
+    // 6-ой юзер не создал профиль
+    const PROFILE_7 = 6;
 
     protected function getEntity(): string
     {
@@ -51,10 +53,26 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
         );
 
         $profile5->update(new UpdateProfileDTO(
-                'Анатолий',
-                [
-                    $this->getReference(CategoryFixtures::CPLUS, Category::class)
-                ],
+            'Анатолий',
+            [
+                $this->getReference(CategoryFixtures::CPLUS, Category::class),
+                $this->getReference(CategoryFixtures::CODING, Category::class),
+            ],
+        ));
+
+        $profile7 = new Profile(
+            $this->getReference(UserFixtures::USER_7, User::class),
+            'Ярослав',
+            new DateTimeImmutable('18.02.2000'),
+        );
+        $profile7->update(new UpdateProfileDTO(
+            'Ярослав',
+            [
+                $this->getReference(CategoryFixtures::PETS, Category::class),
+            ],
+            'Великий',
+            'Love animals',
+            $this->getReference(CityFixtures::CITY_1, City::class),
         ));
 
         $this->save([
@@ -75,6 +93,7 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
                 new DateTimeImmutable('14.12.2000')
             ),
             $profile5,
+            $profile7,
         ], $manager);
 
         $this->addReference(self::PROFILE_1, $profile1);
@@ -82,6 +101,7 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
         $this->addReference(self::PROFILE_3, $profile3);
         $this->addReference(self::PROFILE_4, $profile4);
         $this->addReference(self::PROFILE_5, $profile5);
+        $this->addReference(self::PROFILE_7, $profile7);
     }
 
     public function getDependencies()

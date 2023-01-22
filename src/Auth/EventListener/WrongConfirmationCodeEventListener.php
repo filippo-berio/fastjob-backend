@@ -2,7 +2,6 @@
 
 namespace App\Auth\EventListener;
 
-use App\Auth\Entity\BannedPhone;
 use App\Auth\Event\WrongConfirmationCodeEvent;
 use App\Auth\Repository\BannedPhoneRepository;
 use App\Auth\Repository\ConfirmationTokenRepository;
@@ -20,9 +19,7 @@ class WrongConfirmationCodeEventListener
     public function __invoke(WrongConfirmationCodeEvent $event)
     {
         if ($event->confirmationToken->getRetries() === 0) {
-            $this->bannedPhoneRepository->save(
-                new BannedPhone($event->confirmationToken->getPhone())
-            );
+            $this->bannedPhoneRepository->banPhone($event->confirmationToken->getPhone());
             return;
         }
         $event->confirmationToken->decreaseRetries();

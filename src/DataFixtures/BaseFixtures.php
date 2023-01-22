@@ -25,6 +25,12 @@ abstract class BaseFixtures extends Fixture
         parent::addReference($prefix . $name, $object);
     }
 
+    /**
+     * @template T
+     * @param string $name
+     * @param class-string<T>|null $class
+     * @return T
+     */
     public function getReference($name, ?string $class = null): object
     {
         $prefix = '';

@@ -22,6 +22,7 @@ class CreateTaskTest extends IntegrationTest
     public function testSuccess(
         int $profileId,
         string $title,
+        bool $remote = false,
         array $categoryIds = [],
         ?string $description = null,
         ?int $price = null,
@@ -33,6 +34,7 @@ class CreateTaskTest extends IntegrationTest
         $task = $useCase->create(
             $this->getEntity(Profile::class, $profileId),
             $title,
+            $remote,
             $categoryIds,
             $description,
             $price,
@@ -46,6 +48,7 @@ class CreateTaskTest extends IntegrationTest
         $this->assertEquals($addressPlain?->cityId, $task->getAddress()?->getCity()->getId());
         $this->assertEquals($addressPlain?->title, $task->getAddress()?->getTitle());
         $this->assertEquals($deadline, $task->getDeadline()?->format('Y-m-d'));
+        $this->assertEquals($remote, $task->isRemote());
 
         $this->assertCount(count($categoryIds), $task->getCategories());
         foreach ($task->getCategories() as $category) {
@@ -61,6 +64,7 @@ class CreateTaskTest extends IntegrationTest
         $useCase->create(
             $this->getEntity(Profile::class, ProfileFixtures::PROFILE_1),
             '$title',
+            true,
             deadline: '2010-01-01'
         );
     }
@@ -73,6 +77,7 @@ class CreateTaskTest extends IntegrationTest
         $useCase->create(
             $this->getEntity(Profile::class, ProfileFixtures::PROFILE_1),
             '$title',
+            true,
             addressPlain: new AddressPlain(
                 CityFixtures::CITY_NOT_EXIST,
                 'title',
@@ -91,6 +96,7 @@ class CreateTaskTest extends IntegrationTest
         $useCase->create(
             $this->getEntity(Profile::class, ProfileFixtures::PROFILE_1),
             '$title',
+            false,
             $ids
         );
     }
@@ -105,6 +111,7 @@ class CreateTaskTest extends IntegrationTest
             [
                 ProfileFixtures::PROFILE_1,
                 'title',
+                true,
                 [
                     CategoryFixtures::COMPUTER_REPAIR,
                 ]
@@ -112,6 +119,7 @@ class CreateTaskTest extends IntegrationTest
             [
                 ProfileFixtures::PROFILE_1,
                 'title',
+                false,
                 [
                     CategoryFixtures::COMPUTER_REPAIR,
                     CategoryFixtures::CLEANING,
@@ -121,6 +129,7 @@ class CreateTaskTest extends IntegrationTest
             [
                 ProfileFixtures::PROFILE_1,
                 'title',
+                true,
                 [
                     CategoryFixtures::COMPUTERS,
                 ],
@@ -129,6 +138,7 @@ class CreateTaskTest extends IntegrationTest
             [
                 ProfileFixtures::PROFILE_1,
                 'title',
+                false,
                 [
                     CategoryFixtures::COMPUTERS,
                 ],
@@ -138,6 +148,7 @@ class CreateTaskTest extends IntegrationTest
             [
                 ProfileFixtures::PROFILE_1,
                 'title',
+                false,
                 [
                     CategoryFixtures::COMPUTERS,
                 ],

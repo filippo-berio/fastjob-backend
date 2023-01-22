@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Query\Task;
+namespace App\Core\Query\Task\FindById;
 
 use App\CQRS\BaseQuery;
 

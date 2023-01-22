@@ -30,27 +30,27 @@ class CategoryFixtures extends BaseFixtures
     public function load(ObjectManager $manager)
     {
         $this->save([
-            $category1 = new Category('Компьютеры'),
-            $category2 = new Category('Программирование'),
-            $category3 = new Category('C++'),
-            $category4 = new Category('Ремонт компьютеров'),
+            $computers = new Category('Компьютеры', false),
+            $coding = new Category('Программирование', true, $computers),
+            $cpp = new Category('C++', parent: $coding),
+            $computerRepair = new Category('Ремонт компьютеров', parent: $computers),
 
-            $category5 = new Category('Работа по дому'),
-            $category6 = new Category('Сантехника'),
-            $category7 = new Category('Чистка'),
+            $houseWork = new Category('Работа по дому', false,),
+            $plumbing = new Category('Сантехника', parent: $houseWork),
+            $cleaning = new Category('Чистка', parent: $houseWork),
 
-            $category8 = new Category('Домашние питомцы'),
-            $category9 = new Category('Рыбы'),
+            $pets = new Category('Домашние питомцы', false),
+            $fish = new Category('Рыбы', parent: $pets),
         ], $manager);
 
-        $this->addReference(self::COMPUTERS, $category1);
-        $this->addReference(self::CODING, $category2);
-        $this->addReference(self::CPLUS, $category3);
-        $this->addReference(self::COMPUTER_REPAIR, $category4);
-        $this->addReference(self::HOUSEWORK, $category5);
-        $this->addReference(self::PLUMBING, $category6);
-        $this->addReference(self::CLEANING, $category7);
-        $this->addReference(self::PETS, $category8);
-        $this->addReference(self::FISH, $category9);
+        $this->addReference(self::COMPUTERS, $computers);
+        $this->addReference(self::CODING, $coding);
+        $this->addReference(self::CPLUS, $cpp);
+        $this->addReference(self::COMPUTER_REPAIR, $computerRepair);
+        $this->addReference(self::HOUSEWORK, $houseWork);
+        $this->addReference(self::PLUMBING, $plumbing);
+        $this->addReference(self::CLEANING, $cleaning);
+        $this->addReference(self::PETS, $pets);
+        $this->addReference(self::FISH, $fish);
     }
 }

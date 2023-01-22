@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[Entity]
 class Task
@@ -25,40 +26,54 @@ class Task
     #[Id]
     #[GeneratedValue]
     #[Column]
+    #[Groups(['task_full'])]
     private ?int $id = null;
 
     #[Column]
+    #[Groups(['task_full'])]
     private string $title;
 
     #[Column]
     private string $status = self::STATUS_WAIT;
 
     #[ManyToOne]
+    #[Groups(['task_full'])]
     private Profile $employer;
 
     #[Column]
+    #[Groups(['task_full'])]
     private DateTimeImmutable $createdAt;
 
     #[ManyToMany(targetEntity: Category::class)]
+    #[Groups(['task_full'])]
     /** @var Collection<Category> $categories */
     private Collection $categories;
 
     #[Column(nullable: true)]
+    #[Groups(['task_full'])]
     private ?int $price;
 
     #[ManyToOne]
+    #[Groups(['task_full'])]
     private ?Address $address;
 
     #[Column(type: 'datetime', nullable: true)]
+    #[Groups(['task_full'])]
     private ?DateTimeInterface $deadline;
 
     #[Column(nullable: true)]
+    #[Groups(['task_full'])]
     private ?string $description;
+
+    #[Column(type: 'smallint')]
+    #[Groups(['task_full'])]
+    private bool $remote;
 
     public function __construct(
         string             $title,
         Profile            $employer,
         array              $categories,
+        bool               $remote,
         ?int               $price = null,
         ?Address           $address = null,
         ?DateTimeInterface $deadline = null,
@@ -72,6 +87,12 @@ class Task
         $this->address = $address;
         $this->deadline = $deadline;
         $this->description = $description;
+        $this->remote = $remote;
+    }
+
+    public function isRemote(): bool
+    {
+        return $this->remote;
     }
 
     public function getDescription(): ?string

@@ -6,11 +6,11 @@ use App\Core\Entity\Profile;
 use App\Core\Entity\Task;
 use App\CQRS\BaseQuery;
 
-class FindByProfileTask extends BaseQuery
+class FindTaskSwipeByProfileAndTask extends BaseQuery
 {
     public function __construct(
         public Profile $profile,
-        public Task $task
+        public Task $task,
     ) {
     }
 }

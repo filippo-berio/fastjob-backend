@@ -2,20 +2,14 @@
 
 namespace App\Validation\Constraints;
 
-use App\Core\Service\AgeService;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class YearsPassedValidator extends ConstraintValidator
 {
-    public function __construct(
-        private AgeService $ageService,
-    ) {
-    }
-
     /**
-     * @param DateTimeImmutable $value
+     * @param \DateTimeInterface $value
      * @param YearsPassed $constraint
      * @return void
      */
@@ -25,11 +19,7 @@ class YearsPassedValidator extends ConstraintValidator
             return;
         }
 
-        $diff = $this->ageService->calculateDiffYears(
-            $value,
-            new DateTimeImmutable()
-        );
-        if ($diff < $constraint->shouldPass) {
+        if ($value->diff(new DateTimeImmutable())->y < $constraint->shouldPass) {
             $this->context->buildViolation($constraint->getMessage())
                 ->setParameter('{{ value }}', $value->format('d.m.Y'))
                 ->addViolation();

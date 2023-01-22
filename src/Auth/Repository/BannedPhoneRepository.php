@@ -2,7 +2,6 @@
 
 namespace App\Auth\Repository;
 
-use App\Auth\Entity\BannedPhone;
 use Predis\Client;
 
 class BannedPhoneRepository
@@ -13,16 +12,15 @@ class BannedPhoneRepository
     ) {
     }
 
-    public function save(BannedPhone $bannedPhone): BannedPhone
+    public function banPhone(string $phone)
     {
-        $phone = str_replace('+', '', $bannedPhone->getPhone());
-        $this->redis->set('ban-phone-' . $phone, 1, 'EX', $this->phoneBanTime);
-        return $bannedPhone;
+        $phone = str_replace('+', '', $phone);
+        $this->redis->set('ban-phone:' . $phone, 1, 'EX', $this->phoneBanTime);
     }
 
     public function isPhoneBanned(string $phone): bool
     {
         $phone = str_replace('+', '', $phone);
-        return !!$this->redis->get('ban-phone-' . $phone);
+        return !!$this->redis->get('ban-phone:' . $phone);
     }
 }

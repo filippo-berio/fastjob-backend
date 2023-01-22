@@ -14,6 +14,7 @@ class UserFixtures extends BaseFixtures
     const USER_4_PHONE = '+79444444444';
     const USER_5_PHONE = '+79555555555';
     const USER_6_PHONE = '+79666666666';
+    const USER_7_PHONE = '+79777777777';
     const NOT_EXIST_USER_PHONE = '+79879543210';
 
     const USER_1 = 1;
@@ -22,6 +23,7 @@ class UserFixtures extends BaseFixtures
     const USER_4 = 4;
     const USER_5 = 5;
     const USER_6 = 6;
+    const USER_7 = 7;
 
 
     protected function getEntity(): string
@@ -38,6 +40,7 @@ class UserFixtures extends BaseFixtures
             $user4 = new User(self::USER_4_PHONE),
             $user5 = new User(self::USER_5_PHONE),
             $user6 = new User(self::USER_6_PHONE),
+            $user7 = new User(self::USER_7_PHONE),
         ], $manager);
 
         $this->addReference(self::USER_1, $user1);
@@ -46,5 +49,6 @@ class UserFixtures extends BaseFixtures
         $this->addReference(self::USER_4, $user4);
         $this->addReference(self::USER_5, $user5);
         $this->addReference(self::USER_6, $user6);
+        $this->addReference(self::USER_7, $user7);
     }
 }

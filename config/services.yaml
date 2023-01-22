@@ -18,8 +18,8 @@ services:
             tags: ['cqrs.query_handler']
         App\CQRS\CommandHandlerInterface:
             tags: ['cqrs.command_handler']
-        App\Core\Service\Task\TaskStack\Generator\TaskStackGeneratorInterface:
-            tags: ['core.task_stack_generator']
+        App\Core\Service\Task\NextTask\Generator\ProfileNextTaskGeneratorInterface:
+            tags: ['core.next_task_generator']
         App\Sms\Service\Provider\SmsProviderInterface:
             tags: ['sms.provider']
 
@@ -54,10 +54,6 @@ services:
     App\DataFixtures\Purger\PurgerFactory:
         tags:
             - { name: 'doctrine.fixtures.purger_factory', alias: 'my_purger' }
-
-
-    App\Core\Service\Task\TaskStack\Generator\TaskStackGeneratorFactory:
-        $generators: !tagged_iterator 'core.task_stack_generator'
 
 
     App\Sms\Service\SmsService:

@@ -31,9 +31,12 @@ readonly class CreateTaskDTO
     #[FutureDate]
     public ?DateTimeInterface $deadline;
 
+    public bool $remote;
+
     public function __construct(
         Profile $profile,
         string $title,
+        bool $remote,
         array $categories = [],
         ?string $description = null,
         ?int $price = null,
@@ -43,6 +46,7 @@ readonly class CreateTaskDTO
     {
         $this->profile = $profile;
         $this->title = $title;
+        $this->remote = $remote;
         $this->description = $description;
         $this->price = $price;
         $this->addressPlain = $addressPlain;

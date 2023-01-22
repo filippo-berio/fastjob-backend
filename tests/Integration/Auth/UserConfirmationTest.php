@@ -53,7 +53,7 @@ class UserConfirmationTest extends IntegrationTest
                 $confirmCodeUseCase->confirm(UserFixtures::USER_4_PHONE, 999);
             } finally {}
             $confirmData = $confirmationTokenRepository->findByPhone(UserFixtures::USER_4_PHONE);
-            $this->assertEquals(5 - $i, $confirmData->retries);
+            $this->assertEquals(5 - $i, $confirmData->getRetries());
         }
 
         $this->assertTrue($bannedPhoneRepo->isPhoneBanned(UserFixtures::USER_4_PHONE));
@@ -70,7 +70,7 @@ class UserConfirmationTest extends IntegrationTest
 
         $sendCodeUseCase->send(UserFixtures::USER_4_PHONE);
         $confirmData = $confirmationTokenRepository->findByPhone(UserFixtures::USER_4_PHONE);
-        $this->assertEquals(5, $confirmData->retries);
+        $this->assertEquals(5, $confirmData->getRetries());
         $confirmCodeUseCase->confirm(UserFixtures::USER_4_PHONE, $confirmData->getConfirmationCode());
     }
 
@@ -87,7 +87,7 @@ class UserConfirmationTest extends IntegrationTest
             $confirmCodeUseCase->confirm(UserFixtures::USER_3_PHONE, 999);
         } finally {}
         $confirmData = $confirmationTokenRepository->findByPhone(UserFixtures::USER_3_PHONE);
-        $this->assertEquals(4, $confirmData->retries);
+        $this->assertEquals(4, $confirmData->getRetries());
     }
 
     /**
@@ -103,7 +103,7 @@ class UserConfirmationTest extends IntegrationTest
 
         $confirmData = $confirmationTokenRepository->findByPhone($phone);
         $this->assertNotNull($confirmData->getConfirmationCode());
-        $this->assertEquals(5, $confirmData->retries);
+        $this->assertEquals(5, $confirmData->getRetries());
 
         $confirmCodeUseCase = $this->getDependency(ConfirmCodeUseCase::class);
         $tokens = $confirmCodeUseCase->confirm($phone, $confirmData->getConfirmationCode());
@@ -128,7 +128,7 @@ class UserConfirmationTest extends IntegrationTest
 
         $confirmData = $confirmationTokenRepository->findByPhone(UserFixtures::NOT_EXIST_USER_PHONE);
         $this->assertNotNull($confirmData->getConfirmationCode());
-        $this->assertEquals(5, $confirmData->retries);
+        $this->assertEquals(5, $confirmData->getRetries());
 
         $confirmCodeUseCase = $this->getDependency(ConfirmCodeUseCase::class);
         $tokens = $confirmCodeUseCase->confirm(UserFixtures::NOT_EXIST_USER_PHONE, $confirmData->getConfirmationCode());

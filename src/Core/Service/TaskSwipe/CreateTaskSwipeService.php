@@ -7,7 +7,7 @@ use App\Core\Entity\Profile;
 use App\Core\Entity\Task;
 use App\Core\Entity\TaskSwipe;
 use App\Core\Exception\TaskSwipe\TaskSwipeExistsException;
-use App\Core\Query\TaskSwipe\FindByProfileTask\FindByProfileTask;
+use App\Core\Query\TaskSwipe\FindByProfileTask\FindTaskSwipeByProfileAndTask;
 use App\CQRS\Bus\CommandBusInterface;
 use App\CQRS\Bus\QueryBusInterface;
 
@@ -32,7 +32,7 @@ class CreateTaskSwipeService
 
     private function checkExisting(Profile $profile, Task $task)
     {
-        $taskSwipe = $this->queryBus->handle(new FindByProfileTask($profile, $task));
+        $taskSwipe = $this->queryBus->handle(new FindTaskSwipeByProfileAndTask($profile, $task));
         if ($taskSwipe) {
             throw new TaskSwipeExistsException();
         }

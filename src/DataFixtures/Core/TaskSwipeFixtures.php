@@ -21,10 +21,14 @@ class TaskSwipeFixtures extends BaseFixtures implements DependentFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $task3 = $this->getReference(TaskFixtures::TASK_3, Task::class);
+        $task9 = $this->getReference(TaskFixtures::TASK_9, Task::class);
+
         $profile2 = $this->getReference(ProfileFixtures::PROFILE_2, Profile::class);
+        $profile7 = $this->getReference(ProfileFixtures::PROFILE_7, Profile::class);
 
         $this->save([
             new TaskSwipe($task3, $profile2, Swipe::TYPE_ACCEPT),
+            new TaskSwipe($task9, $profile7, Swipe::TYPE_ACCEPT),
         ], $manager);
     }
 

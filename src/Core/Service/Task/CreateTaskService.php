@@ -31,6 +31,7 @@ class CreateTaskService
             $createTaskDTO->title,
             $createTaskDTO->profile,
             $createTaskDTO->categories,
+            $createTaskDTO->remote,
             $createTaskDTO->price,
             $address,
             $createTaskDTO->deadline,

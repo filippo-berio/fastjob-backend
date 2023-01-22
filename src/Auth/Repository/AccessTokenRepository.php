@@ -17,7 +17,7 @@ class AccessTokenRepository
     public function save(AccessToken $accessToken): AccessToken
     {
         $this->redis->set(
-            'access-token-' . $accessToken->getUser()->getId(),
+            'access-token:' . $accessToken->getUser()->getId(),
             $accessToken->getValue(),
             'EX',
             $this->accessTokenLifeTime
@@ -27,7 +27,7 @@ class AccessTokenRepository
 
     public function findByUser(User $user): ?AccessToken
     {
-        $value = $this->redis->get('access-token-' . $user->getId());
+        $value = $this->redis->get('access-token:' . $user->getId());
         if (!$value) {
             return null;
         }

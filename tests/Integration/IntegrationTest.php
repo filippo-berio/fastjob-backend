@@ -5,10 +5,13 @@ namespace App\Tests\Integration;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use WireMock\Client\WireMock;
 
 abstract class IntegrationTest extends KernelTestCase
 {
     protected ContainerInterface $container;
+
+    private const WIREMOCK_HOST = 'fastjob-wiremock';
 
     protected function bootContainer()
     {
@@ -48,5 +51,12 @@ abstract class IntegrationTest extends KernelTestCase
     {
         $em = $this->getDependency(EntityManagerInterface::class);
         return $em->getRepository($class)->findBy($criteria);
+    }
+
+    protected function createWireMockClient(): WireMock
+    {
+        $wireMock = WireMock::create(self::WIREMOCK_HOST);
+        $this->assertTrue($wireMock->isAlive());
+        return $wireMock;
     }
 }

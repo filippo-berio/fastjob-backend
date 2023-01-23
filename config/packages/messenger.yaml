@@ -5,6 +5,7 @@ framework:
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
              async: '%env(MESSENGER_TRANSPORT_DSN)%'
+#             sync: 'sync://'
 
         routing:
             'App\Sms\Message\SmsMessage': async
@@ -15,3 +16,4 @@ when@test:
         messenger:
             transports:
                 async: 'test://'
+#                sync: 'test://'

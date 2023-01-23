@@ -46,6 +46,10 @@ services:
         restart: always
         command: bin/console messenger:consume async --limit 10 -vv
 
+    wiremock:
+        image: wiremock/wiremock:2.35.0-alpine
+        container_name: fastjob-wiremock
+        restart: always
 
 volumes:
     postgres_data:

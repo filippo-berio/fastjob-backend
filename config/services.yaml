@@ -56,10 +56,11 @@ services:
             - { name: 'doctrine.fixtures.purger_factory', alias: 'my_purger' }
 
 
-    App\Sms\Service\SmsService:
-        $provider: '%env(SMS_PROVIDER)%'
+    App\Sms\Service\Provider\SmsProviderInterface:
+        factory: [App\Sms\Service\Provider\SmsProviderFactory, 'create']
 
     App\Sms\Service\Provider\SmsProviderFactory:
+        $provider: '%env(SMS_PROVIDER)%'
         $providers: !tagged_iterator 'sms.provider'
 
     App\Sms\Service\Provider\TelegramSmsProvider:

@@ -12,20 +12,22 @@ class SmsProviderFactory
 
     /**
      * @param iterable<SmsProviderInterface> $providers
+     * @param string $provider
      */
     public function __construct(
-        iterable $providers
+        iterable $providers,
+        private string $provider,
     ) {
         foreach ($providers as $provider) {
             $this->providers[$provider->getAlias()] = $provider;
         }
     }
 
-    public function create(string $provider): SmsProviderInterface
+    public function create(): SmsProviderInterface
     {
-        if (!isset($this->providers[$provider])) {
-            throw new RuntimeException("Несуществующий провайдер $provider");
+        if (!isset($this->providers[$this->provider])) {
+            throw new RuntimeException("Несуществующий провайдер $this->provider");
         }
-        return $this->providers[$provider];
+        return $this->providers[$this->provider];
     }
 }

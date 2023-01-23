@@ -2,7 +2,6 @@
 
 namespace App\Auth\Entity;
 
-use App\Core\Entity\Profile;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -43,11 +42,6 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function createRefreshToken(string $token)
-    {
-        $this->refreshToken = new RefreshToken($this, $token);
-    }
-
     public function setAccessToken(string $accessToken): void
     {
         $this->accessToken = $accessToken;
@@ -61,11 +55,6 @@ class User implements UserInterface
     public function getRefreshToken(): RefreshToken
     {
         return $this->refreshToken;
-    }
-
-    public function setProfile(Profile $profile)
-    {
-        $this->profile = $profile;
     }
 
     public function eraseCredentials()

@@ -38,7 +38,7 @@ class TaskController extends BaseController
         );
         return $this->json([
             'success' => true
-        ], headers: $this->makeResponseTokenHeaders($profile->getUser()));
+        ]);
     }
 
     #[Route('/next', methods: ['GET'])]

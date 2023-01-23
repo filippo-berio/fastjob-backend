@@ -6,7 +6,7 @@ use App\Auth\Command\RefreshToken\Save\SaveRefreshToken;
 use App\Auth\Entity\RefreshToken;
 use App\Auth\Entity\User;
 use App\Auth\Query\RefreshToken\FindByUser\FindRefreshTokenByUser;
-use App\Core\Service\UuidGenerator;
+use App\Auth\Service\UuidGenerator;
 use App\CQRS\Bus\CommandBusInterface;
 use App\CQRS\Bus\QueryBusInterface;
 

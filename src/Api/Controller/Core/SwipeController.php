@@ -28,7 +28,6 @@ class SwipeController extends BaseController
                 'success' => true,
                 'data' => $executorSwipe
             ],
-            headers: $this->makeResponseTokenHeaders($user),
             context: ['executor_swipe_short']
         );
     }
@@ -46,7 +45,6 @@ class SwipeController extends BaseController
                 'success' => true,
                 'data' => $taskSwipe
             ],
-            headers: $this->makeResponseTokenHeaders($user),
             context: ['task_swipe_short']
         );
     }

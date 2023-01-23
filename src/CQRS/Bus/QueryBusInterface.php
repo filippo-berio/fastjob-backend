@@ -6,5 +6,5 @@ use App\CQRS\QueryInterface;
 
 interface QueryBusInterface
 {
-    public function handle(QueryInterface $query): mixed;
+    public function query(QueryInterface $query): mixed;
 }

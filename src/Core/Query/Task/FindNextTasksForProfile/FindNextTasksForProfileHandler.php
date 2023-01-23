@@ -7,10 +7,9 @@ use App\Core\Entity\Profile;
 use App\Core\Entity\Task;
 use App\Core\Entity\TaskSwipe;
 use App\Core\Query\Task\FindByProfile\FindTaskByEmployer;
-use App\Core\Query\Task\FindByProfile\FindTaskByEmployerHandler;
 use App\Core\Query\TaskSwipe\FindByProfile\FindTaskSwipeByProfile;
-use App\Core\Query\TaskSwipe\FindByProfile\FindTaskSwipeByProfileHandler;
 use App\Core\Repository\ProfileNextTaskRepository;
+use App\CQRS\Bus\QueryBusInterface;
 use App\CQRS\QueryHandlerInterface;
 use App\CQRS\QueryInterface;
 use DateTimeImmutable;
@@ -21,8 +20,7 @@ class FindNextTasksForProfileHandler implements QueryHandlerInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private FindTaskByEmployerHandler $findTaskByEmployerHandler,
-        private FindTaskSwipeByProfileHandler $findTaskSwipeByProfileHandler,
+        private QueryBusInterface $queryBus,
         private ProfileNextTaskRepository $nextTaskRepository,
     ) {
     }
@@ -67,12 +65,12 @@ class FindNextTasksForProfileHandler implements QueryHandlerInterface
     private function getExcluded(Profile $profile): array
     {
         $generatedTasks = $this->nextTaskRepository->get($profile);
-        $swipedTasks = $this->findTaskSwipeByProfileHandler->handle(new FindTaskSwipeByProfile($profile));
+        $swipedTasks = $this->queryBus->query(new FindTaskSwipeByProfile($profile));
         $swipedTasks = array_map(
             fn(TaskSwipe $swipe) => $swipe->getTask(),
             $swipedTasks
         );
-        $profileTasks = $this->findTaskByEmployerHandler->handle(new FindTaskByEmployer($profile));
+        $profileTasks = $this->queryBus->query(new FindTaskByEmployer($profile));
 
         return array_map(
             fn(Task $task) => $task->getId(),

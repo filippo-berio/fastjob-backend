@@ -20,7 +20,7 @@ class GetOrCreateAddressService
 
     public function getOrCreate(CreateAddressDTO $createAddressDTO): Address
     {
-        $existing = $this->queryBus->handle(new FindAddressByCityAndTitle(
+        $existing = $this->queryBus->query(new FindAddressByCityAndTitle(
             $createAddressDTO->city,
             $createAddressDTO->title,
         ));
@@ -36,6 +36,6 @@ class GetOrCreateAddressService
             $coordinates,
         );
 
-        return $this->commandBus->handle(new SaveAddress($address));
+        return $this->commandBus->execute(new SaveAddress($address));
     }
 }

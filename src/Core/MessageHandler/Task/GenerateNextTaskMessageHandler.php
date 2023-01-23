@@ -21,7 +21,7 @@ class GenerateNextTaskMessageHandler
 
     public function __invoke(GenerateNextTaskMessage $message)
     {
-        $profile = $this->queryBus->handle(new FindProfileById($message->profileId));
+        $profile = $this->queryBus->query(new FindProfileById($message->profileId));
         $tasks = $this->nextTaskGenerator->generateForProfile($profile, $message->count);
         $this->nextTaskRepository->add($profile, $tasks);
     }

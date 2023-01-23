@@ -2,35 +2,22 @@
 
 namespace App\CQRS\Bus;
 
-use App\CQRS\QueryHandlerInterface;
+use App\CQRS\Message\QueryMessage;
 use App\CQRS\QueryInterface;
-use Exception;
+use Symfony\Component\Messenger\HandleTrait;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class QueryBus implements QueryBusInterface
 {
-    private array $queryHandlers;
+    use HandleTrait;
 
     public function __construct(
-        iterable $queryHandlers,
+        private MessageBusInterface $messageBus,
     ) {
-        foreach ($queryHandlers as $queryHandler) {
-            $this->queryHandlers[$queryHandler::class] = $queryHandler;
-        }
     }
 
-    public function handle(QueryInterface $query): mixed
+    public function query(QueryInterface $query): mixed
     {
-        $handler = $this->getHandler($query);
-        return $handler->handle($query);
-    }
-
-    private function getHandler(QueryInterface $query): QueryHandlerInterface
-    {
-        $handlerClass = $query->getHandlerClass();
-        $handler = $this->queryHandlers[$query->getHandlerClass()] ?? null;
-        if (!$handler) {
-            throw new Exception("Не найден queryHandler $handlerClass");
-        }
-        return $handler;
+        return $this->handle(new QueryMessage($query));
     }
 }

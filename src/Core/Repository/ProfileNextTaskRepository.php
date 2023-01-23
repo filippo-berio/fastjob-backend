@@ -5,7 +5,7 @@ namespace App\Core\Repository;
 use App\Core\Entity\Profile;
 use App\Core\Entity\Task;
 use App\Core\Query\Task\FindByIds\FindTaskByIds;
-use App\Core\Query\Task\FindByIds\FindTaskByIdsHandler;
+use App\CQRS\Bus\QueryBusInterface;
 use Predis\Client;
 
 class ProfileNextTaskRepository
@@ -14,7 +14,7 @@ class ProfileNextTaskRepository
 
     public function __construct(
         private Client $redis,
-        private FindTaskByIdsHandler $findTaskByIds,
+        private QueryBusInterface $queryBus,
     ) {
     }
 
@@ -40,7 +40,7 @@ class ProfileNextTaskRepository
     public function get(Profile $profile): array
     {
         $ids[] = $this->redis->lrange('profile:next-tasks:' . $profile->getId(), 0, self::STACK_LIMIT - 1);
-        return empty($ids) ? $this->findTaskByIds->handle(new FindTaskByIds($ids)) : [];
+        return empty($ids) ? $this->queryBus->query(new FindTaskByIds($ids)) : [];
     }
 
     /**
@@ -54,7 +54,7 @@ class ProfileNextTaskRepository
         for ($i = 0; $i < min($this->count($profile), $count); $i++) {
             $ids[] = $this->redis->rpop('profile:next-tasks:' . $profile->getId());
         }
-        return empty($ids) ? $this->findTaskByIds->handle(new FindTaskByIds($ids)) : [];
+        return empty($ids) ? $this->queryBus->query(new FindTaskByIds($ids)) : [];
     }
 
     public function count(Profile $profile): int

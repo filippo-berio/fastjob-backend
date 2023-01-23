@@ -30,18 +30,18 @@ class UpdateProfileUseCase
         ?string $description = null,
         ?int $cityId = null,
     ): Profile {
-        if (!$profile = $this->queryBus->handle(new FindProfileByUser($user))) {
+        if (!$profile = $this->queryBus->query(new FindProfileByUser($user))) {
             throw new ProfileNotFoundException();
         }
 
         if ($cityId) {
-            $city = $this->queryBus->handle(new FindCityById($cityId));
+            $city = $this->queryBus->query(new FindCityById($cityId));
             if (!$city) {
                 throw new CityNotFoundException();
             }
         }
 
-        $categories = empty($categoryIds) ? [] : $this->queryBus->handle(new FindCategoriesByIds($categoryIds));
+        $categories = empty($categoryIds) ? [] : $this->queryBus->query(new FindCategoriesByIds($categoryIds));
         if (count($categories) !== count($categoryIds)) {
             throw new CategoryNotFoundException();
         }

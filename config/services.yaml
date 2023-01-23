@@ -30,8 +30,8 @@ services:
         exclude: '../src/*/Entity/'
 
     App\Api\EventListener\ExceptionListener:
-#        tags:
-#            - {name: kernel.event_listener, event: kernel.exception}
+        tags:
+            - {name: kernel.event_listener, event: kernel.exception}
 
 
     App\Auth\Repository\AccessTokenRepository:
@@ -44,10 +44,10 @@ services:
         $confirmationTokenLifeTime: '%env(CONFIRMATION_TOKEN_LIFETIME)%'
 
 
-    App\CQRS\Bus\CommandBus:
+    App\CQRS\MessageHandler\CommandMessageHandler:
         $commandHandlers: !tagged_iterator 'cqrs.command_handler'
 
-    App\CQRS\Bus\QueryBus:
+    App\CQRS\MessageHandler\QueryMessageHandler:
         $queryHandlers: !tagged_iterator 'cqrs.query_handler'
 
 
@@ -58,7 +58,6 @@ services:
 
     App\Sms\Service\SmsService:
         $provider: '%env(SMS_PROVIDER)%'
-
 
     App\Sms\Service\Provider\SmsProviderFactory:
         $providers: !tagged_iterator 'sms.provider'

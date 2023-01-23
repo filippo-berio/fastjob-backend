@@ -15,7 +15,7 @@ class CategoryNextTaskGenerator implements ProfileNextTaskGeneratorInterface
 
     public function generateForProfile(Profile $profile, int $count): array
     {
-        return $this->queryBus->handle(new FindNextTasksForProfile(
+        return $this->queryBus->query(new FindNextTasksForProfile(
             $profile,
             $count
         ));

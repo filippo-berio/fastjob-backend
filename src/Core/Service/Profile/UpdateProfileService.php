@@ -20,6 +20,6 @@ class UpdateProfileService
     {
         $this->validator->validate($updateProfileDTO);
         $profile->update($updateProfileDTO);
-        return $this->commandBus->handle(new SaveProfile($profile));
+        return $this->commandBus->execute(new SaveProfile($profile));
     }
 }

@@ -16,6 +16,6 @@ class RegisterUserService
     public function register(string $phone): User
     {
         $user = new User($phone);
-        return $this->commandBus->handle(new SaveUser($user));
+        return $this->commandBus->execute(new SaveUser($user));
     }
 }

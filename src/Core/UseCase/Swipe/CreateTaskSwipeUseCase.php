@@ -28,7 +28,7 @@ class CreateTaskSwipeUseCase
         string $type,
         ?int $customPrice = null
     ): TaskSwipe {
-        $profile = $this->queryBus->handle(new FindProfileByUser($user));
+        $profile = $this->queryBus->query(new FindProfileByUser($user));
         $task = $this->getTask($taskId);
         $this->checkExisting($profile, $task);
         return $this->createTaskSwipeService->create($profile, $task, $type, $customPrice);
@@ -36,7 +36,7 @@ class CreateTaskSwipeUseCase
 
     private function getTask(int $id): Task
     {
-        $task = $this->queryBus->handle(new FindTaskById($id));
+        $task = $this->queryBus->query(new FindTaskById($id));
         if (!$task) {
             throw new TaskNotFoundException();
         }
@@ -45,7 +45,7 @@ class CreateTaskSwipeUseCase
 
     private function checkExisting(Profile $profile, Task $task)
     {
-        $taskSwipe = $this->queryBus->handle(new FindExecutorSwipeByProfileTask($profile, $task));
+        $taskSwipe = $this->queryBus->query(new FindExecutorSwipeByProfileTask($profile, $task));
         if ($taskSwipe) {
             throw new TaskSwipeExistsException();
         }

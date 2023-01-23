@@ -19,7 +19,7 @@ class CreateAddressUseCase
 
     public function create(int $cityId, string $title): Address
     {
-        $city = $this->queryBus->handle(new FindCityById($cityId));
+        $city = $this->queryBus->query(new FindCityById($cityId));
         if (!$city) {
             throw new CityNotFoundException();
         }

@@ -32,7 +32,7 @@ class ConfirmCodeService
 
         $this->confirmationTokenRepository->delete($phone);
 
-        $user = $this->queryBus->handle(new FindUserByPhone($phone));
+        $user = $this->queryBus->query(new FindUserByPhone($phone));
         if (!$user) {
             $user = $this->registerUserService->register($phone);
         }

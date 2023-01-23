@@ -38,6 +38,6 @@ class CreateTaskService
             $createTaskDTO->description,
         );
 
-        return $this->commandBus->handle(new SaveTask($task));
+        return $this->commandBus->execute(new SaveTask($task));
     }
 }

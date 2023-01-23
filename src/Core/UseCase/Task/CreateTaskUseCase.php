@@ -30,7 +30,7 @@ class CreateTaskUseCase
         ?AddressPlain $addressPlain = null,
         ?string $deadline = null,
     ): Task {
-        $categories = empty($categoryIds) ? [] : $this->queryBus->handle(new FindCategoriesByIds($categoryIds));
+        $categories = empty($categoryIds) ? [] : $this->queryBus->query(new FindCategoriesByIds($categoryIds));
         if (count($categories) !== count($categoryIds)) {
             throw new CategoryNotFoundException();
         }

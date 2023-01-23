@@ -46,7 +46,7 @@ class AuthenticateService
     private function getUser(string $accessToken): User
     {
         $id = $this->getUserId($accessToken);
-        $user = $this->queryBus->handle(new FindUserById($id));
+        $user = $this->queryBus->query(new FindUserById($id));
         if (!$user) {
             $this->throwException();
         }

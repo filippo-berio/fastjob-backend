@@ -35,12 +35,12 @@ class CreateExecutorSwipeService
             throw new ExecutorSwipeSelfAssignException();
         }
 
-        $existing = $this->queryBus->handle(new FindExecutorSwipeByProfileTask($executor, $task));
+        $existing = $this->queryBus->query(new FindExecutorSwipeByProfileTask($executor, $task));
         if ($existing) {
             throw new ExecutorSwipeExistsException();
         }
 
         $executorSwipe = new ExecutorSwipe($task, $executor, $type);
-        return $this->commandBus->handle(new CreateExecutorSwipe($executorSwipe));
+        return $this->commandBus->execute(new CreateExecutorSwipe($executorSwipe));
     }
 }

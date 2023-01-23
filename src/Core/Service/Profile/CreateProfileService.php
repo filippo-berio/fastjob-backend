@@ -30,13 +30,13 @@ class CreateProfileService
             $createProfileDTO->firstName,
             $createProfileDTO->birthDate,
         );
-        $this->commandBus->handle(new SaveProfile($profile));
+        $this->commandBus->execute(new SaveProfile($profile));
         return $profile;
     }
 
     private function validate(CreateProfileDTO $createProfileDTO)
     {
-        if ($this->queryBus->handle(new FindProfileByUser($createProfileDTO->user))) {
+        if ($this->queryBus->query(new FindProfileByUser($createProfileDTO->user))) {
             throw new ProfileCreatedException();
         }
 

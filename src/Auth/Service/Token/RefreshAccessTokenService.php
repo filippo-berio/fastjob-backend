@@ -21,7 +21,7 @@ class RefreshAccessTokenService
         $accessToken = $this->createAccessTokenService->create($user);
         $refreshToken = $this->uuidGenerator->generate();
         $user->getRefreshToken()->setToken($refreshToken);
-        $this->commandBus->handle(new SaveRefreshToken($user->getRefreshToken()));
+        $this->commandBus->execute(new SaveRefreshToken($user->getRefreshToken()));
         return $accessToken;
     }
 }

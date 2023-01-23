@@ -30,13 +30,13 @@ class CreateExecutorSwipeUseCase
     ): ExecutorSwipe {
         $task = $this->getTask($taskId);
         $executor = $this->getProfile($executorId);
-        $profile = $this->queryBus->handle(new FindProfileByUser($user));
+        $profile = $this->queryBus->query(new FindProfileByUser($user));
         return $this->createExecutorSwipeService->create($profile, $task, $executor, $type);
     }
 
     private function getTask(int $id): Task
     {
-        $task = $this->queryBus->handle(new FindTaskById($id));
+        $task = $this->queryBus->query(new FindTaskById($id));
         if (!$task) {
             throw new TaskNotFoundException();
         }
@@ -45,7 +45,7 @@ class CreateExecutorSwipeUseCase
 
     private function getProfile(int $id): Profile
     {
-        $profile = $this->queryBus->handle(new FindProfileById($id));
+        $profile = $this->queryBus->query(new FindProfileById($id));
         if (!$profile) {
             throw new ProfileNotFoundException();
         }

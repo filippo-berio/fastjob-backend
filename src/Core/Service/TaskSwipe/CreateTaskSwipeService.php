@@ -27,12 +27,12 @@ class CreateTaskSwipeService
     ): TaskSwipe {
         $this->checkExisting($profile, $task);
         $taskSwipe = new TaskSwipe($task, $profile, $type, $customPrice);
-        return $this->commandBus->handle(new CreateTaskSwipe($taskSwipe));
+        return $this->commandBus->execute(new CreateTaskSwipe($taskSwipe));
     }
 
     private function checkExisting(Profile $profile, Task $task)
     {
-        $taskSwipe = $this->queryBus->handle(new FindTaskSwipeByProfileAndTask($profile, $task));
+        $taskSwipe = $this->queryBus->query(new FindTaskSwipeByProfileAndTask($profile, $task));
         if ($taskSwipe) {
             throw new TaskSwipeExistsException();
         }

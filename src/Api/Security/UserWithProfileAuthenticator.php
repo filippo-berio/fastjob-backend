@@ -24,7 +24,7 @@ class UserWithProfileAuthenticator extends AccessRefreshTokenAuthenticator
     {
         $user = parent::getUser($request);
         /** @var Profile $profile */
-        $profile = $this->queryBus->handle(new FindProfileByUser($user));
+        $profile = $this->queryBus->query(new FindProfileByUser($user));
         if (!$profile) {
             throw new ProfileNotFoundException();
         }

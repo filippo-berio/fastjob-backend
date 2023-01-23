@@ -21,10 +21,10 @@ class GetRefreshTokenService
 
     public function getOrCreate(User $user): RefreshToken
     {
-        $refreshToken = $this->queryBus->handle(new FindRefreshTokenByUser($user));
+        $refreshToken = $this->queryBus->query(new FindRefreshTokenByUser($user));
         if (!$refreshToken) {
             $refreshToken = new RefreshToken($user, $this->uuidGenerator->generate());
-            $refreshToken = $this->commandBus->handle(new SaveRefreshToken($refreshToken));
+            $refreshToken = $this->commandBus->execute(new SaveRefreshToken($refreshToken));
         }
         return $refreshToken;
     }

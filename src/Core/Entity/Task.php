@@ -38,7 +38,7 @@ class Task
 
     #[ManyToOne]
     #[Groups(['task_full'])]
-    private Profile $employer;
+    private Profile $author;
 
     #[Column]
     #[Groups(['task_full'])]
@@ -71,7 +71,7 @@ class Task
 
     public function __construct(
         string             $title,
-        Profile            $employer,
+        Profile            $author,
         array              $categories,
         bool               $remote,
         ?int               $price = null,
@@ -80,7 +80,7 @@ class Task
         ?string            $description = null,
     ) {
         $this->title = $title;
-        $this->employer = $employer;
+        $this->author = $author;
         $this->createdAt = new DateTimeImmutable();
         $this->categories = new ArrayCollection($categories);
         $this->price = $price;
@@ -133,9 +133,9 @@ class Task
         return $this->categories->toArray();
     }
 
-    public function getEmployer(): Profile
+    public function getAuthor(): Profile
     {
-        return $this->employer;
+        return $this->author;
     }
 
     public function getPrice(): ?int

@@ -9,7 +9,7 @@ class FindNextTasksForProfile extends BaseQuery
 {
     public function __construct(
         public Profile $profile,
-        public int $count
+        public int $count,
     ) {
     }
 }

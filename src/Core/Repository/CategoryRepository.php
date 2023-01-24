@@ -1,29 +1,27 @@
 <?php
 
-namespace App\Core\Query\Category\FindByIds;
+namespace App\Core\Repository;
 
 use App\Core\Entity\Category;
-use App\CQRS\QueryHandlerInterface;
-use App\CQRS\QueryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-class FindCategoriesByIdsHandler implements QueryHandlerInterface
+class CategoryRepository
 {
+
     public function __construct(
         private EntityManagerInterface $entityManager
     ) {
     }
 
     /**
-     * @param FindCategoriesByIds $query
      * @return Category[]
      */
-    public function handle(QueryInterface $query): array
+    public function findByIds(array $ids): array
     {
         return $this->entityManager->getRepository(Category::class)
             ->createQueryBuilder('c')
             ->andWhere('c.id in (:id)')
-            ->setParameter('id', $query->ids)
+            ->setParameter('id', $ids)
             ->getQuery()
             ->getResult();
     }

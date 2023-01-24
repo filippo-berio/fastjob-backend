@@ -13,22 +13,18 @@ use App\Auth\UseCase\UserConfirmation\SendConfirmationCodeUseCase;
 use App\DataFixtures\Auth\UserFixtures;
 use App\Sms\Message\SmsMessage;
 use App\Tests\Functional\FunctionalTest;
-use Zenstruck\Messenger\Test\InteractsWithMessenger;
 
 class UserConfirmationTest extends FunctionalTest
 {
-    use InteractsWithMessenger;
-
     public function testRottenConfirmation()
     {
-        $this->bootContainer();
         $confirmationTokenRepository = $this->getDependency(ConfirmationTokenRepository::class);
 
         $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
         $sendCodeUseCase->send(UserFixtures::USER_5_PHONE);
         $confirmData = $confirmationTokenRepository->findByPhone(UserFixtures::USER_5_PHONE);
 
-        sleep(3);
+        $this->redisClear();
 
         $this->assertNull($confirmationTokenRepository->findByPhone(UserFixtures::USER_5_PHONE));
         $confirmCodeUseCase = $this->getDependency(ConfirmCodeUseCase::class);
@@ -38,8 +34,6 @@ class UserConfirmationTest extends FunctionalTest
 
     public function testBanUser()
     {
-        $this->bootContainer();
-
         $bannedPhoneRepo = $this->getDependency(BannedPhoneRepository::class);
         $confirmationTokenRepository = $this->getDependency(ConfirmationTokenRepository::class);
         $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
@@ -64,7 +58,7 @@ class UserConfirmationTest extends FunctionalTest
         } finally {}
 
 
-        sleep(3);
+        $this->redisClear();
 
         $this->assertFalse($bannedPhoneRepo->isPhoneBanned(UserFixtures::USER_4_PHONE));
 
@@ -76,7 +70,6 @@ class UserConfirmationTest extends FunctionalTest
 
     public function testWrongCode()
     {
-        $this->bootContainer();
         $confirmationTokenRepository = $this->getDependency(ConfirmationTokenRepository::class);
         $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
         $sendCodeUseCase->send(UserFixtures::USER_3_PHONE);
@@ -95,7 +88,6 @@ class UserConfirmationTest extends FunctionalTest
      */
     public function testExistingUser(string $phone)
     {
-        $this->bootContainer();
         $confirmationTokenRepository = $this->getDependency(ConfirmationTokenRepository::class);
 
         $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);
@@ -115,7 +107,6 @@ class UserConfirmationTest extends FunctionalTest
 
     public function testNewUser()
     {
-        $this->bootContainer();
         $confirmationTokenRepository = $this->getDependency(ConfirmationTokenRepository::class);
 
         $sendCodeUseCase = $this->getDependency(SendConfirmationCodeUseCase::class);

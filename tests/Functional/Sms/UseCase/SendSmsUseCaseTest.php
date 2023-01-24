@@ -6,12 +6,9 @@ use App\Sms\Message\SmsMessage;
 use App\Sms\UseCase\SendSmsUseCase;
 use App\Tests\Functional\FunctionalTest;
 use WireMock\Client\WireMock;
-use Zenstruck\Messenger\Test\InteractsWithMessenger;
 
 class SendSmsUseCaseTest extends FunctionalTest
 {
-    use InteractsWithMessenger;
-
     public function testSuccess()
     {
         $this->bootContainer();

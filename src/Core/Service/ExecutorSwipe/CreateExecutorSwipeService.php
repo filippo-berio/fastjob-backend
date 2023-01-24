@@ -2,22 +2,18 @@
 
 namespace App\Core\Service\ExecutorSwipe;
 
-use App\Core\Command\ExecutorSwipe\Create\CreateExecutorSwipe;
 use App\Core\Entity\ExecutorSwipe;
 use App\Core\Entity\Profile;
 use App\Core\Entity\Task;
 use App\Core\Exception\ExecutorSwipe\ExecutorSwipeExistsException;
 use App\Core\Exception\ExecutorSwipe\ExecutorSwipeSelfAssignException;
 use App\Core\Exception\Task\TaskNotFoundException;
-use App\Core\Query\ExecutorSwipe\FindByProfileTask\FindExecutorSwipeByProfileTask;
-use App\CQRS\Bus\CommandBusInterface;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Core\Repository\ExecutorSwipeRepository;
 
 class CreateExecutorSwipeService
 {
     public function __construct(
-        private QueryBusInterface $queryBus,
-        private CommandBusInterface $commandBus,
+        private ExecutorSwipeRepository $executorSwipeRepository,
     ) {
     }
 
@@ -27,7 +23,7 @@ class CreateExecutorSwipeService
         Profile $executor,
         string $type,
     ): ExecutorSwipe {
-        if ($task->getEmployer()->getId() !== $user->getId()) {
+        if ($task->getAuthor()->getId() !== $user->getId()) {
             throw new TaskNotFoundException();
         }
 
@@ -35,12 +31,12 @@ class CreateExecutorSwipeService
             throw new ExecutorSwipeSelfAssignException();
         }
 
-        $existing = $this->queryBus->query(new FindExecutorSwipeByProfileTask($executor, $task));
+        $existing = $this->executorSwipeRepository->findByAuthorAndTask($executor, $task);
         if ($existing) {
             throw new ExecutorSwipeExistsException();
         }
 
         $executorSwipe = new ExecutorSwipe($task, $executor, $type);
-        return $this->commandBus->execute(new CreateExecutorSwipe($executorSwipe));
+        return $this->executorSwipeRepository->save($executorSwipe);
     }
 }

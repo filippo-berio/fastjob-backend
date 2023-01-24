@@ -1,32 +1,35 @@
 <?php
 
-namespace App\Location\Query\Address\FindByCityAddress;
+namespace App\Location\Repository;
 
-use App\CQRS\QueryHandlerInterface;
-use App\CQRS\QueryInterface;
 use App\Location\Entity\Address;
+use App\Location\Entity\City;
 use Doctrine\ORM\EntityManagerInterface;
 
-class FindAddressByCityAndTitleHandler implements QueryHandlerInterface
+class AddressRepository
 {
+
     public function __construct(
         private EntityManagerInterface $entityManager
     ) {
     }
 
-    /**
-     * @param FindAddressByCityAndTitle $query
-     * @return Address|null
-     */
-    public function handle(QueryInterface $query): ?Address
+    public function save(Address $address): Address
+    {
+        $this->entityManager->persist($address);
+        $this->entityManager->flush();
+        return $address;
+    }
+
+    public function findByCityAndTitle(City $city, string $title): ?Address
     {
         return $this->entityManager->getRepository(Address::class)
             ->createQueryBuilder('a')
             ->andWhere('a.city = :city')
             ->andWhere('a.title = :title')
             ->setParameters([
-                'city' => $query->city,
-                'title' => $query->title
+                'city' => $city,
+                'title' => $title
             ])
             ->getQuery()
             ->getOneOrNullResult();

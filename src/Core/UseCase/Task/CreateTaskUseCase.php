@@ -7,16 +7,15 @@ use App\Core\DTO\Task\CreateTaskDTO;
 use App\Core\Entity\Profile;
 use App\Core\Entity\Task;
 use App\Core\Exception\Category\CategoryNotFoundException;
-use App\Core\Query\Category\FindByIds\FindCategoriesByIds;
+use App\Core\Repository\CategoryRepository;
 use App\Core\Service\Task\CreateTaskService;
-use App\CQRS\Bus\QueryBusInterface;
 use DateTimeImmutable;
 
 class CreateTaskUseCase
 {
     public function __construct(
         private CreateTaskService $createTaskService,
-        private QueryBusInterface $queryBus,
+        private CategoryRepository $categoryRepository,
     ) {
     }
 
@@ -30,7 +29,7 @@ class CreateTaskUseCase
         ?AddressPlain $addressPlain = null,
         ?string $deadline = null,
     ): Task {
-        $categories = empty($categoryIds) ? [] : $this->queryBus->query(new FindCategoriesByIds($categoryIds));
+        $categories = empty($categoryIds) ? [] : $this->categoryRepository->findByIds($categoryIds);
         if (count($categories) !== count($categoryIds)) {
             throw new CategoryNotFoundException();
         }

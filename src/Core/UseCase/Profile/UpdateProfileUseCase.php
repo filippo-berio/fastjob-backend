@@ -7,18 +7,20 @@ use App\Core\DTO\Profile\UpdateProfileDTO;
 use App\Core\Entity\Profile;
 use App\Core\Exception\Category\CategoryNotFoundException;
 use App\Core\Exception\Profile\ProfileNotFoundException;
-use App\Core\Query\Category\FindByIds\FindCategoriesByIds;
 use App\Core\Query\Profile\FindByUser\FindProfileByUser;
+use App\Core\Repository\CategoryRepository;
 use App\Core\Service\Profile\UpdateProfileService;
 use App\CQRS\Bus\QueryBusInterface;
 use App\Location\Exception\CityNotFoundException;
-use App\Location\Query\City\FindCityById;
+use App\Location\UseCase\City\GetCityByIdUseCase;
 
 class UpdateProfileUseCase
 {
     public function __construct(
         private UpdateProfileService $updateProfileService,
         private QueryBusInterface $queryBus,
+        private GetCityByIdUseCase $getCityByIdUseCase,
+        private CategoryRepository $categoryRepository,
     ) {
     }
 
@@ -35,13 +37,13 @@ class UpdateProfileUseCase
         }
 
         if ($cityId) {
-            $city = $this->queryBus->query(new FindCityById($cityId));
+            $city = $this->getCityByIdUseCase->get($cityId);
             if (!$city) {
                 throw new CityNotFoundException();
             }
         }
 
-        $categories = empty($categoryIds) ? [] : $this->queryBus->query(new FindCategoriesByIds($categoryIds));
+        $categories = empty($categoryIds) ? [] : $this->categoryRepository->findByIds($categoryIds);
         if (count($categories) !== count($categoryIds)) {
             throw new CategoryNotFoundException();
         }

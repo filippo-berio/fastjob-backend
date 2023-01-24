@@ -18,8 +18,6 @@ services:
             tags: ['cqrs.query_handler']
         App\CQRS\CommandHandlerInterface:
             tags: ['cqrs.command_handler']
-        App\Core\Service\Task\NextTask\Generator\ProfileNextTaskGeneratorInterface:
-            tags: ['core.next_task_generator']
         App\Sms\Service\Provider\SmsProviderInterface:
             tags: ['sms.provider']
 
@@ -42,6 +40,11 @@ services:
 
     App\Auth\Repository\ConfirmationTokenRepository:
         $confirmationTokenLifeTime: '%env(CONFIRMATION_TOKEN_LIFETIME)%'
+
+
+    App\Core\Service\Task\NextTask\GetProfileNextTaskService:
+        $minimalStack: '%env(NEXT_TASK_MINIMAL_STACK)%'
+        $stackLimit: '%env(NEXT_TASK_STACK_LIMIT)%'
 
 
     App\CQRS\MessageHandler\CommandMessageHandler:

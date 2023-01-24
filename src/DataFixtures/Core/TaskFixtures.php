@@ -24,6 +24,8 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
     const TASK_8 = 8;
     const TASK_9 = 9;
     const TASK_10 = 10;
+    const TASK_11 = 11;
+    const TASK_12 = 12;
 
     protected function getEntity(): string
     {
@@ -111,7 +113,37 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                     $this->getReference(CategoryFixtures::PETS, Category::class),
                 ],
                 true,
-            )
+            ),
+            $task10 = new Task(
+                'Другое удаленное задание по животным',
+                $this->getReference(ProfileFixtures::PROFILE_7, Profile::class),
+                [
+                    $this->getReference(CategoryFixtures::PETS, Category::class),
+                ],
+                true,
+            ),
+            $task11 = new Task(
+                'Поаутсорсить чуток',
+                $this->getReference(ProfileFixtures::PROFILE_1, Profile::class),
+                [
+                    $this->getReference(CategoryFixtures::CODING, Category::class),
+                    $this->getReference(CategoryFixtures::CPLUS, Category::class),
+                ],
+                true,
+                15000,
+                address: $this->getReference(AddressFixtures::ADDRESS_4, Address::class),
+            ),
+            $task12 = new Task(
+                'Поаутсорсить чуток, совсем чуть чуть',
+                $this->getReference(ProfileFixtures::PROFILE_1, Profile::class),
+                [
+                    $this->getReference(CategoryFixtures::CODING, Category::class),
+                    $this->getReference(CategoryFixtures::CPLUS, Category::class),
+                ],
+                true,
+                150000,
+                address: $this->getReference(AddressFixtures::ADDRESS_4, Address::class),
+            ),
         ], $manager);
 
         $this->addReference(self::TASK_1, $task1);

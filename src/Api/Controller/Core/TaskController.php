@@ -9,7 +9,6 @@ use App\Core\Entity\Profile;
 use App\Core\UseCase\Task\CreateTaskUseCase;
 use App\Core\UseCase\Task\GetProfileNextTaskUseCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
@@ -44,13 +43,9 @@ class TaskController extends BaseController
     #[Route('/next', methods: ['GET'])]
     public function getNext(
         #[CurrentUser] Profile $profile,
-        Request $request,
         GetProfileNextTaskUseCase $useCase,
     ): JsonResponse {
-        $count = $request->query->get('count');
-        $tasks = $count ?
-            $useCase->get($profile, $count) :
-            $useCase->get($profile);
+        $tasks = $useCase->get($profile);
         return $this->json($tasks, context: ['task_full']);
     }
 }

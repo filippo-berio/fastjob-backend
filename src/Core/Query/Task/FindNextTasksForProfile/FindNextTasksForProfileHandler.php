@@ -6,9 +6,10 @@ use App\Core\Entity\Category;
 use App\Core\Entity\Profile;
 use App\Core\Entity\Task;
 use App\Core\Entity\TaskSwipe;
-use App\Core\Query\Task\FindByProfile\FindTaskByEmployer;
-use App\Core\Query\TaskSwipe\FindByProfile\FindTaskSwipeByProfile;
+use App\Core\Query\Task\FindByProfile\FindTaskByAuthor;
+use App\Core\Repository\PendingTaskRepository;
 use App\Core\Repository\ProfileNextTaskRepository;
+use App\Core\Repository\TaskSwipeRepository;
 use App\CQRS\Bus\QueryBusInterface;
 use App\CQRS\QueryHandlerInterface;
 use App\CQRS\QueryInterface;
@@ -22,6 +23,8 @@ class FindNextTasksForProfileHandler implements QueryHandlerInterface
         private EntityManagerInterface $entityManager,
         private QueryBusInterface $queryBus,
         private ProfileNextTaskRepository $nextTaskRepository,
+        private PendingTaskRepository $pendingTaskRepository,
+        private TaskSwipeRepository $taskSwipeRepository,
     ) {
     }
 
@@ -65,16 +68,22 @@ class FindNextTasksForProfileHandler implements QueryHandlerInterface
     private function getExcluded(Profile $profile): array
     {
         $generatedTasks = $this->nextTaskRepository->get($profile);
-        $swipedTasks = $this->queryBus->query(new FindTaskSwipeByProfile($profile));
+        $swipedTasks = $this->taskSwipeRepository->findByProfile($profile);
         $swipedTasks = array_map(
             fn(TaskSwipe $swipe) => $swipe->getTask(),
             $swipedTasks
         );
-        $profileTasks = $this->queryBus->query(new FindTaskByEmployer($profile));
+        $profileTasks = $this->queryBus->query(new FindTaskByAuthor($profile));
+
+        $exclude = [...$generatedTasks, ...$swipedTasks, ...$profileTasks];
+
+        if ($pending = $this->pendingTaskRepository->get($profile)) {
+            $exclude[] = $pending;
+        }
 
         return array_map(
             fn(Task $task) => $task->getId(),
-            $generatedTasks + $swipedTasks + $profileTasks
+            $exclude
         );
     }
 

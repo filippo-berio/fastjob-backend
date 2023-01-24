@@ -2,28 +2,24 @@
 
 namespace App\Location\Service\Address;
 
-use App\CQRS\Bus\CommandBusInterface;
-use App\CQRS\Bus\QueryBusInterface;
-use App\Location\Command\Address\Save\SaveAddress;
 use App\Location\DTO\Address\CreateAddressDTO;
 use App\Location\Entity\Address;
-use App\Location\Query\Address\FindByCityAddress\FindAddressByCityAndTitle;
+use App\Location\Repository\AddressRepository;
 
 class GetOrCreateAddressService
 {
     public function __construct(
-        private CommandBusInterface $commandBus,
-        private QueryBusInterface $queryBus,
         private GetCoordinatesService $getCoordinatesService,
+        private AddressRepository $addressRepository,
     ) {
     }
 
     public function getOrCreate(CreateAddressDTO $createAddressDTO): Address
     {
-        $existing = $this->queryBus->query(new FindAddressByCityAndTitle(
+        $existing = $this->addressRepository->findByCityAndTitle(
             $createAddressDTO->city,
             $createAddressDTO->title,
-        ));
+        );
         if ($existing) {
             return $existing;
         }
@@ -36,6 +32,6 @@ class GetOrCreateAddressService
             $coordinates,
         );
 
-        return $this->commandBus->execute(new SaveAddress($address));
+        return $this->addressRepository->save($address);
     }
 }

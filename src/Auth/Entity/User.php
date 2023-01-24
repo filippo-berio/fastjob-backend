@@ -23,7 +23,7 @@ class User implements UserInterface
     private string $phone;
 
     #[OneToOne(mappedBy: 'user', cascade: ['persist'])]
-    private RefreshToken $refreshToken;
+    private ?RefreshToken $refreshToken = null;
 
     private string $accessToken;
 
@@ -52,7 +52,7 @@ class User implements UserInterface
         return $this->accessToken;
     }
 
-    public function getRefreshToken(): RefreshToken
+    public function getRefreshToken(): ?RefreshToken
     {
         return $this->refreshToken;
     }

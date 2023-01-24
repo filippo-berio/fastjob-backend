@@ -6,6 +6,7 @@ use App\Api\Controller\BaseController;
 use App\Api\Request\Swipe\CreateExecutorSwipeRequest;
 use App\Api\Request\Swipe\CreateTaskSwipeRequest;
 use App\Auth\Entity\User;
+use App\Core\Entity\Profile;
 use App\Core\UseCase\Swipe\CreateExecutorSwipeUseCase;
 use App\Core\UseCase\Swipe\CreateTaskSwipeUseCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,16 +35,16 @@ class SwipeController extends BaseController
 
     #[Route('/task', methods: ['POST'])]
     public function createTaskSwipe(
-        #[CurrentUser] User $user,
+        #[CurrentUser] Profile $profile,
         CreateTaskSwipeUseCase $useCase,
         CreateTaskSwipeRequest $body,
     ): JsonResponse {
         $this->validator->validate($body);
-        $taskSwipe = $useCase($user, $body->taskId, $body->type, $body->customPrice);
+        $nextTask = $useCase->create($profile, $body->taskId, $body->type, $body->customPrice);
         return $this->json(
             [
                 'success' => true,
-                'data' => $taskSwipe
+                'next' => $nextTask
             ],
             context: ['task_swipe_short']
         );

@@ -3,18 +3,31 @@
 namespace App\Tests\Functional;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Predis\Client;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use WireMock\Client\WireMock;
+use Zenstruck\Messenger\Test\InteractsWithMessenger;
 
 abstract class FunctionalTest extends KernelTestCase
 {
-    protected ContainerInterface $container;
+    use InteractsWithMessenger;
 
+    protected ContainerInterface $container;
     private const WIREMOCK_HOST = 'fastjob-wiremock';
+
+    protected function setUp(): void
+    {
+        $this->bootContainer();
+        $this->redisClear();
+        $this->messenger()->reset();
+    }
 
     protected function bootContainer()
     {
+        if ($this::$booted) {
+            return;
+        }
         $this::bootKernel();
         $this->container = $this::getContainer();
     }
@@ -58,5 +71,11 @@ abstract class FunctionalTest extends KernelTestCase
         $wireMock = WireMock::create(self::WIREMOCK_HOST);
         $this->assertTrue($wireMock->isAlive());
         return $wireMock;
+    }
+
+    protected function redisClear()
+    {
+        $redis = $this->getDependency(Client::class);
+        $redis->flushall();
     }
 }

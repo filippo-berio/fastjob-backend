@@ -14,7 +14,9 @@ abstract class FunctionalTest extends KernelTestCase
     use InteractsWithMessenger;
 
     protected ContainerInterface $container;
+
     private const WIREMOCK_HOST = 'fastjob-wiremock';
+    private const REDIS_HOST = 'redis://fastjob-redis-test:6379';
 
     protected function setUp(): void
     {
@@ -75,7 +77,7 @@ abstract class FunctionalTest extends KernelTestCase
 
     protected function redisClear()
     {
-        $redis = $this->getDependency(Client::class);
+        $redis = new Client(self::REDIS_HOST);
         $redis->flushall();
     }
 }

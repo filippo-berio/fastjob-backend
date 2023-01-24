@@ -6,10 +6,13 @@ use Predis\Client;
 
 class BannedPhoneRepository
 {
+    private Client $redis;
+
     public function __construct(
-        private Client $redis,
         private int $phoneBanTime,
+        string $redisHost,
     ) {
+        $this->redis = new Client($redisHost);
     }
 
     public function banPhone(string $phone)

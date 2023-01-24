@@ -8,10 +8,13 @@ use Predis\Client;
 
 class AccessTokenRepository
 {
+    private Client $redis;
+
     public function __construct(
-        private Client $redis,
         private int $accessTokenLifeTime,
-     ) {
+        string $redisHost,
+    ) {
+        $this->redis = new Client($redisHost);
     }
 
     public function save(AccessToken $accessToken): AccessToken

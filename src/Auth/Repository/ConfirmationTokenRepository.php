@@ -7,10 +7,13 @@ use Predis\Client;
 
 class ConfirmationTokenRepository
 {
+    private Client $redis;
+
     public function __construct(
-        private Client $redis,
         private int $confirmationTokenLifeTime,
+        string $redisHost,
     ) {
+        $this->redis = new Client($redisHost);
     }
 
     public function save(ConfirmationToken $token): ConfirmationToken

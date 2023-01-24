@@ -11,10 +11,13 @@ use Predis\Client;
 
 class ProfileNextTaskRepository
 {
+    private Client $redis;
+
     public function __construct(
-        private Client $redis,
         private QueryBusInterface $queryBus,
+        string $redisHost,
     ) {
+        $this->redis = new Client($redisHost);
     }
 
     /**

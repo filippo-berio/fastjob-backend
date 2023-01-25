@@ -5,6 +5,8 @@ namespace App\Core\Service\TaskSwipe;
 use App\Core\Entity\Profile;
 use App\Core\Entity\Task;
 use App\Core\Entity\TaskSwipe;
+use App\Core\Exception\Task\TaskUnavailableToSwipe;
+use App\Core\Exception\TaskSwipe\CantSwipeOwnTask;
 use App\Core\Exception\TaskSwipe\TaskSwipeExistsException;
 use App\Core\Repository\PendingTaskRepository;
 use App\Core\Repository\TaskSwipeRepository;
@@ -24,6 +26,15 @@ class CreateTaskSwipeService
         ?int $customPrice = null
     ): TaskSwipe {
         $this->checkExisting($profile, $task);
+
+        if ($task->getAuthor()->getId() === $profile->getId()) {
+            throw new CantSwipeOwnTask();
+        }
+
+        if (!$task->isAvailableToSwipe()) {
+            throw new TaskUnavailableToSwipe();
+        }
+
         $this->pendingTaskRepository->clear($profile);
         $taskSwipe = new TaskSwipe($task, $profile, $type, $customPrice);
         return $this->taskSwipeRepository->save($taskSwipe);

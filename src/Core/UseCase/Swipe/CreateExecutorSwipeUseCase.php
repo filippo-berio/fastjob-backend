@@ -2,13 +2,11 @@
 
 namespace App\Core\UseCase\Swipe;
 
-use App\Auth\Entity\User;
 use App\Core\Entity\ExecutorSwipe;
 use App\Core\Entity\Profile;
 use App\Core\Entity\Task;
 use App\Core\Exception\Profile\ProfileNotFoundException;
 use App\Core\Exception\Task\TaskNotFoundException;
-use App\Core\Query\Profile\FindByUser\FindProfileByUser;
 use App\Core\Query\Profile\FindProfileById\FindProfileById;
 use App\Core\Query\Task\FindById\FindTaskById;
 use App\Core\Service\ExecutorSwipe\CreateExecutorSwipeService;
@@ -18,19 +16,18 @@ class CreateExecutorSwipeUseCase
 {
     public function __construct(
         private QueryBusInterface $queryBus,
-        private CreateExecutorSwipeService $createExecutorSwipeService
+        private CreateExecutorSwipeService $createExecutorSwipeService,
     ) {
     }
 
-    public function __invoke(
-        User $user,
+    public function create(
+        Profile $profile,
         int $taskId,
         int $executorId,
         string $type
     ): ExecutorSwipe {
         $task = $this->getTask($taskId);
         $executor = $this->getProfile($executorId);
-        $profile = $this->queryBus->query(new FindProfileByUser($user));
         return $this->createExecutorSwipeService->create($profile, $task, $executor, $type);
     }
 

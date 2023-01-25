@@ -148,6 +148,11 @@ class Task
         return $this->status;
     }
 
+    public function isAvailableToSwipe(): bool
+    {
+        return $this->status === self::STATUS_WAIT;
+    }
+
     public function transferProgress()
     {
         $this->status = self::STATUS_IN_PROGRESS;

@@ -27,8 +27,8 @@ class ExecutorSwipeFixtures extends BaseFixtures implements \Doctrine\Common\Dat
 
     public function load(ObjectManager $manager)
     {
-        /** @var Task $task3 */
         $task3 = $this->getReference(TaskFixtures::TASK_3, Task::class);
+
         $profile4 = $this->getReference(ProfileFixtures::PROFILE_4, Profile::class);
 
         $this->save([

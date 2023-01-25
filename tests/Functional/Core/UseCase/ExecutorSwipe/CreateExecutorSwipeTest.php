@@ -4,6 +4,7 @@ namespace App\Tests\Functional\Core\UseCase\ExecutorSwipe;
 
 use App\Auth\Entity\User;
 use App\Core\Entity\ExecutorSwipe;
+use App\Core\Entity\Profile;
 use App\Core\Entity\Swipe;
 use App\Core\Exception\ExecutorSwipe\ExecutorSwipeExistsException;
 use App\Core\Exception\ExecutorSwipe\ExecutorSwipeSelfAssignException;
@@ -22,9 +23,9 @@ class CreateExecutorSwipeTest extends FunctionalTest
      */
     public function testError(
         string $exception,
-        int $userId,
-        int $taskId,
-        int $executorId,
+        int    $profileId,
+        int    $taskId,
+        int    $executorId,
         string $type
     ) {
         $this->bootContainer();
@@ -32,15 +33,14 @@ class CreateExecutorSwipeTest extends FunctionalTest
         $useCase = $this->getUseCase();
         $this->expectException($exception);
 
-        $em = $this->getEm();
-        $user = $em->getRepository(User::class)->find($userId);
-        $useCase($user, $taskId, $executorId,  $type);
+        $profile = $this->getEntity(Profile::class, $profileId);
+        $useCase->create($profile, $taskId, $executorId,  $type);
     }
     /**
      * @dataProvider successData
      */
     public function testSuccess(
-        int $userId,
+        int $profileId,
         int $taskId,
         int $executorId,
         string $type
@@ -53,8 +53,8 @@ class CreateExecutorSwipeTest extends FunctionalTest
 
         $useCase = $this->getUseCase();
 
-        $user = $em->getRepository(User::class)->find($userId);
-        $useCase($user, $taskId, $executorId,  $type);
+        $profile = $this->getEntity(Profile::class, $profileId);
+        $useCase->create($profile, $taskId, $executorId,  $type);
 
         $after = $repo->findAll();
         $this->assertCount(count($before) + 1, $after);
@@ -119,7 +119,7 @@ class CreateExecutorSwipeTest extends FunctionalTest
             ],
             [
                 ExecutorSwipeExistsException::class,
-                ProfileFixtures::PROFILE_1,
+                ProfileFixtures::PROFILE_2,
                 TaskFixtures::TASK_3,
                 ProfileFixtures::PROFILE_4,
                 Swipe::TYPE_REJECT,

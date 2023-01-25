@@ -5,7 +5,6 @@ namespace App\Api\Controller\Core;
 use App\Api\Controller\BaseController;
 use App\Api\Request\Swipe\CreateExecutorSwipeRequest;
 use App\Api\Request\Swipe\CreateTaskSwipeRequest;
-use App\Auth\Entity\User;
 use App\Core\Entity\Profile;
 use App\Core\UseCase\Swipe\CreateExecutorSwipeUseCase;
 use App\Core\UseCase\Swipe\CreateTaskSwipeUseCase;
@@ -18,12 +17,12 @@ class SwipeController extends BaseController
 {
     #[Route('/executor', methods: ['POST'])]
     public function createExecutorSwipe(
-        #[CurrentUser] User $user,
+        #[CurrentUser] Profile     $profile,
         CreateExecutorSwipeUseCase $useCase,
         CreateExecutorSwipeRequest $body,
     ): JsonResponse {
         $this->validator->validate($body);
-        $executorSwipe = $useCase($user, $body->taskId, $body->executorId, $body->type);
+        $executorSwipe = $useCase->create($profile, $body->taskId, $body->executorId, $body->type);
         return $this->json(
             [
                 'success' => true,

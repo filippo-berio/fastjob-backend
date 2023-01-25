@@ -6,6 +6,8 @@ use App\Core\Entity\Profile;
 use App\Core\Entity\Swipe;
 use App\Core\Entity\Task;
 use App\Core\Entity\TaskSwipe;
+use App\Core\Exception\Task\TaskUnavailableToSwipe;
+use App\Core\Exception\TaskSwipe\CantSwipeOwnTask;
 use App\Core\Exception\TaskSwipe\TaskSwipeExistsException;
 use App\Core\Service\TaskSwipe\CreateTaskSwipeService;
 use App\DataFixtures\Core\ProfileFixtures;
@@ -97,23 +99,35 @@ class CreateTaskSwipeServiceTest extends FunctionalTest
         return [
             [
                 TaskSwipeExistsException::class,
-                ProfileFixtures::PROFILE_2,
-                TaskFixtures::TASK_3,
+                ProfileFixtures::PROFILE_7,
+                TaskFixtures::TASK_9,
                 Swipe::TYPE_REJECT
             ],
             [
                 TaskSwipeExistsException::class,
-                ProfileFixtures::PROFILE_2,
-                TaskFixtures::TASK_3,
+                ProfileFixtures::PROFILE_7,
+                TaskFixtures::TASK_9,
                 Swipe::TYPE_ACCEPT,
                 1500
             ],
             [
                 TaskSwipeExistsException::class,
+                ProfileFixtures::PROFILE_7,
+                TaskFixtures::TASK_9,
+                Swipe::TYPE_ACCEPT,
+            ],
+            [
+                TaskUnavailableToSwipe::class,
+                ProfileFixtures::PROFILE_2,
+                TaskFixtures::TASK_2,
+                Swipe::TYPE_ACCEPT,
+            ],
+            [
+                CantSwipeOwnTask::class,
                 ProfileFixtures::PROFILE_2,
                 TaskFixtures::TASK_3,
                 Swipe::TYPE_ACCEPT,
-            ],
+            ]
         ];
     }
 

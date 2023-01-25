@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional;
 
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\ORM\EntityManagerInterface;
 use Predis\Client;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -79,5 +80,11 @@ abstract class FunctionalTest extends KernelTestCase
     {
         $redis = new Client(self::REDIS_HOST);
         $redis->flushall();
+    }
+
+    protected function debugDB()
+    {
+        StaticDriver::commit();
+        dd('debug your fucking db now bitch');
     }
 }

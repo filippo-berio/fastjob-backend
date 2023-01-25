@@ -23,6 +23,9 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
     const PROFILE_5 = 5;
     // 6-ой юзер не создал профиль
     const PROFILE_7 = 6;
+    const PROFILE_8 = 7;
+    const PROFILE_9 = 8;
+    const PROFILE_10 = 9;
 
     protected function getEntity(): string
     {
@@ -94,6 +97,21 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
             ),
             $profile5,
             $profile7,
+            $profile8 = new Profile(
+                $this->getReference(UserFixtures::USER_8, User::class),
+                'Фекалий',
+                new DateTimeImmutable('24.01.1935'),
+            ),
+            $profile9 = new Profile(
+                $this->getReference(UserFixtures::USER_9, User::class),
+                'Аромий',
+                new DateTimeImmutable('25.04.2000'),
+            ),
+            $profile10 = new Profile(
+                $this->getReference(UserFixtures::USER_10, User::class),
+                'Ганжубий',
+                new DateTimeImmutable('10.10.2000'),
+            ),
         ], $manager);
 
         $this->addReference(self::PROFILE_1, $profile1);
@@ -102,6 +120,9 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
         $this->addReference(self::PROFILE_4, $profile4);
         $this->addReference(self::PROFILE_5, $profile5);
         $this->addReference(self::PROFILE_7, $profile7);
+        $this->addReference(self::PROFILE_8, $profile8);
+        $this->addReference(self::PROFILE_9, $profile9);
+        $this->addReference(self::PROFILE_10, $profile10);
     }
 
     public function getDependencies()

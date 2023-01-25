@@ -23,6 +23,7 @@ class UserWithProfileAuthenticator extends AccessRefreshTokenAuthenticator
     protected function getUser(Request $request): UserInterface
     {
         $user = parent::getUser($request);
+//        TODO useCase
         /** @var Profile $profile */
         $profile = $this->queryBus->query(new FindProfileByUser($user));
         if (!$profile) {

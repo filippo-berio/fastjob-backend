@@ -26,6 +26,7 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
     const TASK_10 = 10;
     const TASK_11 = 11;
     const TASK_12 = 12;
+    const TASK_13 = 13;
 
     protected function getEntity(): string
     {
@@ -36,7 +37,7 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
     {
         $task2 = new Task(
             'Архивированное задание',
-            $this->getReference(ProfileFixtures::PROFILE_1, Profile::class),
+            $this->getReference(ProfileFixtures::PROFILE_8, Profile::class),
             [$this->getReference(CategoryFixtures::FISH, Category::class)],
             false,
         );
@@ -53,7 +54,7 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
             $task2,
             $task3 = new Task(
                 'Починить кран',
-                $this->getReference(ProfileFixtures::PROFILE_1, Profile::class),
+                $this->getReference(ProfileFixtures::PROFILE_2, Profile::class),
                 [$this->getReference(CategoryFixtures::PLUMBING, Category::class)],
                 false,
                 3000,
@@ -144,6 +145,16 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 150000,
                 address: $this->getReference(AddressFixtures::ADDRESS_4, Address::class),
             ),
+            $task13 = new Task(
+                '',
+                $this->getReference(ProfileFixtures::PROFILE_4, Profile::class),
+                [
+                    $this->getReference(CategoryFixtures::CLEANING, Category::class),
+                ],
+                false,
+                2000,
+                $this->getReference(AddressFixtures::ADDRESS_3, Address::class),
+            )
         ], $manager);
 
         $this->addReference(self::TASK_1, $task1);
@@ -151,7 +162,10 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
         $this->addReference(self::TASK_3, $task3);
         $this->addReference(self::TASK_4, $task4);
         $this->addReference(self::TASK_5, $task5);
+        $this->addReference(self::TASK_7, $task7);
+        $this->addReference(self::TASK_8, $task8);
         $this->addReference(self::TASK_9, $task9);
+        $this->addReference(self::TASK_10, $task9);
     }
 
     public function getDependencies()

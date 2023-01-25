@@ -2,7 +2,7 @@
 
 namespace App\Core\Domain\Query\Profile;
 
-use App\Auth\Entity\User;
+use App\Core\Domain\Entity\User;
 use App\CQRS\QueryInterface;
 
 class FindProfileByUser implements QueryInterface

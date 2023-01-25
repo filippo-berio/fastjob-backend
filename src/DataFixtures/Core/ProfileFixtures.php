@@ -2,10 +2,11 @@
 
 namespace App\DataFixtures\Core;
 
-use App\Auth\Entity\User;
+use App\Auth\Entity\User as AuthUser;
 use App\Core\Domain\DTO\Profile\UpdateProfileDTO;
 use App\Core\Infrastructure\Entity\Category;
 use App\Core\Infrastructure\Entity\Profile;
+use App\Core\Domain\Entity\User;
 use App\DataFixtures\Auth\UserFixtures;
 use App\DataFixtures\BaseFixtures;
 use App\DataFixtures\Location\CityFixtures;
@@ -35,7 +36,7 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $profile1 = new Profile(
-            $this->getReference(UserFixtures::USER_1, User::class),
+            $this->getCoreUser(UserFixtures::USER_1, AuthUser::class),
             'Викидий',
             new DateTimeImmutable('14.12.2000'),
         );
@@ -50,7 +51,7 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
         );
 
         $profile5 = new Profile(
-            $this->getReference(UserFixtures::USER_5, User::class),
+            $this->getCoreUser(UserFixtures::USER_5, AuthUser::class),
             'Анатолий',
             new DateTimeImmutable('18.02.2002')
         );
@@ -64,7 +65,7 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
         ));
 
         $profile7 = new Profile(
-            $this->getReference(UserFixtures::USER_7, User::class),
+            $this->getCoreUser(UserFixtures::USER_7, AuthUser::class),
             'Ярослав',
             new DateTimeImmutable('18.02.2000'),
         );
@@ -81,34 +82,34 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
         $this->save([
             $profile1,
             $profile2 = new Profile(
-                $this->getReference(UserFixtures::USER_2, User::class),
+                $this->getCoreUser(UserFixtures::USER_2, AuthUser::class),
                 'Алексей',
                 new DateTimeImmutable('14.12.2000')
             ),
             $profile3 = new Profile(
-                $this->getReference(UserFixtures::USER_3, User::class),
+                $this->getCoreUser(UserFixtures::USER_3, AuthUser::class),
                 'Шайа',
                 new DateTimeImmutable('18.02.2002'),
             ),
             $profile4 = new Profile(
-                $this->getReference(UserFixtures::USER_4, User::class),
+                $this->getCoreUser(UserFixtures::USER_4, AuthUser::class),
                 'Миктор',
                 new DateTimeImmutable('14.12.2000')
             ),
             $profile5,
             $profile7,
             $profile8 = new Profile(
-                $this->getReference(UserFixtures::USER_8, User::class),
+                $this->getCoreUser(UserFixtures::USER_8, AuthUser::class),
                 'Фекалий',
                 new DateTimeImmutable('24.01.1935'),
             ),
             $profile9 = new Profile(
-                $this->getReference(UserFixtures::USER_9, User::class),
+                $this->getCoreUser(UserFixtures::USER_9, AuthUser::class),
                 'Аромий',
                 new DateTimeImmutable('25.04.2000'),
             ),
             $profile10 = new Profile(
-                $this->getReference(UserFixtures::USER_10, User::class),
+                $this->getCoreUser(UserFixtures::USER_10, AuthUser::class),
                 'Ганжубий',
                 new DateTimeImmutable('10.10.2000'),
             ),
@@ -132,5 +133,16 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
             UserFixtures::class,
             CityFixtures::class,
         ];
+    }
+
+    private function getCoreUser(int $id): User
+    {
+        $authUser = $this->getAuthUser($id);
+        return new User($authUser->getId(), $authUser->getPhone());
+    }
+
+    private function getAuthUser(int $id): AuthUser
+    {
+        return $this->getReference($id, AuthUser::class);
     }
 }

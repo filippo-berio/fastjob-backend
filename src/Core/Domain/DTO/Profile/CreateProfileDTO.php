@@ -2,8 +2,8 @@
 
 namespace App\Core\Domain\DTO\Profile;
 
-use App\Auth\Entity\User;
 use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Entity\User;
 use App\Validation\Constraints\Name;
 use App\Validation\Constraints\OldDate;
 use App\Validation\Constraints\YearsPassed;
@@ -21,8 +21,8 @@ readonly class CreateProfileDTO
     public DateTimeImmutable $birthDate;
 
     public function __construct(
-        User $user,
-        string $firstName,
+        User              $user,
+        string            $firstName,
         DateTimeImmutable $birthDate
     ) {
         $this->birthDate = $birthDate;

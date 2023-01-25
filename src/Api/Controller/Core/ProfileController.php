@@ -29,7 +29,7 @@ class ProfileController extends BaseController
 
     #[Route('/create', methods: ['POST'])]
     public function create(
-        #[CurrentUser] User $user,
+        #[CurrentUser] User  $user,
         CreateProfileRequest $body,
         CreateProfileUseCase $useCase,
     ): JsonResponse {
@@ -42,7 +42,7 @@ class ProfileController extends BaseController
 
     #[Route(methods: ['PUT'])]
     public function update(
-        #[CurrentUser] User $user,
+        #[CurrentUser] User  $user,
         UpdateProfileRequest $body,
         UpdateProfileUseCase $useCase,
     ): JsonResponse {

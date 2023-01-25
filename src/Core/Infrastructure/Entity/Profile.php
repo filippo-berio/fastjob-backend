@@ -2,8 +2,9 @@
 
 namespace App\Core\Infrastructure\Entity;
 
-use App\Auth\Entity\User;
+use App\Auth\Entity\User as AuthUser;
 use App\Core\Domain\Entity\Profile as DomainProfile;
+use App\Core\Domain\Entity\User as DomainUser;
 use App\Location\Entity\City;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,10 +14,8 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\PostLoad;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -31,9 +30,8 @@ class Profile extends DomainProfile implements UserInterface
     #[Column]
     protected ?int $id = null;
 
-    #[OneToOne]
-    #[JoinColumn]
-    protected User $user;
+    #[Column]
+    protected int $userId;
 
     #[Column]
     #[Groups(['profile_full'])]
@@ -65,9 +63,26 @@ class Profile extends DomainProfile implements UserInterface
     protected ?City $city = null;
 
     #[PostLoad]
-    public function initCategories()
+    public function init()
     {
         $this->categories = $this->doctrineCategories->toArray();
+    }
+
+    public function __construct(DomainUser $user, string $firstName, DateTimeImmutable $birthDate)
+    {
+        parent::__construct($user, $firstName, $birthDate);
+        $this->userId = $user->getId();
+    }
+
+    public function fillUser(AuthUser $authUser): self
+    {
+        $this->user = new DomainUser($authUser->getId(), $authUser->getPhone());
+        return $this;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->userId;
     }
 
     protected function setCategories(array $categories)
@@ -78,16 +93,15 @@ class Profile extends DomainProfile implements UserInterface
 
     public function getRoles(): array
     {
-        return $this->user->getRoles();
+        return [];
     }
 
     public function eraseCredentials()
     {
-        $this->user->eraseCredentials();
     }
 
     public function getUserIdentifier(): string
     {
-        return $this->user->getUserIdentifier();
+        return $this->userId;
     }
 }

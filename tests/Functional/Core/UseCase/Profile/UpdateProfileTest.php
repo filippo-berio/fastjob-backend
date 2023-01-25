@@ -29,7 +29,7 @@ class UpdateProfileTest extends FunctionalTest
     ) {
         $this->bootContainer();
         $useCase = $this->getDependency(UpdateProfileUseCase::class);
-        $user = $this->getEntity(User::class, $userId);
+        $user = $this->getCoreUser($userId);
         $this->expectException($exception);
         $useCase->update($user, $firstName, $categoryIds, $lastName, $description, $cityId);
     }
@@ -47,7 +47,7 @@ class UpdateProfileTest extends FunctionalTest
     ) {
         $this->bootContainer();
         $useCase = $this->getDependency(UpdateProfileUseCase::class);
-        $user = $this->getEntity(User::class, $userId);
+        $user = $this->getCoreUser($userId);
         $profile = $useCase->update($user, $firstName, $categoryIds, $lastName, $description, $cityId);
 
         $this->assertEquals($firstName, $profile->getFirstName());

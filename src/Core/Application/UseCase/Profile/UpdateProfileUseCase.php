@@ -2,9 +2,9 @@
 
 namespace App\Core\Application\UseCase\Profile;
 
-use App\Auth\Entity\User;
 use App\Core\Domain\DTO\Profile\UpdateProfileDTO;
 use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Entity\User;
 use App\Core\Domain\Exception\Category\CategoryNotFoundException;
 use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
 use App\Core\Domain\Query\Profile\FindProfileByUser;
@@ -25,12 +25,12 @@ class UpdateProfileUseCase
     }
 
     public function update(
-        User $user,
-        string $firstName,
-        array $categoryIds = [],
+        User    $user,
+        string  $firstName,
+        array   $categoryIds = [],
         ?string $lastName = null,
         ?string $description = null,
-        ?int $cityId = null,
+        ?int    $cityId = null,
     ): Profile {
         if (!$profile = $this->queryBus->query(new FindProfileByUser($user))) {
             throw new ProfileNotFoundException();

@@ -2,7 +2,6 @@
 
 namespace App\Tests\Functional\Core\UseCase\Profile;
 
-use App\Auth\Entity\User;
 use App\Core\Application\UseCase\Profile\CreateProfileUseCase;
 use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Exception\Profile\ProfileCreatedException;
@@ -20,7 +19,7 @@ class CreateProfileTest extends FunctionalTest
     {
         $this->bootContainer();
         $useCase = $this->getDependency(CreateProfileUseCase::class);
-        $user = $this->getEntity(User::class, $userId);
+        $user = $this->getCoreUser($userId);
         $this->expectException($exception);
         $useCase->create($user, $firstName, $birthDate->format('Y-m-d'));
     }
@@ -32,7 +31,7 @@ class CreateProfileTest extends FunctionalTest
     {
         $this->bootContainer();
         $useCase = $this->getDependency(CreateProfileUseCase::class);
-        $user = $this->getEntity(User::class, $userId);
+        $user = $this->getCoreUser($userId);
         $profile = $useCase->create($user, $firstName, $birthDate);
         $this->assertEquals($user->getId(), $profile->getUser()->getId());
     }

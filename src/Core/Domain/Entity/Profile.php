@@ -2,7 +2,6 @@
 
 namespace App\Core\Domain\Entity;
 
-use App\Auth\Entity\User;
 use App\Core\Domain\DTO\Profile\UpdateProfileDTO;
 use App\Location\Entity\City;
 use DateTimeImmutable;

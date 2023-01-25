@@ -2,6 +2,8 @@
 
 namespace App\Tests\Functional;
 
+use App\Auth\Entity\User as AuthUser;
+use App\Core\Domain\Entity\User;
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\ORM\EntityManagerInterface;
 use Predis\Client;
@@ -86,5 +88,11 @@ abstract class FunctionalTest extends KernelTestCase
     {
         StaticDriver::commit();
         dd('debug your fucking db now bitch');
+    }
+
+    protected function getCoreUser(int $id): User
+    {
+        $authUser = $this->getEntity(AuthUser::class, $id);
+        return new User($authUser->getId(), $authUser->getPhone());
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Core\Application\UseCase\Profile;
 
-use App\Auth\Entity\User;
 use App\Core\Domain\DTO\Profile\CreateProfileDTO;
 use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Entity\User;
 use App\Core\Domain\Service\Profile\CreateProfileService;
 use DateTimeImmutable;
 

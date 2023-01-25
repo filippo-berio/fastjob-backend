@@ -2,7 +2,7 @@
 
 namespace App\Api\Controller\Admin;
 
-use App\Core\Entity\Category;
+use App\Core\Domain\Entity\Category;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class CategoryCrudController extends AbstractCrudController

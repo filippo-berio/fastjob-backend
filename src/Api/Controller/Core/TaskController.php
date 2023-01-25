@@ -4,10 +4,10 @@ namespace App\Api\Controller\Core;
 
 use App\Api\Controller\BaseController;
 use App\Api\Request\Task\CreateTaskRequest;
-use App\Core\DTO\Address\AddressPlain;
-use App\Core\Entity\Profile;
-use App\Core\UseCase\Task\CreateTaskUseCase;
-use App\Core\UseCase\Task\GetProfileNextTaskUseCase;
+use App\Core\Application\UseCase\Task\CreateTaskUseCase;
+use App\Core\Application\UseCase\Task\GetProfileNextTaskUseCase;
+use App\Core\Domain\DTO\Address\AddressPlain;
+use App\Core\Domain\Entity\Profile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;

@@ -2,9 +2,9 @@
 
 namespace App\DataFixtures\Core;
 
-use App\Core\Entity\Category;
-use App\Core\Entity\Profile;
-use App\Core\Entity\Task;
+use App\Core\Domain\Entity\Category;
+use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Entity\Task;
 use App\DataFixtures\BaseFixtures;
 use App\DataFixtures\Location\AddressFixtures;
 use App\Location\Entity\Address;

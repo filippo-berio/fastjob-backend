@@ -2,10 +2,10 @@
 
 namespace App\Tests\Functional\Core\UseCase\Task;
 
-use App\Core\DTO\Address\AddressPlain;
-use App\Core\Entity\Profile;
-use App\Core\Exception\Category\CategoryNotFoundException;
-use App\Core\UseCase\Task\CreateTaskUseCase;
+use App\Core\Application\UseCase\Task\CreateTaskUseCase;
+use App\Core\Domain\DTO\Address\AddressPlain;
+use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Exception\Category\CategoryNotFoundException;
 use App\DataFixtures\Core\CategoryFixtures;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Location\CityFixtures;

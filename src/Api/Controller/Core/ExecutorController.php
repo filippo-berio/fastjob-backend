@@ -3,10 +3,9 @@
 namespace App\Api\Controller\Core;
 
 use App\Api\Controller\BaseController;
-use App\Core\Entity\Profile;
-use App\Core\UseCase\Executor\GetSwipedNextExecutorUseCase;
+use App\Core\Application\UseCase\Executor\GetSwipedNextExecutorUseCase;
+use App\Core\Domain\Entity\Profile;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 

@@ -2,14 +2,14 @@
 
 namespace App\Tests\Functional\Core\Service\TaskSwipe;
 
-use App\Core\Entity\Profile;
-use App\Core\Entity\Swipe;
-use App\Core\Entity\Task;
-use App\Core\Entity\TaskSwipe;
-use App\Core\Exception\Task\TaskUnavailableToSwipe;
-use App\Core\Exception\TaskSwipe\CantSwipeOwnTask;
-use App\Core\Exception\TaskSwipe\TaskSwipeExistsException;
-use App\Core\Service\TaskSwipe\CreateTaskSwipeService;
+use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Entity\Swipe;
+use App\Core\Domain\Entity\Task;
+use App\Core\Domain\Entity\TaskSwipe;
+use App\Core\Domain\Exception\Task\TaskUnavailableToSwipe;
+use App\Core\Domain\Exception\TaskSwipe\CantSwipeOwnTask;
+use App\Core\Domain\Exception\TaskSwipe\TaskSwipeExistsException;
+use App\Core\Domain\Service\TaskSwipe\CreateTaskSwipeService;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Core\TaskFixtures;
 use App\Tests\Functional\FunctionalTest;

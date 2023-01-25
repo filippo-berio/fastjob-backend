@@ -3,7 +3,7 @@
 namespace App\Api\Request\Swipe;
 
 use App\Api\Request\RequestInterface;
-use App\Core\Entity\Swipe;
+use App\Core\Domain\Entity\Swipe;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;

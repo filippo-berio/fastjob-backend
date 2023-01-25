@@ -2,10 +2,10 @@
 
 namespace App\DataFixtures\Core;
 
-use App\Core\Entity\ExecutorSwipe;
-use App\Core\Entity\Profile;
-use App\Core\Entity\Swipe;
-use App\Core\Entity\Task;
+use App\Core\Domain\Entity\ExecutorSwipe;
+use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Entity\Swipe;
+use App\Core\Domain\Entity\Task;
 use App\DataFixtures\BaseFixtures;
 use Doctrine\Persistence\ObjectManager;
 

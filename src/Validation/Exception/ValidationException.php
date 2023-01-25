@@ -2,7 +2,7 @@
 
 namespace App\Validation\Exception;
 
-use App\Core\Exception\BaseException;
+use App\Core\Domain\Exception\BaseException;
 
 class ValidationException extends BaseException
 {

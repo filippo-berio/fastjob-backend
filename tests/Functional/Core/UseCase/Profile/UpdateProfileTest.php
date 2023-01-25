@@ -3,9 +3,9 @@
 namespace App\Tests\Functional\Core\UseCase\Profile;
 
 use App\Auth\Entity\User;
-use App\Core\Exception\Category\CategoryNotFoundException;
-use App\Core\Exception\Profile\ProfileNotFoundException;
-use App\Core\UseCase\Profile\UpdateProfileUseCase;
+use App\Core\Application\UseCase\Profile\UpdateProfileUseCase;
+use App\Core\Domain\Exception\Category\CategoryNotFoundException;
+use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
 use App\DataFixtures\Auth\UserFixtures;
 use App\DataFixtures\Core\CategoryFixtures;
 use App\DataFixtures\Location\CityFixtures;

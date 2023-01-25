@@ -3,9 +3,9 @@
 namespace App\Tests\Functional\Core\UseCase\Profile;
 
 use App\Auth\Entity\User;
-use App\Core\Entity\Profile;
-use App\Core\Exception\Profile\ProfileCreatedException;
-use App\Core\UseCase\Profile\CreateProfileUseCase;
+use App\Core\Application\UseCase\Profile\CreateProfileUseCase;
+use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Exception\Profile\ProfileCreatedException;
 use App\DataFixtures\Auth\UserFixtures;
 use App\Tests\Functional\FunctionalTest;
 use App\Validation\Exception\ValidationException;

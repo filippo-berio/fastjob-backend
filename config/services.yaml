@@ -42,7 +42,7 @@ services:
         $confirmationTokenLifeTime: '%env(CONFIRMATION_TOKEN_LIFETIME)%'
 
 
-    App\Core\Service\Task\NextTask\GetProfileNextTaskService:
+    App\Core\Domain\Service\Task\NextTask\GetProfileNextTaskService:
         $minimalStack: '%env(NEXT_TASK_MINIMAL_STACK)%'
         $stackLimit: '%env(NEXT_TASK_STACK_LIMIT)%'
 

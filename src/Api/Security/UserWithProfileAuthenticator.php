@@ -2,11 +2,10 @@
 
 namespace App\Api\Security;
 
-use App\Auth\Entity\User;
 use App\Auth\UseCase\AuthenticateUseCase;
-use App\Core\Entity\Profile;
-use App\Core\Exception\Profile\ProfileNotFoundException;
-use App\Core\Query\Profile\FindByUser\FindProfileByUser;
+use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
+use App\Core\Domain\Query\Profile\FindByUser\FindProfileByUser;
 use App\CQRS\Bus\QueryBusInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -23,7 +22,6 @@ class UserWithProfileAuthenticator extends AccessRefreshTokenAuthenticator
     protected function getUser(Request $request): UserInterface
     {
         $user = parent::getUser($request);
-//        TODO useCase
         /** @var Profile $profile */
         $profile = $this->queryBus->query(new FindProfileByUser($user));
         if (!$profile) {

@@ -2,15 +2,14 @@
 
 namespace App\Tests\Functional\Core\UseCase\ExecutorSwipe;
 
-use App\Auth\Entity\User;
-use App\Core\Entity\ExecutorSwipe;
-use App\Core\Entity\Profile;
-use App\Core\Entity\Swipe;
-use App\Core\Exception\ExecutorSwipe\ExecutorSwipeExistsException;
-use App\Core\Exception\ExecutorSwipe\ExecutorSwipeSelfAssignException;
-use App\Core\Exception\Profile\ProfileNotFoundException;
-use App\Core\Exception\Task\TaskNotFoundException;
-use App\Core\UseCase\Swipe\CreateExecutorSwipeUseCase;
+use App\Core\Application\UseCase\Swipe\CreateExecutorSwipeUseCase;
+use App\Core\Domain\Entity\ExecutorSwipe;
+use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Entity\Swipe;
+use App\Core\Domain\Exception\ExecutorSwipe\ExecutorSwipeExistsException;
+use App\Core\Domain\Exception\ExecutorSwipe\ExecutorSwipeSelfAssignException;
+use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
+use App\Core\Domain\Exception\Task\TaskNotFoundException;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Core\TaskFixtures;
 use App\Tests\Functional\FunctionalTest;

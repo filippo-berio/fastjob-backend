@@ -13,7 +13,6 @@ class GetCoordinatesService
 
     public function get(City $city, string $address): Coordinates
     {
-        // todo Dadata
         return new Coordinates(56.8519, 60.6122);
     }
 }

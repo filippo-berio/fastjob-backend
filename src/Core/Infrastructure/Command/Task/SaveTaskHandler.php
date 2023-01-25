@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Core\Domain\Command\Task\Save;
+namespace App\Core\Infrastructure\Command\Task;
 
+use App\Core\Domain\Command\Task\Save\SaveTask;
 use App\Core\Domain\Entity\Task;
 use App\CQRS\CommandHandlerInterface;
 use App\CQRS\CommandInterface;

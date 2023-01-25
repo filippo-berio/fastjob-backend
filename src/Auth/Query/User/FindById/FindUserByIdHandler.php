@@ -14,9 +14,18 @@ class FindUserByIdHandler implements QueryHandlerInterface
     ) {
     }
 
-    public function handle(QueryInterface $query): mixed
+    /**
+     * @param FindUserById $query
+     * @return User|null
+     */
+    public function handle(QueryInterface $query): ?User
     {
         /** @var FindUserById $query */
         return $this->em->getRepository(User::class)->find($query->id);
+    }
+
+    public function getQueryClass(): string
+    {
+        return FindUserById::class;
     }
 }

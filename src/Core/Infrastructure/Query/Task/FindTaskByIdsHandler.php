@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Core\Domain\Query\Task\FindByIds;
+namespace App\Core\Infrastructure\Query\Task;
 
 use App\Core\Domain\Entity\Task;
+use App\Core\Domain\Query\Task\FindTaskByIds;
 use App\CQRS\QueryHandlerInterface;
 use App\CQRS\QueryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,5 +28,10 @@ class FindTaskByIdsHandler implements QueryHandlerInterface
             ->getQuery()
             ->getResult();
 
+    }
+
+    public function getQueryClass(): string
+    {
+        return FindTaskByIds::class;
     }
 }

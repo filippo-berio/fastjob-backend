@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Core\Domain\Query\Profile\FindByPhone;
+namespace App\Core\Infrastructure\Query\Profile;
 
 use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Query\Profile\FindProfileByPhone;
 use App\CQRS\QueryHandlerInterface;
 use App\CQRS\QueryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,9 +15,12 @@ class FindProfileByPhoneHandler implements QueryHandlerInterface
     ) {
     }
 
+    /**
+     * @param FindProfileByPhone $query
+     * @return Profile|null
+     */
     public function handle(QueryInterface $query): ?Profile
     {
-        /** @var FindProfileByPhone $query; */
         return $this->em->getRepository(Profile::class)
             ->createQueryBuilder('p')
             ->innerJoin('p.user', 'u')
@@ -24,5 +28,10 @@ class FindProfileByPhoneHandler implements QueryHandlerInterface
             ->setParameter('phone', $query->phone)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function getQueryClass(): string
+    {
+        return FindProfileByPhone::class;
     }
 }

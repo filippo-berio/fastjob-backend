@@ -4,8 +4,8 @@ namespace App\Core\Infrastructure\Repository;
 
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
-use App\Core\Domain\Query\Task\FindById\FindTaskById;
-use App\Core\Domain\Query\Task\FindByIds\FindTaskByIds;
+use App\Core\Domain\Query\Task\FindTaskById;
+use App\Core\Domain\Query\Task\FindTaskByIds;
 use App\Core\Domain\Repository\ProfileNextTaskRepositoryInterface;
 use App\CQRS\Bus\QueryBusInterface;
 use Predis\Client;

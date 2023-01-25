@@ -5,7 +5,7 @@ namespace App\Core\Domain\Service\Executor\NextExecutorService;
 use App\Core\Domain\Entity\NextExecutor;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Exception\Task\TaskNotFoundException;
-use App\Core\Domain\Query\Task\FindByProfile\FindTaskByAuthor;
+use App\Core\Domain\Query\Task\FindTaskByAuthor;
 use App\Core\Domain\Repository\NextExecutorRepositoryInterface;
 use App\CQRS\Bus\QueryBusInterface;
 

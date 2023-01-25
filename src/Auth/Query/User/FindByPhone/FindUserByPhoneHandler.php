@@ -27,4 +27,9 @@ class FindUserByPhoneHandler implements QueryHandlerInterface
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function getQueryClass(): string
+    {
+        return FindUserByPhone::class;
+    }
 }

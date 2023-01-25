@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Core\Domain\Command\Profile\Save;
+namespace App\Core\Infrastructure\Command\Profile;
 
+use App\Core\Domain\Command\Profile\SaveProfile;
 use App\Core\Domain\Entity\Profile;
 use App\CQRS\CommandHandlerInterface;
 use App\CQRS\CommandInterface;
@@ -14,11 +15,19 @@ class SaveProfileHandler implements CommandHandlerInterface
     ) {
     }
 
+    /**
+     * @param SaveProfile $command
+     * @return Profile
+     */
     public function handle(CommandInterface $command): Profile
     {
-        /** @var SaveProfile $command */
         $this->em->persist($command->profile);
         $this->em->flush();
         return $command->profile;
+    }
+
+    public function getCommandClass(): string
+    {
+        return SaveProfile::class;
     }
 }

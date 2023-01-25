@@ -24,4 +24,9 @@ class SaveRefreshTokenHandler implements CommandHandlerInterface
         $this->em->flush();
         return $command->refreshToken;
     }
+
+    public function getCommandClass(): string
+    {
+        return SaveRefreshToken::class;
+    }
 }

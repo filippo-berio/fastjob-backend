@@ -2,7 +2,7 @@
 
 namespace App\Core\Domain\Service\Profile;
 
-use App\Core\Domain\Command\Profile\Save\SaveProfile;
+use App\Core\Domain\Command\Profile\SaveProfile;
 use App\Core\Domain\DTO\Profile\UpdateProfileDTO;
 use App\Core\Domain\Entity\Profile;
 use App\CQRS\Bus\CommandBusInterface;

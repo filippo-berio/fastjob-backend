@@ -14,11 +14,19 @@ class SaveUserHandler implements CommandHandlerInterface
     ) {
     }
 
+    /**
+     * @param SaveUser $command
+     * @return User
+     */
     public function handle(CommandInterface $command): User
     {
-        /** @var SaveUser $command */
         $this->em->persist($command->user);
         $this->em->flush();
         return $command->user;
+    }
+
+    public function getCommandClass(): string
+    {
+        return SaveUser::class;
     }
 }

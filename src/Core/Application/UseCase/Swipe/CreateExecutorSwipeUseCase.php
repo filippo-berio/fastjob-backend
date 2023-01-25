@@ -7,8 +7,8 @@ use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
 use App\Core\Domain\Exception\Task\TaskNotFoundException;
-use App\Core\Domain\Query\Profile\FindProfileById\FindProfileById;
-use App\Core\Domain\Query\Task\FindById\FindTaskById;
+use App\Core\Domain\Query\Profile\FindProfileById;
+use App\Core\Domain\Query\Task\FindTaskById;
 use App\Core\Domain\Service\ExecutorSwipe\CreateExecutorSwipeService;
 use App\CQRS\Bus\QueryBusInterface;
 

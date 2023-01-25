@@ -13,11 +13,14 @@ class QueryMessageHandler
 {
     private array $queryHandlers;
 
+    /**
+     * @param iterable<QueryHandlerInterface> $queryHandlers
+     */
     public function __construct(
         iterable $queryHandlers,
     ) {
         foreach ($queryHandlers as $queryHandler) {
-            $this->queryHandlers[$queryHandler::class] = $queryHandler;
+            $this->queryHandlers[$queryHandler->getQueryClass()] = $queryHandler;
         }
     }
 
@@ -29,7 +32,7 @@ class QueryMessageHandler
 
     private function getHandler(QueryInterface $query): QueryHandlerInterface
     {
-        $handler = $this->queryHandlers[$query->getHandlerClass()] ?? null;
+        $handler = $this->queryHandlers[$query::class] ?? null;
         if (!$handler) {
             throw new QueryHandlerNotFound($query);
         }

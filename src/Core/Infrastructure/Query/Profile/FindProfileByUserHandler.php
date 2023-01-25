@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Core\Domain\Query\Profile\FindByUser;
+namespace App\Core\Infrastructure\Query\Profile;
 
 use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Query\Profile\FindProfileByUser;
 use App\CQRS\QueryHandlerInterface;
 use App\CQRS\QueryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,5 +26,10 @@ class FindProfileByUserHandler implements QueryHandlerInterface
             ->findOneBy([
                 'user' => $query->user
             ]);
+    }
+
+    public function getQueryClass(): string
+    {
+        return FindProfileByUser::class;
     }
 }

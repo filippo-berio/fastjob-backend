@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Core\Domain\Query\Task\FindNextTasksForProfile;
+namespace App\Core\Infrastructure\Query\Task;
 
 use App\Core\Domain\Entity\Category;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Entity\TaskSwipe;
-use App\Core\Domain\Query\Task\FindByProfile\FindTaskByAuthor;
+use App\Core\Domain\Query\Task\FindNextTasksForProfile;
+use App\Core\Domain\Query\Task\FindTaskByAuthor;
 use App\Core\Domain\Repository\PendingTaskRepositoryInterface;
 use App\Core\Domain\Repository\ProfileNextTaskRepositoryInterface;
 use App\Core\Domain\Repository\TaskSwipeRepositoryInterface;
@@ -26,6 +27,11 @@ class FindNextTasksForProfileHandler implements QueryHandlerInterface
         private PendingTaskRepositoryInterface     $pendingTaskRepository,
         private TaskSwipeRepositoryInterface       $taskSwipeRepository,
     ) {
+    }
+
+    public function getQueryClass(): string
+    {
+        return FindNextTasksForProfile::class;
     }
 
     /**

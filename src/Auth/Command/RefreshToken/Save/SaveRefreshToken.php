@@ -3,9 +3,9 @@
 namespace App\Auth\Command\RefreshToken\Save;
 
 use App\Auth\Entity\RefreshToken;
-use App\CQRS\BaseCommand;
+use App\CQRS\CommandInterface;
 
-class SaveRefreshToken extends BaseCommand
+class SaveRefreshToken implements CommandInterface
 {
     public function __construct(
         public RefreshToken $refreshToken

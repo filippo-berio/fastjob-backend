@@ -7,7 +7,7 @@ use App\Core\Domain\DTO\Profile\UpdateProfileDTO;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Exception\Category\CategoryNotFoundException;
 use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
-use App\Core\Domain\Query\Profile\FindByUser\FindProfileByUser;
+use App\Core\Domain\Query\Profile\FindProfileByUser;
 use App\Core\Domain\Service\Profile\UpdateProfileService;
 use App\Core\Infrastructure\Repository\CategoryRepository;
 use App\CQRS\Bus\QueryBusInterface;

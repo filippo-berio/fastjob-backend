@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Core\Domain\Query\Task\FindNextTasksForProfile;
+namespace App\Core\Domain\Query\Task;
 
 use App\Core\Domain\Entity\Profile;
-use App\CQRS\BaseQuery;
+use App\CQRS\QueryInterface;
 
-class FindNextTasksForProfile extends BaseQuery
+class FindNextTasksForProfile implements QueryInterface
 {
     public function __construct(
         public Profile $profile,

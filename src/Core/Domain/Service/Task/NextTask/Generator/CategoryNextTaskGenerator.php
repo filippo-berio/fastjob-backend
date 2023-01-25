@@ -4,7 +4,7 @@ namespace App\Core\Domain\Service\Task\NextTask\Generator;
 
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
-use App\Core\Domain\Query\Task\FindNextTasksForProfile\FindNextTasksForProfile;
+use App\Core\Domain\Query\Task\FindNextTasksForProfile;
 use App\CQRS\Bus\QueryBusInterface;
 
 class CategoryNextTaskGenerator

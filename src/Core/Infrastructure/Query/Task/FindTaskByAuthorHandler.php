@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Core\Domain\Query\Task\FindByProfile;
+namespace App\Core\Infrastructure\Query\Task;
 
 use App\Core\Domain\Entity\Task;
+use App\Core\Domain\Query\Task\FindTaskByAuthor;
 use App\CQRS\QueryHandlerInterface;
 use App\CQRS\QueryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,5 +27,10 @@ class FindTaskByAuthorHandler implements QueryHandlerInterface
             ->setParameter('author', $query->profile)
             ->getQuery()
             ->getResult();
+    }
+
+    public function getQueryClass(): string
+    {
+        return FindTaskByAuthor::class;
     }
 }

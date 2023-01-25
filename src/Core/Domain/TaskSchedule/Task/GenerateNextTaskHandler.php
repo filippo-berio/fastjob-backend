@@ -2,7 +2,7 @@
 
 namespace App\Core\Domain\TaskSchedule\Task;
 
-use App\Core\Domain\Query\Profile\FindProfileById\FindProfileById;
+use App\Core\Domain\Query\Profile\FindProfileById;
 use App\Core\Domain\Repository\ProfileNextTaskRepositoryInterface;
 use App\Core\Domain\Service\Task\NextTask\Generator\CategoryNextTaskGenerator;
 use App\CQRS\Bus\QueryBusInterface;

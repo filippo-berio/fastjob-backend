@@ -2,11 +2,11 @@
 
 namespace App\Core\Domain\Service\Profile;
 
-use App\Core\Domain\Command\Profile\Save\SaveProfile;
+use App\Core\Domain\Command\Profile\SaveProfile;
 use App\Core\Domain\DTO\Profile\CreateProfileDTO;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Exception\Profile\ProfileCreatedException;
-use App\Core\Domain\Query\Profile\FindByUser\FindProfileByUser;
+use App\Core\Domain\Query\Profile\FindProfileByUser;
 use App\CQRS\Bus\CommandBusInterface;
 use App\CQRS\Bus\QueryBusInterface;
 use App\Validation\ValidatorInterface;

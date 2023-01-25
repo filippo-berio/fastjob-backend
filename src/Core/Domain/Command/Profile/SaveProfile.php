@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Core\Domain\Command\Profile\Save;
+namespace App\Core\Domain\Command\Profile;
 
 use App\Core\Domain\Entity\Profile;
-use App\CQRS\BaseCommand;
+use App\CQRS\CommandInterface;
 
-class SaveProfile extends BaseCommand
+class SaveProfile implements CommandInterface
 {
     public function __construct(
         public Profile $profile

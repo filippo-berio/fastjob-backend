@@ -4,7 +4,7 @@ namespace App\Tests\Functional\Core\UseCase\Task;
 
 use App\Core\Application\UseCase\Task\CreateTaskUseCase;
 use App\Core\Domain\DTO\Address\AddressPlain;
-use App\Core\Domain\Entity\Profile;
+use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Exception\Category\CategoryNotFoundException;
 use App\DataFixtures\Core\CategoryFixtures;
 use App\DataFixtures\Core\ProfileFixtures;

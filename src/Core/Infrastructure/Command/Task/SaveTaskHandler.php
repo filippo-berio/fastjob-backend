@@ -3,7 +3,7 @@
 namespace App\Core\Infrastructure\Command\Task;
 
 use App\Core\Domain\Command\Task\Save\SaveTask;
-use App\Core\Domain\Entity\Task;
+use App\Core\Infrastructure\Entity\Task;
 use App\CQRS\CommandHandlerInterface;
 use App\CQRS\CommandInterface;
 use Doctrine\ORM\EntityManagerInterface;

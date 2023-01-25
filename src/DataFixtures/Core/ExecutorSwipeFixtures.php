@@ -2,14 +2,15 @@
 
 namespace App\DataFixtures\Core;
 
-use App\Core\Domain\Entity\ExecutorSwipe;
-use App\Core\Domain\Entity\Profile;
+use App\Core\Infrastructure\Entity\ExecutorSwipe;
+use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;
-use App\Core\Domain\Entity\Task;
+use App\Core\Infrastructure\Entity\Task;
 use App\DataFixtures\BaseFixtures;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ExecutorSwipeFixtures extends BaseFixtures implements \Doctrine\Common\DataFixtures\DependentFixtureInterface
+class ExecutorSwipeFixtures extends BaseFixtures implements DependentFixtureInterface
 {
 
     protected function getEntity(): string

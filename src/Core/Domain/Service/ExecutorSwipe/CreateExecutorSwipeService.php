@@ -2,6 +2,7 @@
 
 namespace App\Core\Domain\Service\ExecutorSwipe;
 
+use App\Core\Domain\Contract\EntityMapperInterface;
 use App\Core\Domain\Entity\ExecutorSwipe;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
@@ -14,14 +15,15 @@ class CreateExecutorSwipeService
 {
     public function __construct(
         private ExecutorSwipeRepositoryInterface $executorSwipeRepository,
+        private EntityMapperInterface $entityMapper,
     ) {
     }
 
     public function create(
         Profile $user,
-        Task $task,
+        Task    $task,
         Profile $executor,
-        string $type,
+        string  $type,
     ): ExecutorSwipe {
         if ($task->getAuthor()->getId() !== $user->getId()) {
             throw new TaskNotFoundException();
@@ -36,7 +38,8 @@ class CreateExecutorSwipeService
             throw new ExecutorSwipeExistsException();
         }
 
-        $executorSwipe = new ExecutorSwipe($task, $executor, $type);
+        $entity = $this->entityMapper->persistenceEntity(ExecutorSwipe::class);
+        $executorSwipe = new $entity($task, $executor, $type);
         return $this->executorSwipeRepository->save($executorSwipe);
     }
 }

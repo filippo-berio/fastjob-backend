@@ -4,7 +4,7 @@ namespace App\Tests\Functional\Core\UseCase\NextExecutor;
 
 use App\Core\Application\UseCase\Executor\GetSwipedNextExecutorUseCase;
 use App\Core\Application\UseCase\Swipe\CreateExecutorSwipeUseCase;
-use App\Core\Domain\Entity\Profile;
+use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Core\TaskFixtures;

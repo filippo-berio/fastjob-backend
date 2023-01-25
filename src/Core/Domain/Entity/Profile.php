@@ -6,61 +6,20 @@ use App\Auth\Entity\User;
 use App\Core\Domain\DTO\Profile\UpdateProfileDTO;
 use App\Location\Entity\City;
 use DateTimeImmutable;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToOne;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
 
-#[Entity]
-class Profile implements UserInterface
+class Profile
 {
     const MINIMAL_AGE = 16;
 
-    #[Id]
-    #[GeneratedValue]
-    #[Column]
-    private ?int $id = null;
-
-    #[OneToOne]
-    #[JoinColumn]
-    private User $user;
-
-    #[Column]
-    #[Groups(['profile_full'])]
-    private string $firstName;
-
-    #[Column]
-    #[Groups(['profile_full'])]
-    private DateTimeImmutable $birthDate;
-
-    #[Column(nullable: true)]
-    #[Groups(['profile_full'])]
-    private ?string $lastName = null;
-
-    #[Column(nullable: true)]
-    #[Groups(['profile_full'])]
-    private ?string $description = null;
-
-    #[Column(nullable: true)]
-    #[Groups(['profile_full'])]
-    private ?string $photoPath = null;
-
-    #[ManyToMany(targetEntity: Category::class)]
-    #[Groups(['profile_full'])]
-    /** @var Collection<Category> $categories */
-    private Collection $categories;
-
-    #[ManyToOne]
-    #[Groups(['profile_full'])]
-    private ?City $city = null;
+    protected ?int $id = null;
+    protected User $user;
+    protected string $firstName;
+    protected DateTimeImmutable $birthDate;
+    protected ?string $lastName = null;
+    protected ?string $description = null;
+    protected ?string $photoPath = null;
+    protected array $categories = [];
+    protected ?City $city = null;
 
     public function __construct(
         User $user,
@@ -70,13 +29,7 @@ class Profile implements UserInterface
         $this->user = $user;
         $this->firstName = $firstName;
         $this->birthDate = $birthDate;
-        $this->categories = new ArrayCollection();
-    }
-
-    #[Groups(['profile_full'])]
-    public function getPhone(): string
-    {
-        return $this->user->getPhone();
+        $this->setCategories([]);
     }
 
     /**
@@ -84,7 +37,7 @@ class Profile implements UserInterface
      */
     public function getCategories(): array
     {
-        return $this->categories->toArray();
+        return $this->categories;
     }
 
     public function update(UpdateProfileDTO $updateProfileDTO) {
@@ -138,23 +91,8 @@ class Profile implements UserInterface
     /**
      * @param Category[] $categories
      */
-    private function setCategories(array $categories)
+    protected function setCategories(array $categories)
     {
-        $this->categories = new ArrayCollection($categories);
-    }
-
-    public function getRoles(): array
-    {
-        return $this->user->getRoles();
-    }
-
-    public function eraseCredentials()
-    {
-        $this->user->eraseCredentials();
-    }
-
-    public function getUserIdentifier(): string
-    {
-        return $this->user->getUserIdentifier();
+        $this->categories = $categories;
     }
 }

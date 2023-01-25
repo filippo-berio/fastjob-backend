@@ -3,6 +3,7 @@
 namespace App\Core\Domain\Service\Task;
 
 use App\Core\Domain\Command\Task\Save\SaveTask;
+use App\Core\Domain\Contract\EntityMapperInterface;
 use App\Core\Domain\DTO\Task\CreateTaskDTO;
 use App\Core\Domain\Entity\Task;
 use App\CQRS\Bus\CommandBusInterface;
@@ -15,6 +16,7 @@ class CreateTaskService
         private CommandBusInterface $commandBus,
         private CreateAddressUseCase $createAddressUseCase,
         private ValidatorInterface $validator,
+        private EntityMapperInterface $entityMapper,
     ) {
     }
 
@@ -27,7 +29,8 @@ class CreateTaskService
             $createTaskDTO->addressPlain->title,
         ) : null;
 
-        $task = new Task(
+        $entity = $this->entityMapper->persistenceEntity(Task::class);
+        $task = new $entity(
             $createTaskDTO->title,
             $createTaskDTO->profile,
             $createTaskDTO->categories,

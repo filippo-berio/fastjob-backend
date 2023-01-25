@@ -4,9 +4,9 @@ namespace App\Tests\Functional\Core\UseCase\NextTask;
 
 use App\Core\Application\UseCase\Swipe\CreateTaskSwipeUseCase;
 use App\Core\Application\UseCase\Task\GetProfileNextTaskUseCase;
-use App\Core\Domain\Entity\Profile;
+use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;
-use App\Core\Domain\Entity\Task;
+use App\Core\Infrastructure\Entity\Task;
 use App\Core\Domain\Repository\ProfileNextTaskRepositoryInterface;
 use App\Core\Domain\TaskSchedule\Task\GenerateNextTask;
 use App\DataFixtures\Core\ProfileFixtures;

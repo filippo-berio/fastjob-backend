@@ -3,8 +3,8 @@
 namespace App\Tests\Functional\Core\UseCase\ExecutorSwipe;
 
 use App\Core\Application\UseCase\Swipe\CreateExecutorSwipeUseCase;
-use App\Core\Domain\Entity\ExecutorSwipe;
-use App\Core\Domain\Entity\Profile;
+use App\Core\Infrastructure\Entity\ExecutorSwipe;
+use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;
 use App\Core\Domain\Exception\ExecutorSwipe\ExecutorSwipeExistsException;
 use App\Core\Domain\Exception\ExecutorSwipe\ExecutorSwipeSelfAssignException;

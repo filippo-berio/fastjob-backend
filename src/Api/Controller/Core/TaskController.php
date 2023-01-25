@@ -18,8 +18,8 @@ class TaskController extends BaseController
     #[Route('', methods: ['POST'])]
     public function create(
         #[CurrentUser] Profile $profile,
-        CreateTaskUseCase $useCase,
-        CreateTaskRequest $body,
+        CreateTaskUseCase      $useCase,
+        CreateTaskRequest      $body,
     ): JsonResponse {
         $this->validator->validate($body);
         $useCase->create(
@@ -42,7 +42,7 @@ class TaskController extends BaseController
 
     #[Route('/next', methods: ['GET'])]
     public function getNext(
-        #[CurrentUser] Profile $profile,
+        #[CurrentUser] Profile    $profile,
         GetProfileNextTaskUseCase $useCase,
     ): JsonResponse {
         $tasks = $useCase->get($profile);

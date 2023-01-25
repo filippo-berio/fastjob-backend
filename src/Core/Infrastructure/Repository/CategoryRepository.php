@@ -2,7 +2,7 @@
 
 namespace App\Core\Infrastructure\Repository;
 
-use App\Core\Domain\Entity\Category;
+use App\Core\Infrastructure\Entity\Category;
 use App\Core\Domain\Repository\CategoryRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 

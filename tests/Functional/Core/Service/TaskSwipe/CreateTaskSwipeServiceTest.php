@@ -2,10 +2,10 @@
 
 namespace App\Tests\Functional\Core\Service\TaskSwipe;
 
-use App\Core\Domain\Entity\Profile;
+use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;
-use App\Core\Domain\Entity\Task;
-use App\Core\Domain\Entity\TaskSwipe;
+use App\Core\Infrastructure\Entity\Task;
+use App\Core\Infrastructure\Entity\TaskSwipe;
 use App\Core\Domain\Exception\Task\TaskUnavailableToSwipe;
 use App\Core\Domain\Exception\TaskSwipe\CantSwipeOwnTask;
 use App\Core\Domain\Exception\TaskSwipe\TaskSwipeExistsException;

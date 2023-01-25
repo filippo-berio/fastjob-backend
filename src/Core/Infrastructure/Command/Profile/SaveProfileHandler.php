@@ -3,7 +3,7 @@
 namespace App\Core\Infrastructure\Command\Profile;
 
 use App\Core\Domain\Command\Profile\SaveProfile;
-use App\Core\Domain\Entity\Profile;
+use App\Core\Infrastructure\Entity\Profile;
 use App\CQRS\CommandHandlerInterface;
 use App\CQRS\CommandInterface;
 use Doctrine\ORM\EntityManagerInterface;

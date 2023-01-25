@@ -14,7 +14,7 @@ class ExecutorController extends BaseController
 {
     #[Route('/next/swiped', methods: ['GET'])]
     public function nextTask(
-        #[CurrentUser] Profile $profile,
+        #[CurrentUser] Profile       $profile,
         GetSwipedNextExecutorUseCase $useCase,
     ): JsonResponse {
         $executor = $useCase->get($profile);

@@ -20,14 +20,14 @@ class CreateTaskUseCase
     }
 
     public function create(
-        Profile $profile,
-        string $title,
-        bool $remote,
-        array $categoryIds = [],
-        ?string $description = null,
-        ?int $price = null,
+        Profile       $profile,
+        string        $title,
+        bool          $remote,
+        array         $categoryIds = [],
+        ?string       $description = null,
+        ?int          $price = null,
         ?AddressPlain $addressPlain = null,
-        ?string $deadline = null,
+        ?string       $deadline = null,
     ): Task {
         $categories = empty($categoryIds) ? [] : $this->categoryRepository->findByIds($categoryIds);
         if (count($categories) !== count($categoryIds)) {

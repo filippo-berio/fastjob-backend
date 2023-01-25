@@ -2,10 +2,10 @@
 
 namespace App\Core\Infrastructure\Query\Task;
 
-use App\Core\Domain\Entity\Category;
-use App\Core\Domain\Entity\Profile;
-use App\Core\Domain\Entity\Task;
-use App\Core\Domain\Entity\TaskSwipe;
+use App\Core\Infrastructure\Entity\Category;
+use App\Core\Infrastructure\Entity\Profile;
+use App\Core\Infrastructure\Entity\Task;
+use App\Core\Infrastructure\Entity\TaskSwipe;
 use App\Core\Domain\Query\Task\FindNextTasksForProfile;
 use App\Core\Domain\Query\Task\FindTaskByAuthor;
 use App\Core\Domain\Repository\PendingTaskRepositoryInterface;
@@ -67,7 +67,7 @@ class FindNextTasksForProfileHandler implements QueryHandlerInterface
     private function categories(QueryBuilder $queryBuilder): QueryBuilder
     {
         return $queryBuilder
-            ->innerJoin('t.categories', 'taskCategory')
+            ->innerJoin('t.doctrineCategories', 'taskCategory')
             ->andWhere('taskCategory in (:profileCategories)');
     }
 

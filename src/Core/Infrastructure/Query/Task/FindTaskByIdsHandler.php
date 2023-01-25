@@ -2,7 +2,7 @@
 
 namespace App\Core\Infrastructure\Query\Task;
 
-use App\Core\Domain\Entity\Task;
+use App\Core\Infrastructure\Entity\Task;
 use App\Core\Domain\Query\Task\FindTaskByIds;
 use App\CQRS\QueryHandlerInterface;
 use App\CQRS\QueryInterface;

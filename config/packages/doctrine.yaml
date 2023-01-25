@@ -17,8 +17,8 @@ doctrine:
                 alias: Auth
             core:
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Core/Domain/Entity'
-                prefix: 'App\Core\Domain\Entity'
+                dir: '%kernel.project_dir%/src/Core/Infrastructure/Entity'
+                prefix: 'App\Core\Infrastructure\Entity'
                 alias: Core
             location:
                 is_bundle: false

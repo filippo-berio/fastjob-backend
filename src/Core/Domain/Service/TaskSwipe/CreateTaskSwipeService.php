@@ -2,6 +2,7 @@
 
 namespace App\Core\Domain\Service\TaskSwipe;
 
+use App\Core\Domain\Contract\EntityMapperInterface;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Entity\TaskSwipe;
@@ -16,14 +17,15 @@ class CreateTaskSwipeService
     public function __construct(
         private TaskSwipeRepositoryInterface   $taskSwipeRepository,
         private PendingTaskRepositoryInterface $pendingTaskRepository,
+        private EntityMapperInterface $entityMapper,
     ) {
     }
 
     public function create(
         Profile $profile,
-        Task $task,
-        string $type,
-        ?int $customPrice = null
+        Task    $task,
+        string  $type,
+        ?int    $customPrice = null
     ): TaskSwipe {
         $this->checkExisting($profile, $task);
 
@@ -36,7 +38,9 @@ class CreateTaskSwipeService
         }
 
         $this->pendingTaskRepository->clear($profile);
-        $taskSwipe = new TaskSwipe($task, $profile, $type, $customPrice);
+
+        $entity = $this->entityMapper->persistenceEntity(TaskSwipe::class);
+        $taskSwipe = new $entity($task, $profile, $type, $customPrice);
         return $this->taskSwipeRepository->save($taskSwipe);
     }
 

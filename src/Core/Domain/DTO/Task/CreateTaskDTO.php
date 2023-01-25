@@ -34,13 +34,13 @@ readonly class CreateTaskDTO
     public bool $remote;
 
     public function __construct(
-        Profile $profile,
-        string $title,
-        bool $remote,
-        array $categories = [],
-        ?string $description = null,
-        ?int $price = null,
-        ?AddressPlain $addressPlain = null,
+        Profile            $profile,
+        string             $title,
+        bool               $remote,
+        array              $categories = [],
+        ?string            $description = null,
+        ?int               $price = null,
+        ?AddressPlain      $addressPlain = null,
         ?DateTimeInterface $deadline = null,
     )
     {

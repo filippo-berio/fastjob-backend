@@ -22,9 +22,9 @@ class CreateExecutorSwipeUseCase
 
     public function create(
         Profile $profile,
-        int $taskId,
-        int $executorId,
-        string $type
+        int     $taskId,
+        int     $executorId,
+        string  $type
     ): ExecutorSwipe {
         $task = $this->getTask($taskId);
         $executor = $this->getProfile($executorId);

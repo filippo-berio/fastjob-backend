@@ -9,7 +9,7 @@ class FindNextTasksForProfile implements QueryInterface
 {
     public function __construct(
         public Profile $profile,
-        public int $count,
+        public int     $count,
     ) {
     }
 }

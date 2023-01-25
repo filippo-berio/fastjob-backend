@@ -21,9 +21,9 @@ class CreateTaskSwipeUseCase
 
     public function create(
         Profile $profile,
-        int $taskId,
-        string $type,
-        ?int $customPrice = null
+        int     $taskId,
+        string  $type,
+        ?int    $customPrice = null
     ): ?Task {
         $task = $this->queryBus->query(new FindTaskById($taskId));
         if (!$task) {

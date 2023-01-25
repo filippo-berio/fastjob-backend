@@ -4,8 +4,9 @@ namespace App\Core\Infrastructure\Repository;
 
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
-use App\Core\Domain\Entity\TaskSwipe;
+use App\Core\Domain\Entity\TaskSwipe as DomainTaskSwipe;
 use App\Core\Domain\Repository\TaskSwipeRepositoryInterface;
+use App\Core\Infrastructure\Entity\TaskSwipe;
 use Doctrine\ORM\EntityManagerInterface;
 
 class TaskSwipeRepository implements TaskSwipeRepositoryInterface
@@ -15,7 +16,7 @@ class TaskSwipeRepository implements TaskSwipeRepositoryInterface
     ) {
     }
 
-    public function save(TaskSwipe $taskSwipe): TaskSwipe
+    public function save(DomainTaskSwipe $taskSwipe): DomainTaskSwipe
     {
         $this->entityManager->persist($taskSwipe);
         $this->entityManager->flush();
@@ -29,7 +30,7 @@ class TaskSwipeRepository implements TaskSwipeRepositoryInterface
         ]);
     }
 
-    public function findByProfileAndTask(Profile $profile, Task $task): ?TaskSwipe
+    public function findByProfileAndTask(Profile $profile, Task $task): ?DomainTaskSwipe
     {
         return $this->entityManager->getRepository(TaskSwipe::class)->findOneBy([
             'profile' => $profile,

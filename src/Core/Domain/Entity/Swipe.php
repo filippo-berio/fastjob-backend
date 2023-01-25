@@ -19,9 +19,9 @@ abstract class Swipe
     protected string $type;
 
     public function __construct(
-        Task $task,
+        Task    $task,
         Profile $profile,
-        string $type
+        string  $type
     ) {
         $this->task = $task;
         $this->profile = $profile;

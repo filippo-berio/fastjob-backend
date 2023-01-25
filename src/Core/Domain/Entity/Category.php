@@ -2,34 +2,14 @@
 
 namespace App\Core\Domain\Entity;
 
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Exception;
-use Symfony\Component\Serializer\Annotation\Groups;
 
-#[Entity]
 class Category
 {
-    #[Id]
-    #[GeneratedValue]
-    #[Column]
-    #[Groups(['category_full'])]
-    private ?int $id = null;
-
-    #[Column]
-    #[Groups(['category_full'])]
-    private string $title;
-
-
-    #[Column(type: 'smallint')]
-    #[Groups(['category_full'])]
-    private bool $remote;
-
-    #[ManyToOne]
-    private ?Category $parent;
+    protected ?int $id = null;
+    protected string $title;
+    protected bool $remote;
+    protected ?Category $parent;
 
     public function __construct(
         string $title,

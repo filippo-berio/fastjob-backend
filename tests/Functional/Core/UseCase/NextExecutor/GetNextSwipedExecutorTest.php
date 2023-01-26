@@ -4,6 +4,8 @@ namespace App\Tests\Functional\Core\UseCase\NextExecutor;
 
 use App\Core\Application\UseCase\Executor\GetSwipedNextExecutorUseCase;
 use App\Core\Application\UseCase\Swipe\CreateExecutorSwipeUseCase;
+use App\Core\Domain\Exception\Task\TaskNotFoundException;
+use App\Core\Domain\Service\Executor\NextExecutorService\GetSwipedNextExecutorService;
 use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;
 use App\DataFixtures\Core\ProfileFixtures;
@@ -12,6 +14,14 @@ use App\Tests\Functional\FunctionalTest;
 
 class GetNextSwipedExecutorTest extends FunctionalTest
 {
+    public function testNoWaitTasks()
+    {
+        $useCase = $this->getDependency(GetSwipedNextExecutorUseCase::class);
+        $profile = $this->getEntity(Profile::class, ProfileFixtures::PROFILE_8);
+        $this->expectException(TaskNotFoundException::class);
+        $useCase->get($profile);
+    }
+
     /**
      * @dataProvider successData
      */
@@ -31,6 +41,7 @@ class GetNextSwipedExecutorTest extends FunctionalTest
                 $nextExecutor->getTask()->getId(),
                 $nextExecutor->getExecutor()->getId(),
                 Swipe::TYPE_ACCEPT,
+                GetSwipedNextExecutorService::TYPE,
             );
         }
     }
@@ -68,10 +79,6 @@ class GetNextSwipedExecutorTest extends FunctionalTest
             // testNoTaskSwipes
             [
                 ProfileFixtures::PROFILE_4,
-            ],
-            // testTaskArchived
-            [
-                ProfileFixtures::PROFILE_8,
             ],
             // testSwipeTypeRejected
             [

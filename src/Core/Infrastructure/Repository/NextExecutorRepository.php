@@ -5,16 +5,19 @@ namespace App\Core\Infrastructure\Repository;
 use App\Core\Domain\Entity\NextExecutor;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;
+use App\Core\Domain\Query\Task\FindWaitTaskByAuthor;
 use App\Core\Infrastructure\Entity\Task;
 use App\Core\Infrastructure\Entity\TaskSwipe;
 use App\Core\Domain\Repository\NextExecutorRepositoryInterface;
+use App\CQRS\Bus\QueryBusInterface;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManagerInterface;
 
 class NextExecutorRepository implements NextExecutorRepositoryInterface
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private QueryBusInterface $queryBus,
     ) {
     }
 
@@ -29,6 +32,14 @@ class NextExecutorRepository implements NextExecutorRepositoryInterface
             $taskSwipe->getProfile(),
             $taskSwipe
         );
+    }
+
+    public function getSuggestedNextExecutor(Profile $author): ?NextExecutor
+    {
+        $tasks = $this->queryBus->query(new FindWaitTaskByAuthor($author));
+
+        $qb = $this->entityManager->getRepository(Profile::class)
+            ->createQueryBuilder('p');
     }
 
     private function getNextTaskSwipe(Profile $author): ?TaskSwipe
@@ -46,11 +57,7 @@ class NextExecutorRepository implements NextExecutorRepositoryInterface
 
             ->orderBy('ts.id', 'ASC');
 
-        $executorSwipesSql = '
-            select es.task_id, es.profile_id from executor_swipe es
-            inner join task t on t.id = es.task_id
-            where t.author_id = :authorId
-        ';
+        $executorSwipesSql = $this->executorSwipesSql();
         $sql = "select id from task_swipe where (task_id, profile_id) in ($executorSwipesSql)";
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
@@ -64,5 +71,14 @@ class NextExecutorRepository implements NextExecutorRepositoryInterface
         }
 
         return $qb->getQuery()->getResult()[0] ?? null;
+    }
+
+    private function executorSwipesSql()
+    {
+        return '
+            select es.task_id, es.profile_id from executor_swipe es
+            inner join task t on t.id = es.task_id
+            where t.author_id = :authorId
+        ';
     }
 }

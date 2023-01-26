@@ -14,10 +14,14 @@ services:
             $redisHost: '%env(REDIS_HOST)%'
 
     _instanceof:
+        App\Core\Domain\Service\Executor\NextExecutorService\NextExecutorServiceInterface:
+            tags: ['core.next_executor_service']
+
         App\CQRS\QueryHandlerInterface:
             tags: ['cqrs.query_handler']
         App\CQRS\CommandHandlerInterface:
             tags: ['cqrs.command_handler']
+
         App\Sms\Service\Provider\SmsProviderInterface:
             tags: ['sms.provider']
 
@@ -41,6 +45,9 @@ services:
     App\Auth\Repository\ConfirmationTokenRepository:
         $confirmationTokenLifeTime: '%env(CONFIRMATION_TOKEN_LIFETIME)%'
 
+
+    App\Core\Domain\Service\Executor\NextExecutorService\NextExecutorServiceFactory:
+        $services: !tagged_iterator 'core.next_executor_service'
 
     App\Core\Domain\Service\Task\NextTask\GetProfileNextTaskService:
         $minimalStack: '%env(NEXT_TASK_MINIMAL_STACK)%'

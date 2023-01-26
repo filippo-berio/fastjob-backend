@@ -2,28 +2,32 @@
 
 namespace App\Core\Infrastructure\Query\Task;
 
+use App\Core\Domain\Query\Task\FindWaitTaskByAuthor;
 use App\Core\Infrastructure\Entity\Task;
-use App\Core\Domain\Query\Task\FindTaskByAuthor;
 use App\CQRS\QueryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
-class FindTaskByAuthorHandler extends BaseTaskQueryHandler
+class FindWaitTaskByAuthorHandler extends BaseTaskQueryHandler
 {
+
     /**
-     * @param FindTaskByAuthor $query
+     * @param FindWaitTaskByAuthor $query
      * @return Task[]
      */
     public function handle(QueryInterface $query): array
     {
-        return $this->entityManager->getRepository(Task::class)
+        $qb = $this->entityManager->getRepository(Task::class)
             ->createQueryBuilder('t')
             ->andWhere('t.author = :author')
-            ->setParameter('author', $query->profile)
+            ->setParameter('author', $query->profile);
+        $this->filterStatus($qb);
+        return $qb
             ->getQuery()
             ->getResult();
     }
 
     public function getQueryClass(): string
     {
-        return FindTaskByAuthor::class;
+        return FindWaitTaskByAuthor::class;
     }
 }

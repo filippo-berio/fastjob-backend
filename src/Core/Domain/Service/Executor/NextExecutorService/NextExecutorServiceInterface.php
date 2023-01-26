@@ -8,4 +8,6 @@ use App\Core\Domain\Entity\Profile;
 interface NextExecutorServiceInterface
 {
     public function get(Profile $author): ?NextExecutor;
+
+    public function getExecutorType(): string;
 }

@@ -5,9 +5,9 @@ namespace App\Core\Domain\Service\Executor\NextExecutorService;
 use App\Core\Domain\Entity\NextExecutor;
 use App\Core\Domain\Entity\Profile;
 
-class GetSwipedNextExecutorService extends BaseNextExecutorService
+class GetSuggestedNextExecutorService extends BaseNextExecutorService
 {
-    const TYPE = 'swiped';
+    const TYPE = 'suggested';
 
     public function getExecutorType(): string
     {
@@ -17,6 +17,6 @@ class GetSwipedNextExecutorService extends BaseNextExecutorService
     public function get(Profile $author): ?NextExecutor
     {
         $this->checkTasks($author);
-        return $this->nextExecutorRepository->nextSwipedExecutor($author);
+        return $this->nextExecutorRepository->getSuggestedNextExecutor($author);
     }
 }

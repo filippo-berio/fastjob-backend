@@ -8,4 +8,6 @@ use App\Core\Domain\Entity\Profile;
 interface NextExecutorRepositoryInterface
 {
     public function nextSwipedExecutor(Profile $author): ?NextExecutor;
+
+    public function getSuggestedNextExecutor(Profile $author): ?NextExecutor;
 }

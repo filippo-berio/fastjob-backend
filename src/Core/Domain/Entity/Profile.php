@@ -28,7 +28,6 @@ class Profile
         $this->user = $user;
         $this->firstName = $firstName;
         $this->birthDate = $birthDate;
-        $this->setCategories([]);
     }
 
     /**
@@ -41,7 +40,7 @@ class Profile
 
     public function update(UpdateProfileDTO $updateProfileDTO) {
         $this->firstName = $updateProfileDTO->firstName ?? $this->firstName;
-        $this->setCategories($updateProfileDTO->categories);
+        $this->categories = $updateProfileDTO->categories;
         $this->lastName = $updateProfileDTO->lastName;
         $this->description = $updateProfileDTO->description;
         $this->city = $updateProfileDTO->city;
@@ -85,13 +84,5 @@ class Profile
     public function getCity(): ?City
     {
         return $this->city;
-    }
-
-    /**
-     * @param Category[] $categories
-     */
-    protected function setCategories(array $categories)
-    {
-        $this->categories = $categories;
     }
 }

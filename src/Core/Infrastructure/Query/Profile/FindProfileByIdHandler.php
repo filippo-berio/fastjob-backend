@@ -4,21 +4,10 @@ namespace App\Core\Infrastructure\Query\Profile;
 
 use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Query\Profile\FindProfileById;
-use App\CQRS\Bus\QueryBusInterface;
-use App\CQRS\QueryHandlerInterface;
 use App\CQRS\QueryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
-class FindProfileByIdHandler implements QueryHandlerInterface
+class FindProfileByIdHandler extends BaseProfileQueryHandler
 {
-    use FillUserTrait;
-
-    public function __construct(
-        private EntityManagerInterface $em,
-        private QueryBusInterface $queryBus,
-    ) {
-    }
-
     /**
      * @param FindProfileById $query
      * @return Profile|null
@@ -26,8 +15,8 @@ class FindProfileByIdHandler implements QueryHandlerInterface
     public function handle(QueryInterface $query): ?Profile
     {
         /** @var Profile $profile */
-        $profile = $this->em->getRepository(Profile::class)->find($query->id);
-        return $profile ? $this->fillUser($profile, $this->queryBus) : null;
+        $profile = $this->entityManager->getRepository(Profile::class)->find($query->id);
+        return $profile ? $this->fillProfile($profile) : null;
     }
 
     public function getQueryClass(): string

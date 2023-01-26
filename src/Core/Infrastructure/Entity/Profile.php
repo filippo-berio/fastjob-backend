@@ -2,8 +2,9 @@
 
 namespace App\Core\Infrastructure\Entity;
 
-use App\Auth\Entity\User as AuthUser;
+use App\Core\Domain\DTO\Profile\UpdateProfileDTO;
 use App\Core\Domain\Entity\Profile as DomainProfile;
+use App\Core\Domain\Entity\User;
 use App\Core\Domain\Entity\User as DomainUser;
 use App\Location\Entity\City;
 use DateTimeImmutable;
@@ -24,7 +25,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[HasLifecycleCallbacks]
 class Profile extends DomainProfile implements UserInterface
 {
-
     #[Id]
     #[GeneratedValue]
     #[Column]
@@ -74,10 +74,9 @@ class Profile extends DomainProfile implements UserInterface
         $this->userId = $user->getId();
     }
 
-    public function fillUser(AuthUser $authUser): self
+    public function setUser(User $user)
     {
-        $this->user = new DomainUser($authUser->getId(), $authUser->getPhone());
-        return $this;
+        $this->user = $user;
     }
 
     public function getUserId(): int
@@ -85,10 +84,15 @@ class Profile extends DomainProfile implements UserInterface
         return $this->userId;
     }
 
-    protected function setCategories(array $categories)
+    public function update(UpdateProfileDTO $updateProfileDTO)
+    {
+        parent::update($updateProfileDTO);
+        $this->setCategories($updateProfileDTO->categories);
+    }
+
+    private function setCategories(array $categories)
     {
         $this->doctrineCategories = new ArrayCollection($categories);
-        return parent::setCategories($categories);
     }
 
     public function getRoles(): array

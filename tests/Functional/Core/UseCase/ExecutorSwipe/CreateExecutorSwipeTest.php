@@ -35,6 +35,7 @@ class CreateExecutorSwipeTest extends FunctionalTest
         $profile = $this->getEntity(Profile::class, $profileId);
         $useCase->create($profile, $taskId, $executorId,  $type);
     }
+
     /**
      * @dataProvider successData
      */

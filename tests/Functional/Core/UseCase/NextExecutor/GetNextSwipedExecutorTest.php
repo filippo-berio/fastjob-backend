@@ -21,11 +21,12 @@ class GetNextSwipedExecutorTest extends FunctionalTest
         $useCase = $this->getDependency(GetSwipedNextExecutorUseCase::class);
         $profile = $this->getEntity(Profile::class, $authorId);
 
+        $nextExecutor = $useCase->get($profile);
+
         foreach ($expected as [$expectedTask, $expectedExecutor]) {
-            $nextExecutor = $useCase->get($profile);
             $this->assertEquals($expectedTask, $nextExecutor->getTask()->getId());
             $this->assertEquals($expectedExecutor, $nextExecutor->getExecutor()->getId());
-            $createExecutorSwipeUseCase->create(
+            $nextExecutor = $createExecutorSwipeUseCase->create(
                 $profile,
                 $nextExecutor->getTask()->getId(),
                 $nextExecutor->getExecutor()->getId(),

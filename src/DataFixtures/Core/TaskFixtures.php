@@ -27,6 +27,8 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
     const TASK_11 = 11;
     const TASK_12 = 12;
     const TASK_13 = 13;
+    const TASK_14 = 14;
+    const TASK_15 = 15;
 
     protected function getEntity(): string
     {
@@ -154,7 +156,25 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 false,
                 2000,
                 $this->getReference(AddressFixtures::ADDRESS_3, Address::class),
-            )
+            ),
+            $task14 = new Task(
+                'Замерить скорость ветра пальцем',
+                $this->getReference(ProfileFixtures::PROFILE_11, Profile::class),
+                [
+                    $this->getReference(CategoryFixtures::SUM_STUPID_SHIT, Category::class)
+                ],
+                false,
+                price: 1000,
+            ),
+            $task15 = new Task(
+                'Замерить скорость ветра, но без помощи пальца',
+                $this->getReference(ProfileFixtures::PROFILE_11, Profile::class),
+                [
+                    $this->getReference(CategoryFixtures::SUM_STUPID_SHIT, Category::class)
+                ],
+                false,
+                price: 7000,
+            ),
         ], $manager);
 
         $this->addReference(self::TASK_1, $task1);
@@ -165,7 +185,12 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
         $this->addReference(self::TASK_7, $task7);
         $this->addReference(self::TASK_8, $task8);
         $this->addReference(self::TASK_9, $task9);
-        $this->addReference(self::TASK_10, $task9);
+        $this->addReference(self::TASK_10, $task10);
+        $this->addReference(self::TASK_11, $task11);
+        $this->addReference(self::TASK_12, $task12);
+        $this->addReference(self::TASK_13, $task13);
+        $this->addReference(self::TASK_14, $task14);
+        $this->addReference(self::TASK_15, $task15);
     }
 
     public function getDependencies()

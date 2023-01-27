@@ -20,6 +20,8 @@ class CategoryFixtures extends BaseFixtures
     const PETS = 8;
     const FISH = 9;
 
+    const SUM_STUPID_SHIT = 10;
+
     const NOT_EXIST_CATEGORY = 999;
 
     protected function getEntity(): string
@@ -41,6 +43,8 @@ class CategoryFixtures extends BaseFixtures
 
             $pets = new Category('Домашние питомцы', false),
             $fish = new Category('Рыбы', parent: $pets),
+
+            $other = new Category('Другое...', false),
         ], $manager);
 
         $this->addReference(self::COMPUTERS, $computers);
@@ -52,5 +56,6 @@ class CategoryFixtures extends BaseFixtures
         $this->addReference(self::CLEANING, $cleaning);
         $this->addReference(self::PETS, $pets);
         $this->addReference(self::FISH, $fish);
+        $this->addReference(self::SUM_STUPID_SHIT, $other);
     }
 }

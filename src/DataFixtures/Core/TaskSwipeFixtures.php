@@ -25,12 +25,18 @@ class TaskSwipeFixtures extends BaseFixtures implements DependentFixtureInterfac
         $task7 = $this->getReference(TaskFixtures::TASK_7, Task::class);
         $task9 = $this->getReference(TaskFixtures::TASK_9, Task::class);
         $task10 = $this->getReference(TaskFixtures::TASK_8, Task::class);
+        $task14 = $this->getReference(TaskFixtures::TASK_14, Task::class);
+        $task15 = $this->getReference(TaskFixtures::TASK_15, Task::class);
 
         $profile2 = $this->getReference(ProfileFixtures::PROFILE_2, Profile::class);
         $profile4 = $this->getReference(ProfileFixtures::PROFILE_4, Profile::class);
         $profile7 = $this->getReference(ProfileFixtures::PROFILE_7, Profile::class);
         $profile8 = $this->getReference(ProfileFixtures::PROFILE_8, Profile::class);
         $profile10 = $this->getReference(ProfileFixtures::PROFILE_10, Profile::class);
+        $profile12 = $this->getReference(ProfileFixtures::PROFILE_12, Profile::class);
+        $profile13 = $this->getReference(ProfileFixtures::PROFILE_13, Profile::class);
+        $profile14 = $this->getReference(ProfileFixtures::PROFILE_14, Profile::class);
+        $profile15 = $this->getReference(ProfileFixtures::PROFILE_15, Profile::class);
 
         $this->save([
             new TaskSwipe($task9, $profile7, Swipe::TYPE_ACCEPT),
@@ -38,11 +44,20 @@ class TaskSwipeFixtures extends BaseFixtures implements DependentFixtureInterfac
             new TaskSwipe($task3, $profile8, Swipe::TYPE_REJECT),
             new TaskSwipe($task10, $profile2, Swipe::TYPE_REJECT),
 
-            new TaskSwipe($task3, $profile4, Swipe::TYPE_ACCEPT),
+            new TaskSwipe($task3, $profile4, Swipe::TYPE_ACCEPT, 300),
             new TaskSwipe($task7, $profile8, Swipe::TYPE_ACCEPT),
             new TaskSwipe($task3, $profile10, Swipe::TYPE_ACCEPT),
             new TaskSwipe($task3, $profile7, Swipe::TYPE_ACCEPT),
             new TaskSwipe($task7, $profile10, Swipe::TYPE_ACCEPT),
+
+            new TaskSwipe($task14, $profile12, Swipe::TYPE_ACCEPT),
+            new TaskSwipe($task14, $profile13, Swipe::TYPE_ACCEPT),
+            new TaskSwipe($task14, $profile14, Swipe::TYPE_ACCEPT, 2000),
+
+            new TaskSwipe($task15, $profile13, Swipe::TYPE_ACCEPT),
+            new TaskSwipe($task15, $profile14, Swipe::TYPE_ACCEPT),
+            new TaskSwipe($task15, $profile15, Swipe::TYPE_ACCEPT),
+            new TaskSwipe($task15, $profile7, Swipe::TYPE_REJECT),
         ], $manager);
     }
 

@@ -19,7 +19,11 @@ class UserFixtures extends BaseFixtures
     const USER_9_PHONE = '+79999999999';
     const USER_10_PHONE = '+79111111110';
     const USER_11_PHONE = '+79222222211';
-    const USER_12_PHONE = '+79111111113';
+    const USER_12_PHONE = '+79111111112';
+    const USER_13_PHONE = '+79111111113';
+    const USER_14_PHONE = '+79111111114';
+    const USER_15_PHONE = '+79111111115';
+
     const NOT_EXIST_USER_PHONE = '+79879543210';
 
     const USER_1 = 1;
@@ -34,6 +38,9 @@ class UserFixtures extends BaseFixtures
     const USER_10 = 10;
     const USER_11 = 11;
     const USER_12 = 12;
+    const USER_13 = 13;
+    const USER_14 = 14;
+    const USER_15 = 15;
 
 
     protected function getEntity(): string
@@ -56,6 +63,9 @@ class UserFixtures extends BaseFixtures
             $user10 = new User(self::USER_10_PHONE),
             $user11 = new User(self::USER_11_PHONE),
             $user12 = new User(self::USER_12_PHONE),
+            $user13 = new User(self::USER_13_PHONE),
+            $user14 = new User(self::USER_14_PHONE),
+            $user15 = new User(self::USER_15_PHONE),
         ], $manager);
 
         $this->addReference(self::USER_1, $user1);
@@ -70,5 +80,8 @@ class UserFixtures extends BaseFixtures
         $this->addReference(self::USER_10, $user10);
         $this->addReference(self::USER_11, $user11);
         $this->addReference(self::USER_12, $user12);
+        $this->addReference(self::USER_13, $user13);
+        $this->addReference(self::USER_14, $user14);
+        $this->addReference(self::USER_15, $user15);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Tests\Functional;
 
 use App\Auth\Entity\User as AuthUser;
 use App\Core\Domain\Entity\User;
+use App\Core\Infrastructure\Entity\Profile;
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\ORM\EntityManagerInterface;
 use Predis\Client;
@@ -94,5 +95,13 @@ abstract class FunctionalTest extends KernelTestCase
     {
         $authUser = $this->getEntity(AuthUser::class, $id);
         return new User($authUser->getId(), $authUser->getPhone());
+    }
+
+    protected function getCoreProfile(int $id): Profile
+    {
+        $profile = $this->getEntity(Profile::class, $id);
+        $user = $this->getCoreUser($profile->getUserId());
+        $profile->setUser($user);
+        return $profile;
     }
 }

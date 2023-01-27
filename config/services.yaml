@@ -45,6 +45,9 @@ services:
     App\Auth\Repository\ConfirmationTokenRepository:
         $confirmationTokenLifeTime: '%env(CONFIRMATION_TOKEN_LIFETIME)%'
 
+    App\Auth\Repository\ConfirmationTimeoutRepository:
+        $timeout: '%env(CONFIRM_SMS_TIMEOUT)%'
+
 
     App\Core\Domain\Service\Executor\NextExecutorService\NextExecutorServiceFactory:
         $services: !tagged_iterator 'core.next_executor_service'
@@ -65,9 +68,6 @@ services:
         tags:
             - { name: 'doctrine.fixtures.purger_factory', alias: 'my_purger' }
 
-
-    App\Sms\Service\Provider\SmsProviderInterface:
-        factory: [App\Sms\Service\Provider\SmsProviderFactory, 'create']
 
     App\Sms\Service\Provider\SmsProviderFactory:
         $provider: '%env(SMS_PROVIDER)%'

@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\Auth;
 
 use App\Auth\Entity\User;
+use App\Auth\Exception\ConfirmationTimeoutException;
 use App\Auth\Exception\InvalidConfirmationCodeException;
 use App\Auth\Exception\PhoneBannedException;
 use App\Auth\Repository\AccessTokenRepository;
@@ -16,6 +17,18 @@ use App\Tests\Functional\FunctionalTest;
 
 class UserConfirmationTest extends FunctionalTest
 {
+    public function testTimeout()
+    {
+        $useCase = $this->getDependency(SendConfirmationCodeUseCase::class);
+        $useCase->send('+79999999999');
+        $this->expectException(ConfirmationTimeoutException::class);
+        try {
+            $useCase->send('+79999999999');
+        } finally {}
+        $this->redisClear();
+        $useCase->send('+79999999999');
+    }
+
     public function testRottenConfirmation()
     {
         $confirmationTokenRepository = $this->getDependency(ConfirmationTokenRepository::class);

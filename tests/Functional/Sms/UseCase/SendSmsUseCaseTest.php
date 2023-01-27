@@ -7,12 +7,10 @@ use App\Sms\UseCase\SendSmsUseCase;
 use App\Tests\Functional\FunctionalTest;
 use WireMock\Client\WireMock;
 
-// TODO сообщение не ходит в тестовый редис
 class SendSmsUseCaseTest extends FunctionalTest
 {
     public function testSuccess()
     {
-        return;
         $this->bootContainer();
         $useCase = $this->getDependency(SendSmsUseCase::class);
         $useCase->send('+79999999999', 'text');

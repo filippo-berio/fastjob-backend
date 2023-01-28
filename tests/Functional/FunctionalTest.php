@@ -4,9 +4,12 @@ namespace App\Tests\Functional;
 
 use App\Auth\Entity\User as AuthUser;
 use App\Core\Domain\Entity\User;
+use App\Core\Domain\Event\EventInterface;
 use App\Core\Infrastructure\Entity\Profile;
+use App\Core\Infrastructure\Message\Event\EventMessage;
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\AssertionFailedError;
 use Predis\Client;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -103,5 +106,23 @@ abstract class FunctionalTest extends KernelTestCase
         $user = $this->getCoreUser($profile->getUserId());
         $profile->setUser($user);
         return $profile;
+    }
+
+    /**
+     * @template T
+     * @param class-string<T> $event
+     * @return T
+     */
+    protected function assertAsyncEventDispatched(string $event): EventInterface
+    {
+        $this->messenger()->queue()->assertContains(EventMessage::class);
+        foreach ($this->messenger()->queue()->messages() as $message) {
+            if ($message instanceof EventMessage) {
+                if ($message->event instanceof $event) {
+                    return $message->event;
+                }
+            }
+        }
+        throw new AssertionFailedError("Failed asserting that $event is dispatched asynchronously");
     }
 }

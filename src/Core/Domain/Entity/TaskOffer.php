@@ -3,7 +3,6 @@
 namespace App\Core\Domain\Entity;
 
 use DateTimeImmutable;
-use DateTimeInterface;
 
 class TaskOffer
 {
@@ -34,13 +33,18 @@ class TaskOffer
         $this->createdAt = new DateTimeImmutable();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function cancel()
     {
         $this->status = self::STATUS_CANCELED;
     }
 
-    public function isAwaiting()
+    public function isCanceled()
     {
-        return $this->status === self::STATUS_WAIT;
+        return $this->status === self::STATUS_CANCELED;
     }
 }

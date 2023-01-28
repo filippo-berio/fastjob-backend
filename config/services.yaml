@@ -51,6 +51,9 @@ services:
         $timeout: '%env(CONFIRM_SMS_TIMEOUT)%'
 
 
+    App\Core\Infrastructure\Repository\TaskOfferRepository:
+        $taskOfferLifetime: '%env(TASK_OFFER_LIFETIME)%'
+
     App\Core\Infrastructure\Event\EventHandler:
         $handlers: !tagged_iterator 'core.event_handler'
 

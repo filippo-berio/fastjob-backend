@@ -11,6 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class TaskOfferFixtures extends BaseFixtures implements DependentFixtureInterface
 {
+    const OFFER_1 = 1;
 
     protected function getEntity(): string
     {

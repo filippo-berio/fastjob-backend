@@ -19,11 +19,20 @@ RUN apt update \
 
 # redis
 RUN apt-get install libzstd-dev
-#RUN no | pecl install -o -f redis; \
 RUN pecl install -o -f redis; \
     rm -rf /tmp/pear/*
 RUN echo 'redis' >> /usr/src/php-available-exts
 RUN docker-php-ext-enable redis
+
+# mongodb
+RUN apt-get install -y \
+        openssl \
+        libssl-dev \
+        libcurl4-openssl-dev \
+    && apt clean \
+    && pecl install mongodb \
+    && echo "extension=mongodb.so" >> /usr/local/etc/php/php.ini
+
 
 RUN docker-php-ext-install \
         pdo \
@@ -35,4 +44,5 @@ RUN echo "memory_limit=4G" >> /usr/local/etc/php/php.ini
 
 COPY ./ /app
 
-RUN composer install -o && rm -rf var/cache/* var/log/* && chmod 777 -R var/*
+RUN composer config extra.symfony.allow-contrib true \
+    && composer install -o && rm -rf var/cache/* var/log/* && chmod 777 -R var/*

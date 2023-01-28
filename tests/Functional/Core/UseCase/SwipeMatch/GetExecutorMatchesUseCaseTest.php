@@ -29,6 +29,12 @@ class GetExecutorMatchesUseCaseTest extends FunctionalTest
     {
         return [
             [
+                ProfileFixtures::PROFILE_17,
+                [
+                    [TaskFixtures::TASK_16],
+                ],
+            ],
+            [
                 ProfileFixtures::PROFILE_4,
                 [
                     [TaskFixtures::TASK_3, 300],

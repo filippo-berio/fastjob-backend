@@ -6,9 +6,9 @@ use App\Core\Domain\Entity\Profile as DomainProfile;
 use App\Core\Domain\Entity\Swipe;
 use App\Core\Domain\Entity\SwipeMatch;
 use App\Core\Domain\Entity\Task as DomainTask;
+use App\Core\Infrastructure\Entity\TaskOffer;
 use App\Core\Domain\Repository\SwipeMatchRepositoryInterface;
 use App\Core\Infrastructure\Entity\ExecutorSwipe;
-use App\Core\Infrastructure\Entity\Task;
 use App\Core\Infrastructure\Entity\TaskSwipe;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
@@ -42,6 +42,10 @@ class SwipeMatchRepository implements SwipeMatchRepositoryInterface
     {
         $qb = $this->createTaskSwipeQueryBuilder();
         $this->queryExecutor($qb, $profile);
+        $qb
+            ->leftJoin(TaskOffer::class, 'to', Join::WITH, 'to.task = ts.task')
+            ->andWhere('to.id is null or to.status != :acceptOfferStatus or identity(to.profile) = :profileId')
+            ->setParameter('acceptOfferStatus', TaskOffer::STATUS_ACCEPTED);
 
         $taskSwipes = $qb
             ->getQuery()

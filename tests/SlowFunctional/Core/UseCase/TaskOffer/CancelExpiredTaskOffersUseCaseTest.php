@@ -24,5 +24,6 @@ class CancelExpiredTaskOffersUseCaseTest extends SlowFunctionalTest
         $this->messenger()->process();
         $offer = $this->getEntity(TaskOffer::class, TaskOfferFixtures::OFFER_1);
         $this->assertTrue($offer->isCanceled());
+        $this->assertTrue($offer->getTask()->isOffered());
     }
 }

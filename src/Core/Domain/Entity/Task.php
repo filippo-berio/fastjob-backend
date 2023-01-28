@@ -10,6 +10,7 @@ class Task
 {
     const STATUS_WAIT = 'wait';
     const STATUS_OFFERED = 'offered';
+    const STATUS_WORK = 'work';
     const STATUS_DELETED = 'deleted';
 
     protected ?int $id = null;
@@ -129,6 +130,11 @@ class Task
         if ($this->status === self::STATUS_DELETED) {
             $this->status = self::STATUS_WAIT;
         }
+    }
+
+    public function acceptOffer()
+    {
+        $this->status = self::STATUS_WORK;
     }
 
     /**

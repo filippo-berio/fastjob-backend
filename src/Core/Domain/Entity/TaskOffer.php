@@ -33,9 +33,24 @@ class TaskOffer
         $this->createdAt = new DateTimeImmutable();
     }
 
+    public function getTask(): Task
+    {
+        return $this->task;
+    }
+
+    public function getProfile(): Profile
+    {
+        return $this->profile;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function accept()
+    {
+        $this->status = self::STATUS_ACCEPTED;
     }
 
     public function cancel()

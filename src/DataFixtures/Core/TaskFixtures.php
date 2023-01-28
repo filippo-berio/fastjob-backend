@@ -31,6 +31,8 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
     const TASK_15 = 15;
     const TASK_16 = 16;
 
+    const NOT_EXIST_TASK = 899;
+
     protected function getEntity(): string
     {
         return Task::class;

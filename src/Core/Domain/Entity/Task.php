@@ -15,7 +15,7 @@ class Task
 
     protected ?int $id = null;
     protected string $title;
-    protected string $status = self::STATUS_WAIT;
+    protected string $status;
     protected Profile $author;
     protected DateTimeImmutable $createdAt;
     protected ?int $price;
@@ -39,6 +39,7 @@ class Task
         $this->title = $title;
         $this->author = $author;
         $this->createdAt = new DateTimeImmutable();
+        $this->resetStatus();
         $this->setCategories($categories);
         $this->price = $price;
         $this->address = $address;
@@ -113,6 +114,11 @@ class Task
     public function isOffered(): bool
     {
         return $this->status === self::STATUS_OFFERED;
+    }
+
+    public function resetStatus()
+    {
+        $this->status = self::STATUS_WAIT;
     }
 
     public function offer()

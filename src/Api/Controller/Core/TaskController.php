@@ -8,6 +8,7 @@ use App\Core\Application\UseCase\Task\CreateTaskUseCase;
 use App\Core\Application\UseCase\Task\GetProfileNextTaskUseCase;
 use App\Core\Application\UseCase\Task\OfferTaskUseCase;
 use App\Core\Application\UseCase\TaskOffer\AcceptOfferUseCase;
+use App\Core\Application\UseCase\TaskOffer\RejectTaskOfferUseCase;
 use App\Core\Domain\DTO\Address\AddressPlain;
 use App\Core\Domain\Entity\Profile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -62,6 +63,7 @@ class TaskController extends BaseController
     public function acceptOffer(
         #[CurrentUser] Profile    $profile,
         AcceptOfferUseCase $useCase,
+        RejectTaskOfferUseCase $rejectTaskOfferUseCase,
     ): JsonResponse {
         $tasks = $useCase->get($profile);
         return $this->json($tasks, context: ['task_full']);

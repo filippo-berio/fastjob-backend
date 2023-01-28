@@ -36,7 +36,7 @@ class Task extends DomainTask
     protected string $title;
 
     #[Column]
-    protected string $status = self::STATUS_WAIT;
+    protected string $status;
 
     #[ManyToOne(targetEntity: Profile::class)]
     #[Groups(['task_full'])]

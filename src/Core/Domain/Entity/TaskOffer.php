@@ -48,6 +48,16 @@ class TaskOffer
         return $this->id;
     }
 
+    public function isAccepted(): bool
+    {
+        return $this->status === self::STATUS_ACCEPTED;
+    }
+
+    public function reject()
+    {
+        $this->status = self::STATUS_REJECTED;
+    }
+
     public function accept()
     {
         $this->status = self::STATUS_ACCEPTED;

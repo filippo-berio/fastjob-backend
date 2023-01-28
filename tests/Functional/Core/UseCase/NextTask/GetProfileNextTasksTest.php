@@ -4,11 +4,12 @@ namespace App\Tests\Functional\Core\UseCase\NextTask;
 
 use App\Core\Application\UseCase\Swipe\CreateTaskSwipeUseCase;
 use App\Core\Application\UseCase\Task\GetProfileNextTaskUseCase;
-use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;
-use App\Core\Infrastructure\Entity\Task;
+use App\Core\Domain\Event\Task\GenerateNext\GenerateNextTaskEvent;
 use App\Core\Domain\Repository\ProfileNextTaskRepositoryInterface;
-use App\Core\Domain\TaskSchedule\Task\GenerateNextTask;
+use App\Core\Infrastructure\Entity\Profile;
+use App\Core\Infrastructure\Entity\Task;
+use App\Core\Infrastructure\Message\Event\EventMessage;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Core\TaskFixtures;
 use App\Tests\Functional\FunctionalTest;
@@ -37,7 +38,7 @@ class GetProfileNextTasksTest extends FunctionalTest
         $this->assertEquals(TaskFixtures::TASK_4, $task4->getId());
 
         $this->assertEquals(self::MINIMAL_STACK, $nextTaskRepo->count($profile));
-        $this->messenger()->queue()->assertContains(GenerateNextTask::class, 0);
+        $this->messenger()->queue()->assertContains(EventMessage::class, 0);
 
         $task5 = $this->createTaskSwipe($profile->getId(), $task4->getId());
         $this->assertEquals(TaskFixtures::TASK_5, $task5->getId());
@@ -91,11 +92,14 @@ class GetProfileNextTasksTest extends FunctionalTest
 
     private function processGenerateNextTaskMessage(int $profileId)
     {
-        $this->messenger()->queue()->assertContains(GenerateNextTask::class, 1);
-        /** @var GenerateNextTask $message */
-        $message = $this->messenger()->queue()->first(GenerateNextTask::class)->getMessage();
-        $this->assertEquals($profileId, $message->profileId);
-        $this->assertEquals(self::STACK_LIMIT, $message->count);
+        $this->messenger()->queue()->assertContains(EventMessage::class, 1);
+        /** @var EventMessage $message */
+        $message = $this->messenger()->queue()->first(EventMessage::class)->getMessage();
+        /** @var GenerateNextTaskEvent $event */
+        $event = $message->event;
+        $this->assertInstanceOf(GenerateNextTaskEvent::class, $message->event);
+        $this->assertEquals($profileId, $event->profileId);
+        $this->assertEquals(self::STACK_LIMIT, $event->count);
         $this->messenger()->process();
     }
 

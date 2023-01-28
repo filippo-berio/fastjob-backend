@@ -29,6 +29,7 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
     const TASK_13 = 13;
     const TASK_14 = 14;
     const TASK_15 = 15;
+    const TASK_16 = 16;
 
     protected function getEntity(): string
     {
@@ -44,6 +45,18 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
             false,
         );
         $task2->delete();
+
+        $task16 = new Task(
+            'Task 16 title',
+            $this->getReference(ProfileFixtures::PROFILE_15, Profile::class),
+            [
+                $this->getReference(CategoryFixtures::SUM_STUPID_SHIT, Category::class)
+            ],
+            false,
+            price: 7000,
+        );
+        $task16->offer();
+
 
         $this->save([
             $task1 = new Task(
@@ -175,6 +188,7 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 false,
                 price: 7000,
             ),
+            $task16,
         ], $manager);
 
         $this->addReference(self::TASK_1, $task1);
@@ -191,6 +205,7 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
         $this->addReference(self::TASK_13, $task13);
         $this->addReference(self::TASK_14, $task14);
         $this->addReference(self::TASK_15, $task15);
+        $this->addReference(self::TASK_16, $task16);
     }
 
     public function getDependencies()

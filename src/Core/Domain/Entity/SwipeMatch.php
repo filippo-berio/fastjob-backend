@@ -5,9 +5,9 @@ namespace App\Core\Domain\Entity;
 class SwipeMatch
 {
     public function __construct(
-        protected Task $task,
+        protected Task    $task,
         protected Profile $executor,
-        protected ?int $customPrice = null,
+        protected ?int    $customPrice = null,
     ) {
     }
 

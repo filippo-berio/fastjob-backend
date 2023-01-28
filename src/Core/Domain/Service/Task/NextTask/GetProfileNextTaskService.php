@@ -4,11 +4,11 @@ namespace App\Core\Domain\Service\Task\NextTask;
 
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
+use App\Core\Domain\Event\EventDispatcherInterface;
+use App\Core\Domain\Event\Task\GenerateNext\GenerateNextTaskEvent;
 use App\Core\Domain\Repository\PendingTaskRepositoryInterface;
 use App\Core\Domain\Repository\ProfileNextTaskRepositoryInterface;
-use App\Core\Domain\TaskSchedule\Task\GenerateNextTask;
 use App\Core\Domain\Service\Task\NextTask\Generator\CategoryNextTaskGenerator;
-use App\Core\Domain\TaskSchedule\TaskSchedulerInterface;
 
 class GetProfileNextTaskService
 {
@@ -16,7 +16,7 @@ class GetProfileNextTaskService
         private ProfileNextTaskRepositoryInterface $nextTaskRepository,
         private CategoryNextTaskGenerator          $nextTaskGenerator,
         private PendingTaskRepositoryInterface     $pendingTaskRepository,
-        private TaskSchedulerInterface             $taskScheduler,
+        private EventDispatcherInterface           $eventDispatcher,
         private int                                $minimalStack,
         private int                                $stackLimit,
     ) {
@@ -33,7 +33,7 @@ class GetProfileNextTaskService
         if ($task) {
             $stackCount = $this->nextTaskRepository->count($profile);
             if ($stackCount < $this->minimalStack) {
-                $this->taskScheduler->dispatch(new GenerateNextTask($profile->getId(), $this->stackLimit));
+                $this->eventDispatcher->dispatch(new GenerateNextTaskEvent($profile->getId(), $this->stackLimit));
             }
             $this->pendingTaskRepository->set($profile, $task);
             return $task;
@@ -44,7 +44,7 @@ class GetProfileNextTaskService
             return null;
         }
 
-        $this->taskScheduler->dispatch(new GenerateNextTask($profile->getId(), $this->stackLimit));
+        $this->eventDispatcher->dispatch(new GenerateNextTaskEvent($profile->getId(), $this->stackLimit));
         $this->pendingTaskRepository->set($profile, $generatedTasks[0]);
         return $generatedTasks[0];
     }

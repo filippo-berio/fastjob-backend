@@ -9,8 +9,7 @@ use DateTimeInterface;
 class Task
 {
     const STATUS_WAIT = 'wait';
-    const STATUS_IN_PROGRESS = 'in_progress';
-    const STATUS_CLOSED = 'closed';
+    const STATUS_OFFERED = 'offered';
     const STATUS_DELETED = 'deleted';
 
     protected ?int $id = null;
@@ -110,14 +109,14 @@ class Task
         return $this->status === self::STATUS_WAIT;
     }
 
-    public function transferProgress()
+    public function isOffered(): bool
     {
-        $this->status = self::STATUS_IN_PROGRESS;
+        return $this->status === self::STATUS_OFFERED;
     }
 
-    public function close()
+    public function offer()
     {
-        $this->status = self::STATUS_CLOSED;
+        $this->status = self::STATUS_OFFERED;
     }
 
     public function delete()

@@ -32,6 +32,8 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
     const PROFILE_13 = 12;
     const PROFILE_14 = 13;
     const PROFILE_15 = 14;
+    const PROFILE_16 = 15;
+    const PROFILE_17 = 16;
 
     protected function getEntity(): string
     {
@@ -143,6 +145,16 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
                 'Филлимон',
                 new DateTimeImmutable('10.10.2000'),
             ),
+            $profile16 = new Profile(
+                $this->getCoreUser(UserFixtures::USER_16),
+                'Филлимон',
+                new DateTimeImmutable('10.10.2000'),
+            ),
+            $profile17 = new Profile(
+                $this->getCoreUser(UserFixtures::USER_17),
+                'Филлимон',
+                new DateTimeImmutable('10.10.2000'),
+            ),
         ], $manager);
 
         $this->addReference(self::PROFILE_1, $profile1);
@@ -159,6 +171,8 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
         $this->addReference(self::PROFILE_13, $profile13);
         $this->addReference(self::PROFILE_14, $profile14);
         $this->addReference(self::PROFILE_15, $profile15);
+        $this->addReference(self::PROFILE_16, $profile16);
+        $this->addReference(self::PROFILE_17, $profile17);
     }
 
     public function getDependencies()

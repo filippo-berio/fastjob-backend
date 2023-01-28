@@ -12,7 +12,7 @@ readonly class TaskMatches
      * @param SwipeMatch[] $matches
      */
     public function __construct(
-        public Task $task,
+        public Task  $task,
         public array $matches
     ) {
     }

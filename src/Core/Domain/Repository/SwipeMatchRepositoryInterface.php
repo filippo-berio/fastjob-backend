@@ -19,4 +19,6 @@ interface SwipeMatchRepositoryInterface
      * @return SwipeMatch[]
      */
     public function findForExecutor(Profile $profile): array;
+
+    public function findByTaskAndExecutor(Task $task, Profile $profile): ?SwipeMatch;
 }

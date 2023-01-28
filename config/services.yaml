@@ -16,6 +16,8 @@ services:
     _instanceof:
         App\Core\Domain\Service\Executor\NextExecutorService\NextExecutorServiceInterface:
             tags: ['core.next_executor_service']
+        App\Core\Domain\Event\EventHandlerInterface:
+            tags: ['core.event_handler']
 
         App\CQRS\QueryHandlerInterface:
             tags: ['cqrs.query_handler']
@@ -48,6 +50,9 @@ services:
     App\Auth\Repository\ConfirmationTimeoutRepository:
         $timeout: '%env(CONFIRM_SMS_TIMEOUT)%'
 
+
+    App\Core\Infrastructure\Event\EventHandler:
+        $handlers: !tagged_iterator 'core.event_handler'
 
     App\Core\Domain\Service\Executor\NextExecutorService\NextExecutorServiceFactory:
         $services: !tagged_iterator 'core.next_executor_service'

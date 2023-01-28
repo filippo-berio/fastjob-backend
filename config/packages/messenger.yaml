@@ -8,7 +8,7 @@ framework:
 
         routing:
             'App\Sms\Message\SmsMessage': async
-            'App\Core\Domain\TaskSchedule\Task\GenerateNextTask': async
+            'App\Core\Infrastructure\Message\Event\EventMessage': async
 
 when@test:
     framework:

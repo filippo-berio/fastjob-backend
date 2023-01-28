@@ -23,9 +23,10 @@ class SwipeMatchRepository implements SwipeMatchRepositoryInterface
 
     public function findForTask(DomainTask $task): array
     {
-        $taskSwipes = $this->getMatchesQueryBuilder()
-            ->andWhere('identity(ts.task) = :taskId')
-            ->setParameter('taskId', $task->getId())
+        $qb = $this->createTaskSwipeQueryBuilder();
+        $this->queryTask($qb, $task);
+
+        $taskSwipes = $qb
             ->getQuery()
             ->getResult();
 
@@ -39,12 +40,10 @@ class SwipeMatchRepository implements SwipeMatchRepositoryInterface
 
     public function findForExecutor(DomainProfile $profile): array
     {
-        $taskSwipes = $this->getMatchesQueryBuilder()
-            ->andWhere('identity(ts.profile) = :profileId')
-            ->setParameter('profileId', $profile->getId())
-            ->innerJoin('ts.task', 't')
-            ->andWhere('t.status = :waitStatus')
-            ->setParameter('waitStatus', Task::STATUS_WAIT)
+        $qb = $this->createTaskSwipeQueryBuilder();
+        $this->queryExecutor($qb, $profile);
+
+        $taskSwipes = $qb
             ->getQuery()
             ->getResult();
 
@@ -56,7 +55,40 @@ class SwipeMatchRepository implements SwipeMatchRepositoryInterface
         return $result;
     }
 
-    private function getMatchesQueryBuilder(): QueryBuilder
+    public function findByTaskAndExecutor(DomainTask $task, DomainProfile $profile): ?SwipeMatch
+    {
+        $qb = $this->createTaskSwipeQueryBuilder();
+        $this->queryTask($qb, $task);
+        $this->queryExecutor($qb, $profile);
+
+        /** @var ?TaskSwipe $taskSwipe */
+        $taskSwipe = $qb
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (!$taskSwipe) {
+            return null;
+        }
+
+        return new SwipeMatch($task, $profile, $taskSwipe->getCustomPrice());
+    }
+
+    private function queryExecutor(QueryBuilder $queryBuilder, DomainProfile $profile): QueryBuilder
+    {
+        return $queryBuilder
+            ->andWhere('identity(ts.profile) = :profileId')
+            ->setParameter('profileId', $profile->getId());
+    }
+
+    private function queryTask(QueryBuilder $queryBuilder, DomainTask $task): QueryBuilder
+    {
+        return $queryBuilder
+            ->innerJoin('ts.task', 't')
+            ->andWhere('identity(ts.task) = :taskId')
+            ->setParameter('taskId', $task->getId());
+    }
+
+    private function createTaskSwipeQueryBuilder(): QueryBuilder
     {
         return $this->entityManager->getRepository(TaskSwipe::class)
             ->createQueryBuilder('ts')

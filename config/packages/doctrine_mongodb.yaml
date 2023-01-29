@@ -10,11 +10,11 @@ doctrine_mongodb:
         default:
             auto_mapping: true
             mappings:
-                App:
-                    is_bundle: false
-                    dir: '%kernel.project_dir%/src/Document'
-                    prefix: 'App\Document'
-                    alias: App
+#                App:
+#                    is_bundle: false
+#                    dir: '%kernel.project_dir%/src/Document'
+#                    prefix: 'App\Document'
+#                    alias: App
 
 when@prod:
     doctrine_mongodb:

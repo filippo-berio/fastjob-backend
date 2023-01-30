@@ -8,17 +8,14 @@ use Exception;
 
 class EventHandler
 {
-    /** @var EventHandlerInterface[] */
+    /** @var EventHandlerInterface[][] */
     private array $eventHandlers;
 
-    /**
-     * @param iterable<EventHandlerInterface> $handlers
-     */
     public function __construct(
         iterable $handlers,
     ) {
         foreach ($handlers as $handler) {
-            $this->eventHandlers[$handler->event()] = $handler;
+            $this->register($handler);
         }
     }
 
@@ -27,7 +24,16 @@ class EventHandler
         if (!isset($this->eventHandlers[$event::class])) {
             throw new Exception('Не найден хендлер для ' . $event::class);
         }
-        $handler = $this->eventHandlers[$event::class];
-        $handler->handle($event);
+        foreach ($this->eventHandlers[$event::class] as $handler) {
+            $handler->handle($event);
+        }
+    }
+
+    private function register(EventHandlerInterface $handler)
+    {
+        if (!isset($this->eventHandlers[$handler->event()])) {
+            $this->eventHandlers[$handler->event()] = [];
+        }
+        $this->eventHandlers[$handler->event()][] = $handler;
     }
 }

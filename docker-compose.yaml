@@ -14,12 +14,11 @@ services:
         depends_on:
             - postgres
             - redis
+            - mongodb
 
     postgres:
         image: postgres:14.6-alpine
         container_name: fastjob-postgres
-        ports:
-            - '6060:5432'
         environment:
             POSTGRES_DB: ${PG_DB}
             POSTGRES_PASSWORD: ${PG_PASS}
@@ -51,7 +50,31 @@ services:
         container_name: fastjob-wiremock
         restart: always
 
+    mongodb:
+        image: mongo
+        container_name: fastjob-mongo
+        volumes:
+            - mongo_data:/data/db
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: root
+
+    mongo-express:
+        image: mongo-express
+        restart: always
+        ports:
+            - 6060:8081
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: root
+            ME_CONFIG_MONGODB_ADMINPASSWORD: root
+            ME_CONFIG_MONGODB_URL: mongodb://root:root@mongodb:27017/
+        depends_on:
+            - mongodb
+        container_name: fastjob-mongo-express
+
 volumes:
     postgres_data:
     redis_data:
+    mongo_data:
 

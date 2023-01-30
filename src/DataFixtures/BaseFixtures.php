@@ -19,10 +19,7 @@ abstract class BaseFixtures extends Fixture
 
     public function addReference($name, $object): void
     {
-        $entity = $this->getEntity();
-        $parts = explode('\\', $entity);
-        $prefix = array_pop($parts);
-        parent::addReference($prefix . $name, $object);
+        parent::addReference($this->getEntity() . $name, $object);
     }
 
     /**
@@ -33,11 +30,6 @@ abstract class BaseFixtures extends Fixture
      */
     public function getReference($name, ?string $class = null): object
     {
-        $prefix = '';
-        if ($class) {
-            $parts = explode('\\', $class);
-            $prefix = array_pop($parts);
-        }
-        return parent::getReference($prefix . $name, $class);
+        return parent::getReference($class . $name, $class);
     }
 }

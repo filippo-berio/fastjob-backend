@@ -19,7 +19,7 @@ class ReviewRepository implements ReviewRepositoryInterface
     {
         return $this->entityManager->getRepository(Review::class)
             ->createQueryBuilder('r')
-            ->andWhere('identity(r.doctrineTarget) = :target')
+            ->andWhere('r.targetId = :target')
             ->setParameter('target', $target->getId())
             ->getQuery()
             ->getResult();

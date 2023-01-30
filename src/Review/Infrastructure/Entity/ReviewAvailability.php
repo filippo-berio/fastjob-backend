@@ -12,7 +12,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations\Id;
 class ReviewAvailability extends DomainReviewAvailability
 {
     #[Id]
-    protected int $id;
+    protected string $id;
 
     #[Field]
     protected string $authorId;

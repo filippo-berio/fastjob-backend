@@ -25,6 +25,11 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Location/Entity'
                 prefix: 'App\Location\Entity'
                 alias: Location
+            review:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Review/Infrastructure/Entity'
+                prefix: 'App\Review\Infrastructure\Entity'
+                alias: Review
 
 when@test:
     doctrine:

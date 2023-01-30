@@ -2,12 +2,16 @@
 
 namespace App\Api\Controller\Report;
 
-use App\Report\Application\UseCase\AllowReviewUseCase;
-use App\Report\Application\UseCase\CreateReviewUseCase;
-use App\Report\Application\UseCase\GetProfileReviewsUseCase;
+use App\Api\Controller\BaseController;
+use App\Review\Application\UseCase\AllowReviewUseCase;
+use App\Review\Application\UseCase\CreateReviewUseCase;
+use App\Review\Application\UseCase\GetProfileReviewsUseCase;
+use Symfony\Component\Routing\Annotation\Route;
 
-class ReportController
+#[Route('review')]
+class ReportController extends BaseController
 {
+    #[Route]
     public function action(
         AllowReviewUseCase       $useCase1,
         GetProfileReviewsUseCase $useCase2,

@@ -4,7 +4,7 @@ namespace App\Review\Domain\Entity;
 
 class Review
 {
-    protected string $id;
+    protected int $id;
 
     public function __construct(
         protected Profile $author,
@@ -14,7 +14,7 @@ class Review
     ) {
     }
 
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }

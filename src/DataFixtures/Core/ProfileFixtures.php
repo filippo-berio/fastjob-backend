@@ -35,6 +35,8 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
     const PROFILE_16 = 15;
     const PROFILE_17 = 16;
 
+    const NOT_EXIST_PROFILE = 999;
+
     protected function getEntity(): string
     {
         return Profile::class;

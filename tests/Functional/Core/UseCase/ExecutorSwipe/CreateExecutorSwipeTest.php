@@ -9,7 +9,7 @@ use App\Core\Domain\Entity\Swipe;
 use App\Core\Domain\Exception\ExecutorSwipe\ExecutorSwipeExistsException;
 use App\Core\Domain\Exception\ExecutorSwipe\ExecutorSwipeSelfAssignException;
 use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
-use App\Core\Domain\Exception\Task\TaskNotFoundException;
+use App\Core\Application\Exception\Task\TaskNotFoundException;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Core\TaskFixtures;
 use App\Tests\Functional\FunctionalTest;

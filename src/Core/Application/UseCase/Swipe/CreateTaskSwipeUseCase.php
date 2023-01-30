@@ -4,7 +4,7 @@ namespace App\Core\Application\UseCase\Swipe;
 
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
-use App\Core\Domain\Exception\Task\TaskNotFoundException;
+use App\Core\Application\Exception\Task\TaskNotFoundException;
 use App\Core\Domain\Query\Task\FindTaskById;
 use App\Core\Domain\Service\Task\NextTask\GetProfileNextTaskService;
 use App\Core\Domain\Service\TaskSwipe\CreateTaskSwipeService;

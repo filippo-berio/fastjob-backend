@@ -6,7 +6,7 @@ use App\Core\Domain\Entity\NextExecutor;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
-use App\Core\Domain\Exception\Task\TaskNotFoundException;
+use App\Core\Application\Exception\Task\TaskNotFoundException;
 use App\Core\Domain\Query\Profile\FindProfileById;
 use App\Core\Domain\Query\Task\FindTaskByAuthorAndId;
 use App\Core\Domain\Service\Executor\NextExecutorService\NextExecutorServiceFactory;

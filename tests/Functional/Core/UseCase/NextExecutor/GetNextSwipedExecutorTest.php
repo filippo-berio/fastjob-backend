@@ -4,7 +4,7 @@ namespace App\Tests\Functional\Core\UseCase\NextExecutor;
 
 use App\Core\Application\UseCase\Executor\GetSwipedNextExecutorUseCase;
 use App\Core\Application\UseCase\Swipe\CreateExecutorSwipeUseCase;
-use App\Core\Domain\Exception\Task\TaskNotFoundException;
+use App\Core\Application\Exception\Task\TaskNotFoundException;
 use App\Core\Domain\Service\Executor\NextExecutorService\GetSwipedNextExecutorService;
 use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;

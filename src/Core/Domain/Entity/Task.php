@@ -11,6 +11,8 @@ class Task
     const STATUS_WAIT = 'wait';
     const STATUS_OFFERED = 'offered';
     const STATUS_WORK = 'work';
+    const STATUS_CANCELED = 'canceled';
+    const STATUS_FINISHED = 'finished';
     const STATUS_DELETED = 'deleted';
 
     protected ?int $id = null;
@@ -126,9 +128,19 @@ class Task
         $this->status = self::STATUS_OFFERED;
     }
 
+    public function cancel()
+    {
+        $this->status = self::STATUS_CANCELED;
+    }
+
     public function delete()
     {
         $this->status = self::STATUS_DELETED;
+    }
+
+    public function finish()
+    {
+        $this->status = self::STATUS_FINISHED;
     }
 
     public function restore()
@@ -141,6 +153,11 @@ class Task
     public function acceptOffer()
     {
         $this->status = self::STATUS_WORK;
+    }
+
+    public function isInWork()
+    {
+        return $this->status === self::STATUS_WORK;
     }
 
     /**

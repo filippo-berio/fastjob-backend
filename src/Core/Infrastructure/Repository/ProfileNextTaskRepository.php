@@ -56,4 +56,9 @@ class ProfileNextTaskRepository implements ProfileNextTaskRepositoryInterface
     {
         return $this->redis->llen('profile:next-tasks:' . $profile->getId());
     }
+
+    public function clear(Profile $profile)
+    {
+        $this->redis->del('profile:next-tasks:' . $profile->getId());
+    }
 }

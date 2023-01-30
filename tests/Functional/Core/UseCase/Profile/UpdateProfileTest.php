@@ -4,10 +4,14 @@ namespace App\Tests\Functional\Core\UseCase\Profile;
 
 use App\Auth\Entity\User;
 use App\Core\Application\UseCase\Profile\UpdateProfileUseCase;
+use App\Core\Domain\DTO\Profile\UpdateProfileDTO;
+use App\Core\Domain\Entity\Category;
+use App\Core\Domain\Event\Task\GenerateNext\GenerateNextTaskEvent;
 use App\Core\Domain\Exception\Category\CategoryNotFoundException;
 use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
 use App\DataFixtures\Auth\UserFixtures;
 use App\DataFixtures\Core\CategoryFixtures;
+use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Location\CityFixtures;
 use App\Location\Exception\CityNotFoundException;
 use App\Tests\Functional\FunctionalTest;
@@ -15,6 +19,36 @@ use App\Validation\Exception\ValidationException;
 
 class UpdateProfileTest extends FunctionalTest
 {
+    /**
+     * @dataProvider regenerateStackData
+     */
+    public function testRegenerateStack(
+        bool $shouldRegenerate,
+        array $data,
+    ) {
+        $useCase = $this->getDependency(UpdateProfileUseCase::class);
+        $profile = $this->getCoreProfile(ProfileFixtures::PROFILE_1);
+        $useCase->update(
+            $profile->getUser(),
+            $data['firstName'] ?? $profile->getFirstName(),
+            $data['categories'] ?? array_map(
+                fn(Category $category) => $category->getId(),
+                $profile->getCategories()
+            ),
+            $data['lastName'] ?? $profile->getLastName(),
+            $data['description'] ?? $profile->getDescription(),
+            $data['city'] ?? $profile->getCity()->getId(),
+        );
+
+        $this->assertNull(null);
+
+        if ($shouldRegenerate) {
+            $this->assertAsyncEventDispatched(GenerateNextTaskEvent::class);
+        } else {
+            $this->assertAsyncEventNotDispatched(GenerateNextTaskEvent::class);
+        }
+    }
+
     /**
      * @dataProvider invalidData
      */
@@ -59,6 +93,67 @@ class UpdateProfileTest extends FunctionalTest
         foreach ($profile->getCategories() as $category) {
             $this->assertContains($category->getId(), $categoryIds);
         }
+    }
+
+    private function regenerateStackData()
+    {
+        return [
+            [
+                false,
+                [
+                    'firstName' => 'new',
+                ],
+            ],
+            [
+                false,
+                [
+                    'firstName' => 'new',
+                    'lastName' => 'newLast',
+                    'description' => 'newLast',
+                ],
+            ],
+            [
+                false,
+                [
+                    'firstName' => 'new',
+                    'categories' => [
+                        CategoryFixtures::PLUMBING,
+                    ],
+                    'city' => CityFixtures::CITY_1,
+                ],
+            ],
+            [
+                true,
+                [
+                    'firstName' => 'new',
+                    'categories' => [
+                        CategoryFixtures::PLUMBING,
+                        CategoryFixtures::CPLUS,
+                    ],
+                    'city' => CityFixtures::CITY_1,
+                ],
+            ],
+            [
+                true,
+                [
+                    'firstName' => 'new',
+                    'categories' => [
+                        CategoryFixtures::CLEANING,
+                    ],
+                    'city' => CityFixtures::CITY_1,
+                ],
+            ],
+            [
+                true,
+                [
+                    'firstName' => 'new',
+                    'categories' => [
+                        CategoryFixtures::PLUMBING,
+                    ],
+                    'city' => CityFixtures::CITY_2,
+                ],
+            ],
+        ];
     }
 
     private function validData()

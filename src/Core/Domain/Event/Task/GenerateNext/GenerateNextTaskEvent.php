@@ -8,7 +8,7 @@ readonly class GenerateNextTaskEvent implements EventInterface
 {
     public function __construct(
         public int $profileId,
-        public int $count,
+        public ?int $count = null,
     ) {
     }
 }

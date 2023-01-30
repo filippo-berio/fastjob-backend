@@ -14,6 +14,7 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
             $redisHost: '%env(REDIS_HOST)%'
+            $taskStackLimit: '%env(NEXT_TASK_STACK_LIMIT)%'
 
     _instanceof:
         App\Core\Domain\Service\Executor\NextExecutorService\NextExecutorServiceInterface:
@@ -64,7 +65,6 @@ services:
 
     App\Core\Domain\Service\Task\NextTask\GetProfileNextTaskService:
         $minimalStack: '%env(NEXT_TASK_MINIMAL_STACK)%'
-        $stackLimit: '%env(NEXT_TASK_STACK_LIMIT)%'
 
 
     App\CQRS\MessageHandler\CommandMessageHandler:

@@ -125,4 +125,15 @@ abstract class FunctionalTest extends KernelTestCase
         }
         throw new AssertionFailedError("Failed asserting that $event is dispatched asynchronously");
     }
+
+    protected function assertAsyncEventNotDispatched(string $event)
+    {
+        foreach ($this->messenger()->queue()->messages() as $message) {
+            if ($message instanceof EventMessage) {
+                if ($message->event instanceof $event) {
+                    throw new AssertionFailedError("Failed asserting that $event is not dispatched asynchronously");
+                }
+            }
+        }
+    }
 }

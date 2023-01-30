@@ -18,7 +18,7 @@ class GetProfileNextTaskService
         private PendingTaskRepositoryInterface     $pendingTaskRepository,
         private EventDispatcherInterface           $eventDispatcher,
         private int                                $minimalStack,
-        private int                                $stackLimit,
+        private int                                $taskStackLimit,
     ) {
     }
 
@@ -33,7 +33,7 @@ class GetProfileNextTaskService
         if ($task) {
             $stackCount = $this->nextTaskRepository->count($profile);
             if ($stackCount < $this->minimalStack) {
-                $this->eventDispatcher->dispatch(new GenerateNextTaskEvent($profile->getId(), $this->stackLimit));
+                $this->eventDispatcher->dispatch(new GenerateNextTaskEvent($profile->getId(), $this->taskStackLimit));
             }
             $this->pendingTaskRepository->set($profile, $task);
             return $task;
@@ -44,7 +44,7 @@ class GetProfileNextTaskService
             return null;
         }
 
-        $this->eventDispatcher->dispatch(new GenerateNextTaskEvent($profile->getId(), $this->stackLimit));
+        $this->eventDispatcher->dispatch(new GenerateNextTaskEvent($profile->getId(), $this->taskStackLimit));
         $this->pendingTaskRepository->set($profile, $generatedTasks[0]);
         return $generatedTasks[0];
     }

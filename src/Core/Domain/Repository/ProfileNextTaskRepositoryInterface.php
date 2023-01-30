@@ -22,4 +22,6 @@ interface ProfileNextTaskRepositoryInterface
     public function pop(Profile $profile): ?Task;
 
     public function count(Profile $profile): int;
+
+    public function clear(Profile $profile);
 }

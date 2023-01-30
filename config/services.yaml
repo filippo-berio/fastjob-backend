@@ -56,7 +56,7 @@ services:
     App\Core\Infrastructure\Repository\TaskOfferRepository:
         $taskOfferLifetime: '%env(TASK_OFFER_LIFETIME)%'
 
-    App\Core\Infrastructure\Event\EventHandler:
+    App\Core\Infrastructure\Event\EventHandlerFactory:
         $handlers: !tagged_iterator 'core.event_handler'
 
     App\Core\Domain\Service\Executor\NextExecutorService\NextExecutorServiceFactory:

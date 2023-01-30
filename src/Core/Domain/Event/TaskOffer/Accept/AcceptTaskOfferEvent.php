@@ -11,9 +11,4 @@ class AcceptTaskOfferEvent implements EventInterface
         public TaskOffer $offer
     ) {
     }
-
-    public function executionType(): string
-    {
-        return self::EXECUTION_TYPE_ASYNC;
-    }
 }

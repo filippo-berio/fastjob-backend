@@ -18,6 +18,11 @@ class GenerateNextTaskHandler implements EventHandlerInterface
     ) {
     }
 
+    public function executionType(): string
+    {
+        return self::EXECUTION_TYPE_ASYNC;
+    }
+
     public function event(): string
     {
         return GenerateNextTaskEvent::class;

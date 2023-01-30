@@ -11,9 +11,4 @@ readonly class GenerateNextTaskEvent implements EventInterface
         public int $count,
     ) {
     }
-
-    public function executionType(): string
-    {
-        return EventInterface::EXECUTION_TYPE_ASYNC;
-    }
 }

@@ -2,7 +2,8 @@
 
 namespace App\Core\Infrastructure\MessageHandler\Event;
 
-use App\Core\Infrastructure\Event\EventHandler;
+use App\Core\Domain\Event\EventHandlerInterface;
+use App\Core\Infrastructure\Event\EventHandlerFactory;
 use App\Core\Infrastructure\Message\Event\EventMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -10,12 +11,18 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 class EventMessageHandler
 {
     public function __construct(
-        private EventHandler $eventHandler,
+        private EventHandlerFactory $eventHandlerFactory,
     ) {
     }
 
     public function __invoke(EventMessage $message)
     {
-        $this->eventHandler->handle($message->event);
+        $handlers = $this->eventHandlerFactory->getEventHandlers(
+            $message->event,
+            EventHandlerInterface::EXECUTION_TYPE_ASYNC
+        );
+        foreach ($handlers as $eventHandler) {
+            $eventHandler->handle($message->event);
+        }
     }
 }

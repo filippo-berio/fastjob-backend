@@ -28,7 +28,7 @@ class ReviewGateway
     }
     /**
      * @param Profile $profile
-     * @return Review[]
+     * @return ExternalReview[]
      */
     public function findForTarget(Profile $profile): array
     {

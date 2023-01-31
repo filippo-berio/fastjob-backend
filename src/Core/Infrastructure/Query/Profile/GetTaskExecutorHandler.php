@@ -3,7 +3,7 @@
 namespace App\Core\Infrastructure\Query\Profile;
 
 use App\Core\Domain\Query\Profile\GetTaskExecutor;
-use App\Core\Infrastructure\Entity\Profile;
+use App\Core\Domain\Entity\Profile;
 use App\Core\Infrastructure\Entity\Task;
 use App\Core\Infrastructure\Entity\TaskOffer;
 use App\CQRS\QueryInterface;
@@ -17,9 +17,9 @@ class GetTaskExecutorHandler extends BaseProfileQueryHandler
      */
     public function handle(QueryInterface $query): ?Profile
     {
-        $profile = $this->entityManager->getRepository(TaskOffer::class)
+        /** @var ?TaskOffer $taskOffer */
+        $taskOffer = $this->entityManager->getRepository(TaskOffer::class)
             ->createQueryBuilder('to')
-            ->select('to.profile')
             ->andWhere('to.status = :acceptStatus')
             ->setParameter('acceptStatus', TaskOffer::STATUS_ACCEPTED)
             ->innerJoin('to.task', 't')
@@ -29,7 +29,7 @@ class GetTaskExecutorHandler extends BaseProfileQueryHandler
             ->setParameter('taskCancelStatus', Task::STATUS_CANCELED)
             ->getQuery()
             ->getOneOrNullResult();
-        dd($profile);
+        return $taskOffer?->getProfile();
     }
 
     public function getQueryClass(): string

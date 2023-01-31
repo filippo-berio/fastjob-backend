@@ -55,7 +55,7 @@ abstract class FunctionalTest extends KernelTestCase
      * @template T
      * @param class-string<T> $class
      * @param mixed $id
-     * @return T|null
+     * @return T
      */
     protected function getEntity(string $class, mixed $id)
     {

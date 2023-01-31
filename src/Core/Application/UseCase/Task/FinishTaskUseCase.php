@@ -16,13 +16,17 @@ class FinishTaskUseCase
     ) {
     }
 
-    public function finish(Profile $profile, int $taskId)
-    {
+    public function finish(
+        Profile $profile,
+        int $taskId,
+        int $rating,
+        ?string $reviewComment = null,
+    ) {
         $task = $this->queryBus->query(new FindTaskByAuthorAndId($profile, $taskId));
         if (!$task) {
             throw new TaskNotFoundException();
         }
 
-        $this->finishTaskService->finish($task);
+        $this->finishTaskService->finish($task, $rating, $reviewComment);
     }
 }

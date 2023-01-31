@@ -19,6 +19,6 @@ class GetProfileReviewsService
      */
     public function get(Profile $profile): array
     {
-        return $this->reviewRepository->findForProfile($profile);
+        return $this->reviewRepository->findForTarget($profile);
     }
 }

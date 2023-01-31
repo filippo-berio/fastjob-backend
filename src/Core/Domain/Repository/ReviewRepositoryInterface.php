@@ -13,5 +13,5 @@ interface ReviewRepositoryInterface
      * @param Profile $profile
      * @return Review[]
      */
-    public function findForProfile(Profile $profile): array;
+    public function findForTarget(Profile $profile): array;
 }

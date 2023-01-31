@@ -20,7 +20,7 @@ class ReviewRepository implements ReviewRepositoryInterface
         return $review;
     }
 
-    public function findForProfile(Profile $profile): array
+    public function findForTarget(Profile $profile): array
     {
         return $this->reviewGateway->findForTarget($profile);
     }

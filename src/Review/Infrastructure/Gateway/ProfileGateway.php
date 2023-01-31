@@ -3,7 +3,7 @@
 namespace App\Review\Infrastructure\Gateway;
 
 use App\Core\Application\UseCase\Profile\GetProfileByIdUseCase;
-use App\Review\Domain\Entity\Profile;
+use App\Core\Domain\Entity\Profile as ExternalProfile;
 
 class ProfileGateway
 {
@@ -12,9 +12,8 @@ class ProfileGateway
     ) {
     }
 
-    public function getProfile(int $id): ?Profile
+    public function getProfile(int $id): ?ExternalProfile
     {
-        $coreProfile = $this->getProfileByIdUseCase->get($id);
-        return $coreProfile ? new Profile($coreProfile->getId()) : null;
+        return $this->getProfileByIdUseCase->get($id);
     }
 }

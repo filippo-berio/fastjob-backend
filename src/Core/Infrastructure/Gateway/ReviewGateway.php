@@ -20,9 +20,9 @@ class ReviewGateway
     ) {
     }
 
-    public function saveReview(Review $review)
+    public function saveReview(Review $review): ExternalReview
     {
-        $this->createReviewUseCase->create(
+        return $this->createReviewUseCase->create(
             new ReviewProfile($review->getAuthor()->getId()),
             $review->getTarget()->getId(),
             $review->getRating(),
@@ -30,17 +30,17 @@ class ReviewGateway
         );
     }
 
+    public function findById()
+    {
+
+    }
     /**
      * @param Profile $profile
      * @return Review[]
      */
     public function findForTarget(Profile $profile): array
     {
-        $reviews = $this->getProfileReviewsUseCase->get($profile->getId());
-        return array_map(
-            fn(ExternalReview $review) => $this->buildReviewFromExternal($review),
-            $reviews
-        );
+        return $this->getProfileReviewsUseCase->get($profile->getId());
     }
 
     private function buildReviewFromExternal(ExternalReview $review): Review

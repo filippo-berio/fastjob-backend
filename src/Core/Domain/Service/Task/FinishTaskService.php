@@ -38,6 +38,7 @@ class FinishTaskService
         $executor = $this->queryBus->query(new GetTaskExecutor($task));
         $reviewEntity = $this->entityMapper->persistenceEntity(Review::class);
         $review = new $reviewEntity(
+            $task,
             $task->getAuthor(),
             $executor,
             $rating,

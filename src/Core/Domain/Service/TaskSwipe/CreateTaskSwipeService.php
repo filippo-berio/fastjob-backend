@@ -33,7 +33,7 @@ class CreateTaskSwipeService
             throw new CantSwipeOwnTask();
         }
 
-        if (!$task->isAvailableToSwipe()) {
+        if (!$task->isWait()) {
             throw new TaskUnavailableToSwipe();
         }
 

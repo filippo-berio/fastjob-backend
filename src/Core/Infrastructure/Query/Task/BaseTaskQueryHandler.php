@@ -3,9 +3,11 @@
 namespace App\Core\Infrastructure\Query\Task;
 
 use App\Core\Infrastructure\Entity\Task;
+use App\Core\Infrastructure\Entity\TaskOffer;
 use App\CQRS\QueryHandlerInterface;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
 abstract class BaseTaskQueryHandler implements QueryHandlerInterface
@@ -32,5 +34,13 @@ abstract class BaseTaskQueryHandler implements QueryHandlerInterface
     {
         return $queryBuilder->andWhere('t.id not in (:excludeIds)')
             ->setParameter('excludeIds', $ids);
+    }
+
+    protected function joinAcceptedTaskOffers(QueryBuilder $queryBuilder): QueryBuilder
+    {
+        return $queryBuilder
+            ->innerJoin(TaskOffer::class, Join::WITH, 'identity(to.task) = t.id')
+            ->andWhere('to.status = :acceptStatus')
+            ->setParameter('acceptStatus', TaskOffer::STATUS_ACCEPTED);
     }
 }

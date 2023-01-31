@@ -32,6 +32,7 @@ class ExecutorSwipeFixtures extends BaseFixtures implements DependentFixtureInte
         $task14 = $this->getReference(TaskFixtures::TASK_14, Task::class);
         $task15 = $this->getReference(TaskFixtures::TASK_15, Task::class);
         $task16 = $this->getReference(TaskFixtures::TASK_16, Task::class);
+        $task17 = $this->getReference(TaskFixtures::TASK_17, Task::class);
 
         $profile4 = $this->getReference(ProfileFixtures::PROFILE_4, Profile::class);
         $profile7 = $this->getReference(ProfileFixtures::PROFILE_7, Profile::class);
@@ -56,6 +57,8 @@ class ExecutorSwipeFixtures extends BaseFixtures implements DependentFixtureInte
 
             new ExecutorSwipe($task16, $profile16, Swipe::TYPE_ACCEPT),
             new ExecutorSwipe($task16, $profile17, Swipe::TYPE_ACCEPT),
+
+            new ExecutorSwipe($task17, $profile16, Swipe::TYPE_ACCEPT),
         ], $manager);
     }
 }

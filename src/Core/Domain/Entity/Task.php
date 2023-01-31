@@ -108,7 +108,7 @@ class Task
         return $this->status;
     }
 
-    public function isAvailableToSwipe(): bool
+    public function isWait()
     {
         return $this->status === self::STATUS_WAIT;
     }

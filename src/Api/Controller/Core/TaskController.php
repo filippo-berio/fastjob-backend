@@ -5,6 +5,7 @@ namespace App\Api\Controller\Core;
 use App\Api\Controller\BaseController;
 use App\Api\Request\Task\CreateTaskRequest;
 use App\Core\Application\UseCase\Review\GetProfileReviewsUseCase;
+use App\Core\Application\UseCase\Task\CancelTaskExecutionUseCase;
 use App\Core\Application\UseCase\Task\CreateTaskUseCase;
 use App\Core\Application\UseCase\Task\FinishTaskUseCase;
 use App\Core\Application\UseCase\Task\GetProfileNextTaskUseCase;
@@ -68,6 +69,7 @@ class TaskController extends BaseController
         RejectTaskOfferUseCase $rejectTaskOfferUseCase,
         FinishTaskUseCase $finishTaskUseCase,
         GetProfileReviewsUseCase $getProfileReviewsUseCase,
+        CancelTaskExecutionUseCase $cancelTaskExecutionUseCase,
     ): JsonResponse {
         $tasks = $useCase->get($profile);
         return $this->json($tasks, context: ['task_full']);

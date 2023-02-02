@@ -9,6 +9,7 @@ framework:
         routing:
             'App\Sms\Message\SmsMessage': async
             'App\Core\Infrastructure\Message\Event\EventMessage': async
+            'App\CQRS\Message\AsyncCommandMessage': async
 
 when@test:
     framework:

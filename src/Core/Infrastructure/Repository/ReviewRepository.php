@@ -5,6 +5,7 @@ namespace App\Core\Infrastructure\Repository;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Review as DomainReview;
 use App\Core\Domain\Query\Profile\FindProfileById;
+use App\Core\Domain\Query\Task\FindTaskByExecutor;
 use App\Core\Domain\Repository\ReviewRepositoryInterface;
 use App\Core\Infrastructure\Entity\Review;
 use App\Core\Infrastructure\Gateway\ReviewGateway;
@@ -41,6 +42,14 @@ class ReviewRepository implements ReviewRepositoryInterface
             fn(ExternalReview $review) => $this->buildReviewFromExternal($review),
             $external
         );
+    }
+
+    public function getAvailableExecutorReviewTasks(Profile $executor): array
+    {
+        $tasks = $this->queryBus->query(new FindTaskByExecutor($executor));
+        if (empty($tasks)) {
+            return [];
+        }
     }
 
     private function buildReviewFromExternal(ExternalReview $external): Review

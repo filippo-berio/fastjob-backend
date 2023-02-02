@@ -67,6 +67,9 @@ services:
         $minimalStack: '%env(NEXT_TASK_MINIMAL_STACK)%'
 
 
+    App\CQRS\MessageHandler\AsyncCommandMessageHandler:
+        $commandHandlers: !tagged_iterator 'cqrs.command_handler'
+
     App\CQRS\MessageHandler\CommandMessageHandler:
         $commandHandlers: !tagged_iterator 'cqrs.command_handler'
 

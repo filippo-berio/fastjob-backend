@@ -73,7 +73,6 @@ class TaskSwipeFixtures extends BaseFixtures implements DependentFixtureInterfac
             new TaskSwipe($task18, $profile16, Swipe::TYPE_ACCEPT),
             new TaskSwipe($task19, $profile16, Swipe::TYPE_ACCEPT),
             new TaskSwipe($task20, $profile16, Swipe::TYPE_ACCEPT),
-            // TODO profile 16 task 20 finished and reviewed
         ], $manager);
     }
 

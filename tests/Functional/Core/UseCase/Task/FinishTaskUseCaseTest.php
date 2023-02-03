@@ -5,6 +5,7 @@ namespace App\Tests\Functional\Core\UseCase\Task;
 use App\Core\Application\UseCase\Review\GetProfileReviewsUseCase;
 use App\Core\Application\UseCase\Task\FinishTaskUseCase;
 use App\Core\Application\UseCase\TaskOffer\AcceptOfferUseCase;
+use App\Core\Domain\Entity\Review;
 use App\Core\Domain\Exception\Task\TaskNotInWorkException;
 use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Infrastructure\Entity\Task;
@@ -35,12 +36,12 @@ class FinishTaskUseCaseTest extends FunctionalTest
     public function testSuccess()
     {
         $before = $this->getProfileReviewsUseCase->get($this->profile->getId());
-        $this->assertEmpty($before);
         $this->acceptOffer();
         $this->finishTaskUseCase->finish($this->author, $this->task->getId(), 4, 'comment3');
         $after = $this->getProfileReviewsUseCase->get($this->profile->getId());
-        $this->assertCount(1, $after);
-        $review = $after[0];
+        $this->assertCount(count($before) + 1, $after);
+        /** @var Review $review */
+        $review = array_pop($after);
         $this->assertEquals(4, $review->getRating());
         $this->assertEquals('comment3', $review->getComment());
     }

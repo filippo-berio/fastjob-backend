@@ -29,6 +29,9 @@ class TaskSwipeFixtures extends BaseFixtures implements DependentFixtureInterfac
         $task15 = $this->getReference(TaskFixtures::TASK_15, Task::class);
         $task16 = $this->getReference(TaskFixtures::TASK_16, Task::class);
         $task17 = $this->getReference(TaskFixtures::TASK_17, Task::class);
+        $task18 = $this->getReference(TaskFixtures::TASK_18, Task::class);
+        $task19 = $this->getReference(TaskFixtures::TASK_19, Task::class);
+        $task20 = $this->getReference(TaskFixtures::TASK_20, Task::class);
 
         $profile2 = $this->getReference(ProfileFixtures::PROFILE_2, Profile::class);
         $profile4 = $this->getReference(ProfileFixtures::PROFILE_4, Profile::class);
@@ -66,7 +69,11 @@ class TaskSwipeFixtures extends BaseFixtures implements DependentFixtureInterfac
             new TaskSwipe($task16, $profile16, Swipe::TYPE_ACCEPT),
             new TaskSwipe($task16, $profile17, Swipe::TYPE_ACCEPT),
 
-            new TaskSwipe($task17, $profile17, Swipe::TYPE_ACCEPT),
+            new TaskSwipe($task17, $profile16, Swipe::TYPE_ACCEPT),
+            new TaskSwipe($task18, $profile16, Swipe::TYPE_ACCEPT),
+            new TaskSwipe($task19, $profile16, Swipe::TYPE_ACCEPT),
+            new TaskSwipe($task20, $profile16, Swipe::TYPE_ACCEPT),
+            // TODO profile 16 task 20 finished and reviewed
         ], $manager);
     }
 

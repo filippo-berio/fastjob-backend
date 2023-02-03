@@ -39,7 +39,7 @@ abstract class BaseTaskQueryHandler implements QueryHandlerInterface
     protected function joinAcceptedTaskOffers(QueryBuilder $queryBuilder): QueryBuilder
     {
         return $queryBuilder
-            ->innerJoin(TaskOffer::class, Join::WITH, 'identity(to.task) = t.id')
+            ->innerJoin(TaskOffer::class, 'to', Join::WITH, 'identity(to.task) = t.id')
             ->andWhere('to.status = :acceptStatus')
             ->setParameter('acceptStatus', TaskOffer::STATUS_ACCEPTED);
     }

@@ -5,6 +5,7 @@ namespace App\Core\Infrastructure\Gateway;
 use App\Core\Domain\Entity\Review;
 use App\Core\Domain\Entity\Profile;
 use App\Review\Application\UseCase\CreateReviewUseCase;
+use App\Review\Application\UseCase\FindReviewByIdUseCase;
 use App\Review\Application\UseCase\GetProfileReviewsUseCase;
 use App\Review\Domain\Entity\Profile as ReviewProfile;
 use App\Review\Domain\Entity\Review as ExternalReview;
@@ -12,8 +13,9 @@ use App\Review\Domain\Entity\Review as ExternalReview;
 class ReviewGateway
 {
     public function __construct(
-        private CreateReviewUseCase $createReviewUseCase,
+        private CreateReviewUseCase      $createReviewUseCase,
         private GetProfileReviewsUseCase $getProfileReviewsUseCase,
+        private FindReviewByIdUseCase    $findReviewByIdUseCase,
     ) {
     }
 
@@ -33,5 +35,10 @@ class ReviewGateway
     public function findForTarget(Profile $profile): array
     {
         return $this->getProfileReviewsUseCase->get($profile->getId());
+    }
+
+    public function find(int $id): ExternalReview
+    {
+        return $this->findReviewByIdUseCase->find($id);
     }
 }

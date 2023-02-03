@@ -4,7 +4,6 @@ namespace App\Core\Domain\Repository;
 
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Review;
-use App\Core\Domain\Entity\Task;
 
 interface ReviewRepositoryInterface
 {
@@ -15,10 +14,4 @@ interface ReviewRepositoryInterface
      * @return Review[]
      */
     public function findForTarget(Profile $profile): array;
-
-    /**
-     * @param Profile $executor
-     * @return Task[]
-     */
-    public function getAvailableExecutorReviewTasks(Profile $executor): array;
 }

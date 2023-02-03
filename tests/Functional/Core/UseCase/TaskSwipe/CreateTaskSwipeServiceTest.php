@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Tests\Functional\Core\Service\TaskSwipe;
+namespace App\Tests\Functional\Core\UseCase\TaskSwipe;
 
-use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;
-use App\Core\Infrastructure\Entity\Task;
-use App\Core\Infrastructure\Entity\TaskSwipe;
 use App\Core\Domain\Exception\Task\TaskUnavailableToSwipe;
 use App\Core\Domain\Exception\TaskSwipe\CantSwipeOwnTask;
 use App\Core\Domain\Exception\TaskSwipe\TaskSwipeExistsException;
 use App\Core\Domain\Service\TaskSwipe\CreateTaskSwipeService;
+use App\Core\Infrastructure\Entity\Profile;
+use App\Core\Infrastructure\Entity\Task;
+use App\Core\Infrastructure\Entity\TaskSwipe;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Core\TaskFixtures;
 use App\Tests\Functional\FunctionalTest;

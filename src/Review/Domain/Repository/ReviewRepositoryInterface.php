@@ -14,4 +14,6 @@ interface ReviewRepositoryInterface
     public function findByTarget(Profile $target): array;
 
     public function save(Review $review): Review;
+
+    public function find(int $id): ?Review;
 }

@@ -21,9 +21,15 @@ class Review extends DomainReview
     #[ManyToOne(targetEntity: Task::class)]
     protected DomainTask $task;
 
-    public function setId(int $id): void
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): self
     {
         $this->id = $id;
+        return $this;
     }
 
     public function setAuthor(Profile $author): void

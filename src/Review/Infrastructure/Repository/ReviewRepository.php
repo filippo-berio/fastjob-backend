@@ -31,4 +31,10 @@ class ReviewRepository implements ReviewRepositoryInterface
         $this->entityManager->flush();
         return $review;
     }
+
+    public function find(int $id): ?DomainReview
+    {
+        return $this->entityManager->getRepository(Review::class)
+            ->find($id);
+    }
 }

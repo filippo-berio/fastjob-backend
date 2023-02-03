@@ -4,8 +4,8 @@ namespace App\Core\Infrastructure\Repository;
 
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Review as DomainReview;
+use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Query\Profile\FindProfileById;
-use App\Core\Domain\Query\Task\FindTaskByExecutor;
 use App\Core\Domain\Repository\ReviewRepositoryInterface;
 use App\Core\Infrastructure\Entity\Review;
 use App\Core\Infrastructure\Gateway\ReviewGateway;
@@ -44,18 +44,34 @@ class ReviewRepository implements ReviewRepositoryInterface
         );
     }
 
-    public function getAvailableExecutorReviewTasks(Profile $executor): array
+    /**
+     * @param Task $task
+     * @return DomainReview[]
+     */
+    public function findForTask(Task $task): array
     {
-        $tasks = $this->queryBus->query(new FindTaskByExecutor($executor));
-        if (empty($tasks)) {
-            return [];
-        }
+        $reviews = $this->entityManager->getRepository(Review::class)
+            ->createQueryBuilder('r')
+            ->andWhere('identity(r.task) = :task')
+            ->setParameter('task', $task->getId())
+            ->getQuery()
+            ->getResult();
+        return array_map(
+            fn(Review $review) => $this->fillFromExternal($review),
+            $reviews
+        );
     }
 
-    private function buildReviewFromExternal(ExternalReview $external): Review
+    private function fillFromExternal(Review $review): Review
+    {
+        $external = $this->reviewGateway->find($review->getId());
+        return $this->buildReviewFromExternal($external, $review);
+    }
+
+    private function buildReviewFromExternal(ExternalReview $external, ?Review $review = null): Review
     {
         /** @var Review $review */
-        $review = $this->entityManager->getRepository(Review::class)->find($external->getId());
+        $review ??= $this->entityManager->getRepository(Review::class)->find($external->getId());
         $author = $this->queryBus->query(new FindProfileById($external->getAuthor()->getId()));
         $target = $this->queryBus->query(new FindProfileById($external->getTarget()->getId()));
 

@@ -32,13 +32,28 @@ class TaskOfferFixtures extends BaseFixtures implements DependentFixtureInterfac
 
         $task16 = $this->getReference(TaskFixtures::TASK_16, Task::class);
         $task17 = $this->getReference(TaskFixtures::TASK_17, Task::class);
+        $task18 = $this->getReference(TaskFixtures::TASK_18, Task::class);
+        $task19 = $this->getReference(TaskFixtures::TASK_19, Task::class);
+        $task20 = $this->getReference(TaskFixtures::TASK_20, Task::class);
 
         $taskOffer2 = new TaskOffer($task17, $profile16);
         $taskOffer2->accept();
 
+        $taskOffer3 = new TaskOffer($task18, $profile16);
+        $taskOffer3->accept();
+
+        $taskOffer4 = new TaskOffer($task19, $profile16);
+        $taskOffer4->accept();
+
+        $taskOffer5 = new TaskOffer($task20, $profile16);
+        $taskOffer5->accept();
+
         $this->save([
             new TaskOffer($task16, $profile16),
             $taskOffer2,
+            $taskOffer3,
+            $taskOffer4,
+            $taskOffer5,
         ], $manager);
     }
 }

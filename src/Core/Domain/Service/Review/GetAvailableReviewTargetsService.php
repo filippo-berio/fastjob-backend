@@ -4,6 +4,7 @@ namespace App\Core\Domain\Service\Review;
 
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
+use App\Core\Domain\Query\Task\FindAvailableReviewTasksForExecutor;
 use App\CQRS\Bus\QueryBusInterface;
 
 class GetAvailableReviewTargetsService
@@ -19,5 +20,6 @@ class GetAvailableReviewTargetsService
      */
     public function get(Profile $profile): array
     {
+        return $this->queryBus->query(new FindAvailableReviewTasksForExecutor($profile));
     }
 }

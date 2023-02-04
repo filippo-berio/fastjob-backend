@@ -2,11 +2,9 @@
 
 namespace App\Core\Infrastructure\Query\Profile;
 
-use App\Auth\UseCase\User\GetUserByIdUseCase;
 use App\Core\Domain\Entity\User;
 use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Infrastructure\Gateway\UserGateway;
-use App\CQRS\Bus\QueryBusInterface;
 use App\CQRS\QueryHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 

@@ -2,12 +2,17 @@
 
 namespace App\Core\Domain\Entity;
 
+use App\Core\Domain\Entity\Trait\EventDispatcherEntityTrait;
+use App\Core\Domain\Event\Task\Offer\TaskOfferEvent;
+use App\Core\Domain\Exception\TaskOffer\TaskOfferExistsException;
 use App\Location\Entity\Address;
 use DateTimeImmutable;
 use DateTimeInterface;
 
 class Task
 {
+    use EventDispatcherEntityTrait;
+
     const STATUS_WAIT = 'wait';
     const STATUS_OFFERED = 'offered';
     const STATUS_WORK = 'work';
@@ -123,8 +128,12 @@ class Task
         $this->status = self::STATUS_WAIT;
     }
 
-    public function offer()
+    public function offer(Profile $executor)
     {
+        if ($this->isOffered()) {
+            throw new TaskOfferExistsException();
+        }
+        $this->dispatch(new TaskOfferEvent($this, $executor));
         $this->status = self::STATUS_OFFERED;
     }
 

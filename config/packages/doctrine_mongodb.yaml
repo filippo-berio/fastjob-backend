@@ -9,12 +9,12 @@ doctrine_mongodb:
     document_managers:
         default:
             auto_mapping: true
-            mappings:
-                Report:
-                    is_bundle: false
-                    dir: '%kernel.project_dir%/src/Review/Infrastructure/Entity'
-                    prefix: 'App\Review\Infrastructure\Entity'
-                    alias: Review
+#            mappings:
+#                Report:
+#                    is_bundle: false
+#                    dir: '%kernel.project_dir%/src/Review/Infrastructure/Entity'
+#                    prefix: 'App\Review\Infrastructure\Entity'
+#                    alias: Review
 
 when@prod:
     doctrine_mongodb:

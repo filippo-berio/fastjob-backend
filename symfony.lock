@@ -59,19 +59,6 @@
             "migrations/.gitignore"
         ]
     },
-    "doctrine/mongodb-odm-bundle": {
-        "version": "4.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "4.4",
-            "ref": "a6bc3544da98c97b2eafb2ef1e86bcc8093d96cf"
-        },
-        "files": [
-            "config/packages/doctrine_mongodb.yaml",
-            "src/Document/.gitignore"
-        ]
-    },
     "easycorp/easyadmin-bundle": {
         "version": "4.5",
         "recipe": {
@@ -91,6 +78,18 @@
         },
         "files": [
             "config/packages/lexik_jwt_authentication.yaml"
+        ]
+    },
+    "nelmio/cors-bundle": {
+        "version": "2.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.5",
+            "ref": "6bea22e6c564fba3a1391615cada1437d0bde39c"
+        },
+        "files": [
+            "config/packages/nelmio_cors.yaml"
         ]
     },
     "phpunit/phpunit": {

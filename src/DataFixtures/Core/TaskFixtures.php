@@ -6,6 +6,7 @@ use App\Core\Infrastructure\Entity\Category;
 use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Infrastructure\Entity\Task;
 use App\DataFixtures\BaseFixtures;
+use App\DataFixtures\Core\Stubs\EventDispatcherStub;
 use App\DataFixtures\Location\AddressFixtures;
 use App\Location\Entity\Address;
 use DateTimeImmutable;
@@ -61,7 +62,8 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
             false,
             price: 7000,
         );
-        $task16->offer();
+        $task16->setEventDispatcher(new EventDispatcherStub());
+        $task16->offer($this->getReference(ProfileFixtures::PROFILE_16, Profile::class));
 
 
         $task17 = new Task(

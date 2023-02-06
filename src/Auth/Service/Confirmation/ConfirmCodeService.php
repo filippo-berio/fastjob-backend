@@ -2,7 +2,7 @@
 
 namespace App\Auth\Service\Confirmation;
 
-use App\Auth\DTO\TokenPair;
+use App\Auth\DTO\CodeConfirmationResult;
 use App\Auth\Event\WrongConfirmationCodeEvent;
 use App\Auth\Exception\InvalidConfirmationCodeException;
 use App\Auth\Exception\PhoneBannedException;
@@ -26,9 +26,12 @@ class ConfirmCodeService
     ) {
     }
 
-    public function confirm(string $phone, string $code): TokenPair
+    public function confirm(string $phone, string $code): CodeConfirmationResult
     {
-        $this->validateCode($phone, $code);
+        $retriesLeft = $this->validateCode($phone, $code);
+        if ($retriesLeft !== null) {
+            return CodeConfirmationResult::buildFailure($retriesLeft);
+        }
 
         $this->confirmationTokenRepository->delete($phone);
 
@@ -37,10 +40,12 @@ class ConfirmCodeService
             $user = $this->registerUserService->register($phone);
         }
 
-        return $this->loginUserService->login($user);
+        $tokens = $this->loginUserService->login($user);
+
+        return CodeConfirmationResult::buildSuccess($tokens);
     }
 
-    private function validateCode(string $phone, string $code)
+    private function validateCode(string $phone, string $code): ?int
     {
         if ($this->bannedPhoneRepository->isPhoneBanned($phone)) {
             throw new PhoneBannedException();
@@ -49,9 +54,14 @@ class ConfirmCodeService
         $actualCode = $this->confirmationTokenRepository->findByPhone($phone);
         if ($actualCode?->getConfirmationCode() !== $code) {
             if ($actualCode) {
+                $retries = $actualCode->getRetries();
                 $this->eventDispatcher->dispatch(new WrongConfirmationCodeEvent($actualCode));
+                return $retries - 1;
             }
+
             throw new InvalidConfirmationCodeException();
         }
+
+        return null;
     }
 }

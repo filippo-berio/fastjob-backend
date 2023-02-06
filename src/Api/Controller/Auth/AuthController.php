@@ -29,7 +29,7 @@ class AuthController extends BaseController
         ConfirmCodeRequest $body,
         ConfirmCodeUseCase $useCase,
     ): JsonResponse {
-        $tokens = $useCase->confirm($body->phone, $body->code);
-        return $this->json($tokens);
+        $result = $useCase->confirm($body->phone, $body->code);
+        return $this->json($result);
     }
 }

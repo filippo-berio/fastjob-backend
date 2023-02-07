@@ -8,11 +8,12 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use JsonSerializable;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Entity]
 #[Table('users')]
-class User implements UserInterface
+class User implements UserInterface, JsonSerializable
 {
     #[Id]
     #[GeneratedValue]
@@ -55,6 +56,14 @@ class User implements UserInterface
     public function getRefreshToken(): ?RefreshToken
     {
         return $this->refreshToken;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'phone' => $this->getPhone(),
+        ];
     }
 
     public function eraseCredentials()

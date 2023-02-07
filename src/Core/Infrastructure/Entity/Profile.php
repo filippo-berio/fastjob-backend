@@ -28,6 +28,7 @@ class Profile extends DomainProfile implements UserInterface
     #[Id]
     #[GeneratedValue]
     #[Column]
+    #[Groups(['profile_full'])]
     protected ?int $id = null;
 
     #[Column]

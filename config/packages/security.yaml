@@ -10,16 +10,16 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        create-profile:
+            pattern: ^/api/profile(/create)?$
+            stateless: true
+            custom_authenticators:
+                - App\Api\Security\AccessRefreshTokenAuthenticator
         user-with-profile:
             pattern: ^/api/.+$
             stateless: true
             custom_authenticators:
                 - App\Api\Security\UserWithProfileAuthenticator
-        create-profile:
-            pattern: ^/api/profile/create$
-            stateless: true
-            custom_authenticators:
-                - App\Api\Security\AccessRefreshTokenAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

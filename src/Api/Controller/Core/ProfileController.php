@@ -3,6 +3,7 @@
 namespace App\Api\Controller\Core;
 
 use App\Api\Controller\BaseController;
+use App\Api\Gateway\CoreGateway;
 use App\Api\Request\Profile\CreateProfileRequest;
 use App\Api\Request\Profile\UpdateProfileRequest;
 use App\Auth\Entity\User;
@@ -18,9 +19,14 @@ class ProfileController extends BaseController
 {
     #[Route(methods: ['GET'])]
     public function get(
-        #[CurrentUser] Profile $profile,
+        #[CurrentUser] User $user,
+        CoreGateway $coreGateway,
     ): JsonResponse {
-        return $this->json($profile, context: [
+        $profile = $coreGateway->findProfileByAuthUser($user);
+        return $this->json([
+            'success' => !!$profile,
+            'data' => $profile,
+        ], context: [
             'profile_full',
             'category_full',
             'city_full'
@@ -40,7 +46,7 @@ class ProfileController extends BaseController
         ]);
     }
 
-    #[Route(methods: ['PUT'])]
+    #[Route('/update', methods: ['PUT'])]
     public function update(
         #[CurrentUser] User  $user,
         UpdateProfileRequest $body,

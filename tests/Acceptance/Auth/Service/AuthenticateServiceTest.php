@@ -27,9 +27,8 @@ class AuthenticateServiceTest extends AcceptanceTest
     public function testRottenAccessActualRefreshToken()
     {
         $this->assertTrue(true);
-        return;
         $accessToken = $this->setAccessTokenInRedis(UserFixtures::USER_2);
-        sleep(3);
+        $this->redisClear();
         $service = $this->getDependency(AuthenticateService::class);
         $user = $service->authenticate($accessToken, RefreshTokenFixtures::REFRESH_TOKEN_2);
         $this->assertNotEquals($accessToken, $user->getAccessToken());
@@ -97,7 +96,8 @@ class AuthenticateServiceTest extends AcceptanceTest
     {
         $JWTEncoder = $this->getDependency(JWTEncoderInterface::class);
         return $JWTEncoder->encode([
-            'userId' => $userId
+            'userId' => $userId,
+            'salt'   => rand()
         ]);
     }
 }

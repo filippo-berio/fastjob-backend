@@ -92,7 +92,6 @@
         "symfony/css-selector": "6.2.*",
         "symfony/phpunit-bridge": "^6.2",
         "symfony/stopwatch": "6.2.*",
-        "symfony/web-profiler-bundle": "6.2.*",
         "wiremock-php/wiremock-php": "^2.35",
         "zenstruck/messenger-test": "^1.5"
     }

@@ -54,8 +54,10 @@ class Profile extends DomainProfile implements UserInterface
     #[Groups(['profile_full'])]
     protected ?string $photoPath = null;
 
-    #[ManyToMany(targetEntity: Category::class)]
     #[Groups(['profile_full'])]
+    protected array $categories;
+
+    #[ManyToMany(targetEntity: Category::class)]
     /** @var Collection<Category> $categories */
     protected Collection $doctrineCategories;
 

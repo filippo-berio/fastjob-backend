@@ -1,0 +1,23 @@
+127.0.0.1:80 {
+	# Add trailing slash for directory requests
+	@canonicalPath {
+		file {path}/index.php
+		not path */
+	}
+	redir @canonicalPath {http.request.orig_uri.path}/ 308
+
+	# If the requested file does not exist, try index files
+	@indexFiles file {
+		try_files {path} {path}/index.php index.php
+		split_path .php
+	}
+	rewrite @indexFiles {file_match.relative}
+
+	# Proxy PHP files to the FastCGI responder
+	@phpFiles path *.php
+	reverse_proxy @phpFiles fastjob-php:9000 {
+		transport fastcgi {
+			split .php
+		}
+	}
+}

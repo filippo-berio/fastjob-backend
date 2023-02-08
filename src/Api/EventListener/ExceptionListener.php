@@ -12,7 +12,6 @@ class ExceptionListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {
-        return [];
         return [
             // the priority must be greater than the Security HTTP
             // ExceptionListener, to make sure it's called before
@@ -37,6 +36,7 @@ class ExceptionListener implements EventSubscriberInterface
         $event->setResponse(new JsonResponse([
             'success' => false,
             'error' => $exception->getMessage(),
+            'code' => $code,
         ], $code));
     }
 

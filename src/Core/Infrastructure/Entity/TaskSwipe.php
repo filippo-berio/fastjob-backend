@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -18,6 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     'task_id',
     'profile_id'
 ])]
+#[Index(['type'])]
 class TaskSwipe extends DomainTaskSwipe
 {
     #[Id]

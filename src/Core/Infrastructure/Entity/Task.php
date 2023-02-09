@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\PostLoad;
@@ -22,6 +23,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[Entity]
 #[HasLifecycleCallbacks]
+#[Index(['status'])]
+#[Index(['remote'])]
 class Task extends DomainTask
 {
 

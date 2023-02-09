@@ -2,6 +2,7 @@
 
 namespace App\Api\Security;
 
+use App\Api\Service\AccessTokenContext;
 use App\Auth\Entity\User;
 use App\Auth\UseCase\AuthenticateUseCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,6 +20,7 @@ class AccessRefreshTokenAuthenticator extends AbstractAuthenticator
 {
     public function __construct(
         private AuthenticateUseCase $authenticateUseCase,
+        private AccessTokenContext  $accessTokenContext,
     ) {
     }
 
@@ -59,7 +61,12 @@ class AccessRefreshTokenAuthenticator extends AbstractAuthenticator
     {
         $accessToken = $this->getAccessToken($request);
         $refreshToken = $this->getRefreshToken($request);
-        return $this->authenticateUseCase->authenticate($accessToken, $refreshToken);
+        $user = $this->authenticateUseCase->authenticate($accessToken, $refreshToken);
+        $this->accessTokenContext->set(
+            $user->getAccessToken(),
+            $user->getRefreshToken()->getToken(),
+        );
+        return $user;
     }
 
     private function getAccessToken(Request $request): ?string

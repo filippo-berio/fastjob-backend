@@ -21,15 +21,17 @@ abstract class AcceptanceTest extends KernelTestCase
     use InteractsWithMessenger;
 
     protected ContainerInterface $container;
+    protected Client $redis;
 
+    const REDIS_HOST = 'redis://fastjob-redis-test:6379';
     private const WIREMOCK_HOST = 'fastjob-wiremock';
-    private const REDIS_HOST = 'redis://fastjob-redis-test:6379';
 
     protected function setUp(): void
     {
         $this->bootContainer();
-        $this->redisClear();
         $this->messenger()->reset();
+        $this->redis = new Client(self::REDIS_HOST);
+        $this->redisClear();
     }
 
     protected function bootContainer()
@@ -84,8 +86,7 @@ abstract class AcceptanceTest extends KernelTestCase
 
     protected function redisClear()
     {
-        $redis = new Client(self::REDIS_HOST);
-        $redis->flushall();
+        $this->redis->flushall();
     }
 
     protected function debugDB()

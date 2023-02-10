@@ -15,6 +15,7 @@ class RefreshTokenFixtures extends BaseFixtures implements DependentFixtureInter
     const REFRESH_TOKEN_3 = 'refresh-token-3';
     const REFRESH_TOKEN_4 = 'refresh-token-4';
     const REFRESH_TOKEN_5 = 'refresh-token-5';
+    const REFRESH_TOKEN_6 = 'refresh-token-6';
 
     protected function getEntity(): string
     {
@@ -50,6 +51,10 @@ class RefreshTokenFixtures extends BaseFixtures implements DependentFixtureInter
             new RefreshToken(
                 $this->getReference(UserFixtures::USER_5, User::class),
                 self::REFRESH_TOKEN_5,
+            ),
+            new RefreshToken(
+                $this->getReference(UserFixtures::USER_6, User::class),
+                self::REFRESH_TOKEN_6,
             ),
         ], $manager);
     }

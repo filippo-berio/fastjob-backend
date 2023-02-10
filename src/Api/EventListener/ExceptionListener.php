@@ -27,7 +27,7 @@ class ExceptionListener implements EventSubscriberInterface
     {
         $exception = $event->getThrowable();
 
-        if ($exception instanceof HttpExceptionInterface) {
+        if (method_exists($exception, 'getStatusCode')) {
             $code = $exception->getStatusCode();
         } else {
             $code = $exception->getCode() ?: 500;
@@ -36,7 +36,6 @@ class ExceptionListener implements EventSubscriberInterface
         $event->setResponse(new JsonResponse([
             'success' => false,
             'error' => $exception->getMessage(),
-            'code' => $code,
         ], $code));
     }
 

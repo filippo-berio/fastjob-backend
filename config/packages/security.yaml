@@ -10,8 +10,8 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        create-profile:
-            pattern: ^/api/profile(/create)?$
+        profile:
+            pattern: ^/api/profile(/register)?$
             stateless: true
             custom_authenticators:
                 - App\Api\Security\AccessRefreshTokenAuthenticator

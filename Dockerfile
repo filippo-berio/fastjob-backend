@@ -33,6 +33,7 @@ RUN apt-get install -y \
     && pecl install mongodb \
     && echo "extension=mongodb.so" >> /usr/local/etc/php/php.ini
 
+RUN docker-php-ext-install opcache
 
 RUN docker-php-ext-install \
         pdo \

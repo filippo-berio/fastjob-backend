@@ -10,6 +10,7 @@ use App\Auth\Entity\User;
 use App\Core\Application\UseCase\Profile\CreateProfileUseCase;
 use App\Core\Application\UseCase\Profile\UpdateProfileUseCase;
 use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Entity\User as CoreUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -33,14 +34,17 @@ class ProfileController extends BaseController
         ]);
     }
 
-    #[Route('/create', methods: ['POST'])]
-    public function create(
+    #[Route('/register', methods: ['POST'])]
+    public function register(
         #[CurrentUser] User  $user,
         CreateProfileRequest $body,
         CreateProfileUseCase $useCase,
     ): JsonResponse {
         $this->validator->validate($body);
-        $useCase->create($user, $body->firstName, $body->birthDate);
+        $useCase->create(new CoreUser(
+            $user->getId(),
+            $user->getPhone(),
+        ), $body->firstName, $body->birthDate);
         return $this->json([
             'success' => true
         ]);

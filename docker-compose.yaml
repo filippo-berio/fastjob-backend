@@ -19,6 +19,7 @@ services:
         volumes: &volumes
             - ./:/app/
             - ./docker/php/aliases:/root/.bashrc
+            - ./docker/php/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
         container_name: fastjob-php
         depends_on:
             - postgres

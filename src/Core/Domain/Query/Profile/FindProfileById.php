@@ -2,7 +2,7 @@
 
 namespace App\Core\Domain\Query\Profile;
 
-use App\CQRS\QueryInterface;
+use App\Lib\CQRS\QueryInterface;
 
 class FindProfileById implements QueryInterface
 {

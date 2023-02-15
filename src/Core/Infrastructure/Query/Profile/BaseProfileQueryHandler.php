@@ -5,7 +5,7 @@ namespace App\Core\Infrastructure\Query\Profile;
 use App\Core\Domain\Entity\User;
 use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Infrastructure\Gateway\UserGateway;
-use App\CQRS\QueryHandlerInterface;
+use App\Lib\CQRS\QueryHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 abstract class BaseProfileQueryHandler implements QueryHandlerInterface

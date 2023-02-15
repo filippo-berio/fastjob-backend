@@ -4,11 +4,11 @@ namespace App\Api\Security;
 
 use App\Api\Service\AccessTokenContext;
 use App\Auth\UseCase\AuthenticateUseCase;
+use App\Core\Domain\Entity\User;
 use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
 use App\Core\Domain\Query\Profile\FindProfileByUser;
 use App\Core\Infrastructure\Entity\Profile;
-use App\Core\Domain\Entity\User;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
 

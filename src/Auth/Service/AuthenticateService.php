@@ -7,7 +7,7 @@ use App\Auth\Query\User\FindById\FindUserById;
 use App\Auth\Repository\AccessTokenRepository;
 use App\Auth\Service\Token\GetRefreshTokenService;
 use App\Auth\Service\Token\RefreshAccessTokenService;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class AuthenticateService

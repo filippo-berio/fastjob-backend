@@ -3,7 +3,7 @@
 namespace App\Core\Domain\Query\Task;
 
 use App\Core\Domain\Entity\Profile;
-use App\CQRS\QueryInterface;
+use App\Lib\CQRS\QueryInterface;
 
 class FindTaskByAuthor implements QueryInterface
 {

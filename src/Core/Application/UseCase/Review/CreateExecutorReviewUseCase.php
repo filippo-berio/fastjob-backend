@@ -6,7 +6,7 @@ use App\Core\Application\Exception\Task\TaskNotFoundException;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Query\Task\FindTaskById;
 use App\Core\Domain\Service\Review\CreateExecutorReviewService;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class CreateExecutorReviewUseCase
 {

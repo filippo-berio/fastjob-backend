@@ -4,8 +4,7 @@ namespace App\Core\Infrastructure\Query\Task;
 
 use App\Core\Domain\Query\Task\FindWaitTaskByAuthor;
 use App\Core\Infrastructure\Entity\Task;
-use App\CQRS\QueryInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Lib\CQRS\QueryInterface;
 
 class FindWaitTaskByAuthorHandler extends BaseTaskQueryHandler
 {

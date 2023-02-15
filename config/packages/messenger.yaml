@@ -7,9 +7,9 @@ framework:
              async: '%env(MESSENGER_TRANSPORT_DSN)%'
 
         routing:
-            'App\Sms\Message\SmsMessage': async
+            'App\Lib\Sms\Message\SmsMessage': async
             'App\Core\Infrastructure\Message\Event\EventMessage': async
-            'App\CQRS\Message\AsyncCommandMessage': async
+            'App\Lib\CQRS\Message\AsyncCommandMessage': async
 
 when@test:
     framework:

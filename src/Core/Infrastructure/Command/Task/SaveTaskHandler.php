@@ -4,8 +4,8 @@ namespace App\Core\Infrastructure\Command\Task;
 
 use App\Core\Domain\Command\Task\Save\SaveTask;
 use App\Core\Infrastructure\Entity\Task;
-use App\CQRS\CommandHandlerInterface;
-use App\CQRS\CommandInterface;
+use App\Lib\CQRS\CommandHandlerInterface;
+use App\Lib\CQRS\CommandInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SaveTaskHandler implements CommandHandlerInterface

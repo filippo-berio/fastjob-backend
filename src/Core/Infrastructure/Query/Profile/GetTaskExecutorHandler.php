@@ -2,11 +2,11 @@
 
 namespace App\Core\Infrastructure\Query\Profile;
 
-use App\Core\Domain\Query\Profile\GetTaskExecutor;
 use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Query\Profile\GetTaskExecutor;
 use App\Core\Infrastructure\Entity\Task;
 use App\Core\Infrastructure\Entity\TaskOffer;
-use App\CQRS\QueryInterface;
+use App\Lib\CQRS\QueryInterface;
 
 class GetTaskExecutorHandler extends BaseProfileQueryHandler
 {

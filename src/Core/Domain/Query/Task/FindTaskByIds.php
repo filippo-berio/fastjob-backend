@@ -2,7 +2,7 @@
 
 namespace App\Core\Domain\Query\Task;
 
-use App\CQRS\QueryInterface;
+use App\Lib\CQRS\QueryInterface;
 
 class FindTaskByIds implements QueryInterface
 {

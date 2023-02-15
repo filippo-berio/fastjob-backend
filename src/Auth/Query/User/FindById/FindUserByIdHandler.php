@@ -3,8 +3,8 @@
 namespace App\Auth\Query\User\FindById;
 
 use App\Auth\Entity\User;
-use App\CQRS\QueryHandlerInterface;
-use App\CQRS\QueryInterface;
+use App\Lib\CQRS\QueryHandlerInterface;
+use App\Lib\CQRS\QueryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class FindUserByIdHandler implements QueryHandlerInterface

@@ -2,7 +2,7 @@
 
 namespace App\Auth\Query\User\FindByPhone;
 
-use App\CQRS\BaseQuery;
+use App\Lib\CQRS\BaseQuery;
 
 class FindUserByPhone extends BaseQuery
 {

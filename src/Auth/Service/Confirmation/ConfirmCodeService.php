@@ -11,7 +11,7 @@ use App\Auth\Repository\BannedPhoneRepository;
 use App\Auth\Repository\ConfirmationTokenRepository;
 use App\Auth\Service\User\LoginUserService;
 use App\Auth\Service\User\RegisterUserService;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ConfirmCodeService

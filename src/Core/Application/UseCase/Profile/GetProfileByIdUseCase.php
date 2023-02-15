@@ -4,7 +4,7 @@ namespace App\Core\Application\UseCase\Profile;
 
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Query\Profile\FindProfileById;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class GetProfileByIdUseCase
 {

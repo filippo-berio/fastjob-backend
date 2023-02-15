@@ -4,8 +4,8 @@ namespace App\Core\Infrastructure\Command\Profile;
 
 use App\Core\Domain\Command\Profile\SaveProfile;
 use App\Core\Infrastructure\Entity\Profile;
-use App\CQRS\CommandHandlerInterface;
-use App\CQRS\CommandInterface;
+use App\Lib\CQRS\CommandHandlerInterface;
+use App\Lib\CQRS\CommandInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SaveProfileHandler implements CommandHandlerInterface

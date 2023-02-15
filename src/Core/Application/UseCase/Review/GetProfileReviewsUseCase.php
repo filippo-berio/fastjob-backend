@@ -6,7 +6,7 @@ use App\Core\Domain\Entity\Review;
 use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
 use App\Core\Domain\Query\Profile\FindProfileById;
 use App\Core\Domain\Service\Review\GetProfileReviewsService;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class GetProfileReviewsUseCase
 {

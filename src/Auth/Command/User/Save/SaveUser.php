@@ -3,7 +3,7 @@
 namespace App\Auth\Command\User\Save;
 
 use App\Auth\Entity\User;
-use App\CQRS\CommandInterface;
+use App\Lib\CQRS\CommandInterface;
 
 class SaveUser implements CommandInterface
 {

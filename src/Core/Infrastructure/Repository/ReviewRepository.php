@@ -9,7 +9,7 @@ use App\Core\Domain\Query\Profile\FindProfileById;
 use App\Core\Domain\Repository\ReviewRepositoryInterface;
 use App\Core\Infrastructure\Entity\Review;
 use App\Core\Infrastructure\Gateway\ReviewGateway;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 use App\Review\Domain\Entity\Review as ExternalReview;
 use Doctrine\ORM\EntityManagerInterface;
 

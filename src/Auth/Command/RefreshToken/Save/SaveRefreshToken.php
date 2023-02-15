@@ -3,7 +3,7 @@
 namespace App\Auth\Command\RefreshToken\Save;
 
 use App\Auth\Entity\RefreshToken;
-use App\CQRS\CommandInterface;
+use App\Lib\CQRS\CommandInterface;
 
 class SaveRefreshToken implements CommandInterface
 {

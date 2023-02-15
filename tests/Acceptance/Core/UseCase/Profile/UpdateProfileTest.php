@@ -2,9 +2,7 @@
 
 namespace App\Tests\Acceptance\Core\UseCase\Profile;
 
-use App\Auth\Entity\User;
 use App\Core\Application\UseCase\Profile\UpdateProfileUseCase;
-use App\Core\Domain\DTO\Profile\UpdateProfileDTO;
 use App\Core\Domain\Entity\Category;
 use App\Core\Domain\Event\Task\GenerateNext\GenerateNextTaskEvent;
 use App\Core\Domain\Exception\Category\CategoryNotFoundException;
@@ -13,9 +11,9 @@ use App\DataFixtures\Auth\UserFixtures;
 use App\DataFixtures\Core\CategoryFixtures;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Location\CityFixtures;
+use App\Lib\Validation\Exception\ValidationException;
 use App\Location\Exception\CityNotFoundException;
 use App\Tests\Acceptance\AcceptanceTest;
-use App\Validation\Exception\ValidationException;
 
 class UpdateProfileTest extends AcceptanceTest
 {

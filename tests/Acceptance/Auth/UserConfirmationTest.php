@@ -14,7 +14,7 @@ use App\Auth\Service\Confirmation\SendConfirmationCodeService;
 use App\Auth\UseCase\UserConfirmation\ConfirmCodeUseCase;
 use App\Auth\UseCase\UserConfirmation\SendConfirmationCodeUseCase;
 use App\DataFixtures\Auth\UserFixtures;
-use App\Sms\Message\SmsMessage;
+use App\Lib\Sms\Message\SmsMessage;
 use App\Tests\Acceptance\AcceptanceTest;
 
 class UserConfirmationTest extends AcceptanceTest

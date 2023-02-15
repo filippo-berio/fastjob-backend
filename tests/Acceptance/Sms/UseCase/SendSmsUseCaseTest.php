@@ -2,8 +2,8 @@
 
 namespace App\Tests\Acceptance\Sms\UseCase;
 
-use App\Sms\Message\SmsMessage;
-use App\Sms\UseCase\SendSmsUseCase;
+use App\Lib\Sms\Message\SmsMessage;
+use App\Lib\Sms\UseCase\SendSmsUseCase;
 use App\Tests\Acceptance\AcceptanceTest;
 use WireMock\Client\WireMock;
 

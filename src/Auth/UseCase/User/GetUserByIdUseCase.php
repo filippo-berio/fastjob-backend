@@ -4,7 +4,7 @@ namespace App\Auth\UseCase\User;
 
 use App\Auth\Entity\User;
 use App\Auth\Query\User\FindById\FindUserById;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class GetUserByIdUseCase
 {

@@ -5,7 +5,7 @@ namespace App\Core\Domain\DTO\Task;
 use App\Core\Domain\DTO\Address\AddressPlain;
 use App\Core\Domain\Entity\Category;
 use App\Core\Domain\Entity\Profile;
-use App\Validation\Constraints\FutureDate;
+use App\Lib\Validation\Constraints\FutureDate;
 use DateTimeInterface;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Type;

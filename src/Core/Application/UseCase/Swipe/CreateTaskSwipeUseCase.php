@@ -2,13 +2,13 @@
 
 namespace App\Core\Application\UseCase\Swipe;
 
+use App\Core\Application\Exception\Task\TaskNotFoundException;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
-use App\Core\Application\Exception\Task\TaskNotFoundException;
 use App\Core\Domain\Query\Task\FindTaskById;
 use App\Core\Domain\Service\Task\NextTask\GetProfileNextTaskService;
 use App\Core\Domain\Service\TaskSwipe\CreateTaskSwipeService;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class CreateTaskSwipeUseCase
 {

@@ -4,7 +4,7 @@ namespace App\Core\Infrastructure\Query\Task;
 
 use App\Core\Domain\Query\Task\FindTaskByAuthorAndId;
 use App\Core\Infrastructure\Entity\Task;
-use App\CQRS\QueryInterface;
+use App\Lib\CQRS\QueryInterface;
 
 class FindTaskByAuthorAndIdHandler extends BaseTaskQueryHandler
 {

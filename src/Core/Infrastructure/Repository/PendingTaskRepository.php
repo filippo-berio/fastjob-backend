@@ -6,7 +6,7 @@ use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Query\Task\FindTaskById;
 use App\Core\Domain\Repository\PendingTaskRepositoryInterface;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 use Predis\Client;
 
 # таски, не свайпнутые исполнителями

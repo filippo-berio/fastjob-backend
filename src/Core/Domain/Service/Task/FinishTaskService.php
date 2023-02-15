@@ -9,8 +9,8 @@ use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Exception\Task\TaskNotInWorkException;
 use App\Core\Domain\Query\Profile\GetTaskExecutor;
-use App\CQRS\Bus\CommandBusInterface;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\CommandBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class FinishTaskService
 {

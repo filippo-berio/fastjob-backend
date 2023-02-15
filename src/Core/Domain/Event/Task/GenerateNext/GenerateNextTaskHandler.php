@@ -7,7 +7,7 @@ use App\Core\Domain\Event\EventInterface;
 use App\Core\Domain\Query\Profile\FindProfileById;
 use App\Core\Domain\Repository\ProfileNextTaskRepositoryInterface;
 use App\Core\Domain\Service\Task\NextTask\Generator\CategoryNextTaskGenerator;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class GenerateNextTaskHandler implements EventHandlerInterface
 {

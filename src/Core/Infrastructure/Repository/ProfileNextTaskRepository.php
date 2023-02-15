@@ -7,7 +7,7 @@ use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Query\Task\FindTaskById;
 use App\Core\Domain\Query\Task\FindTaskByIds;
 use App\Core\Domain\Repository\ProfileNextTaskRepositoryInterface;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 use Predis\Client;
 
 class ProfileNextTaskRepository implements ProfileNextTaskRepositoryInterface

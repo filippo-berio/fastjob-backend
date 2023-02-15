@@ -8,9 +8,9 @@ use App\Core\Domain\DTO\Profile\CreateProfileDTO;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Exception\Profile\ProfileCreatedException;
 use App\Core\Domain\Query\Profile\FindProfileByUser;
-use App\CQRS\Bus\CommandBusInterface;
-use App\CQRS\Bus\QueryBusInterface;
-use App\Validation\ValidatorInterface;
+use App\Lib\CQRS\Bus\CommandBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
+use App\Lib\Validation\ValidatorInterface;
 
 class CreateProfileService
 {

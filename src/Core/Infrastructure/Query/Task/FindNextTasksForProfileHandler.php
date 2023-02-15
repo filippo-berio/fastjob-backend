@@ -2,19 +2,17 @@
 
 namespace App\Core\Infrastructure\Query\Task;
 
-use App\Core\Infrastructure\Entity\Category;
-use App\Core\Infrastructure\Entity\Profile;
-use App\Core\Infrastructure\Entity\Task;
-use App\Core\Infrastructure\Entity\TaskSwipe;
 use App\Core\Domain\Query\Task\FindNextTasksForProfile;
 use App\Core\Domain\Query\Task\FindTaskByAuthor;
 use App\Core\Domain\Repository\PendingTaskRepositoryInterface;
 use App\Core\Domain\Repository\ProfileNextTaskRepositoryInterface;
 use App\Core\Domain\Repository\TaskSwipeRepositoryInterface;
-use App\CQRS\Bus\QueryBusInterface;
-use App\CQRS\QueryHandlerInterface;
-use App\CQRS\QueryInterface;
-use DateTimeImmutable;
+use App\Core\Infrastructure\Entity\Category;
+use App\Core\Infrastructure\Entity\Profile;
+use App\Core\Infrastructure\Entity\Task;
+use App\Core\Infrastructure\Entity\TaskSwipe;
+use App\Lib\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\QueryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 

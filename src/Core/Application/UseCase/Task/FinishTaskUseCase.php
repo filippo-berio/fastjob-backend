@@ -6,7 +6,7 @@ use App\Core\Application\Exception\Task\TaskNotFoundException;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Query\Task\FindTaskByAuthorAndId;
 use App\Core\Domain\Service\Task\FinishTaskService;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class FinishTaskUseCase
 {

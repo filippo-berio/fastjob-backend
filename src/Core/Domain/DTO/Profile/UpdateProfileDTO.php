@@ -3,8 +3,8 @@
 namespace App\Core\Domain\DTO\Profile;
 
 use App\Core\Domain\Entity\Category;
+use App\Lib\Validation\Constraints\Name;
 use App\Location\Entity\City;
-use App\Validation\Constraints\Name;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Type;
 

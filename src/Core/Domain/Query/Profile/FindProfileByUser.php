@@ -3,7 +3,7 @@
 namespace App\Core\Domain\Query\Profile;
 
 use App\Core\Domain\Entity\User;
-use App\CQRS\QueryInterface;
+use App\Lib\CQRS\QueryInterface;
 
 class FindProfileByUser implements QueryInterface
 {

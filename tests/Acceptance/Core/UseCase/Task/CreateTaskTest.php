@@ -4,14 +4,14 @@ namespace App\Tests\Acceptance\Core\UseCase\Task;
 
 use App\Core\Application\UseCase\Task\CreateTaskUseCase;
 use App\Core\Domain\DTO\Address\AddressPlain;
-use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Exception\Category\CategoryNotFoundException;
+use App\Core\Infrastructure\Entity\Profile;
 use App\DataFixtures\Core\CategoryFixtures;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Location\CityFixtures;
+use App\Lib\Validation\Exception\ValidationException;
 use App\Location\Exception\CityNotFoundException;
 use App\Tests\Acceptance\AcceptanceTest;
-use App\Validation\Exception\ValidationException;
 use DateTimeImmutable;
 
 class CreateTaskTest extends AcceptanceTest

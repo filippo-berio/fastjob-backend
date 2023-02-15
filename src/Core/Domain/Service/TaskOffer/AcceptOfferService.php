@@ -7,7 +7,7 @@ use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Exception\TaskOffer\TaskOfferNotFoundException;
 use App\Core\Domain\Repository\TaskOfferRepositoryInterface;
-use App\CQRS\Bus\CommandBusInterface;
+use App\Lib\CQRS\Bus\CommandBusInterface;
 
 class AcceptOfferService
 {

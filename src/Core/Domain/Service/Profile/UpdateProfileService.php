@@ -9,8 +9,8 @@ use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Event\EventDispatcherInterface;
 use App\Core\Domain\Event\Task\GenerateNext\GenerateNextTaskEvent;
 use App\Core\Domain\Repository\ProfileNextTaskRepositoryInterface;
-use App\CQRS\Bus\CommandBusInterface;
-use App\Validation\ValidatorInterface;
+use App\Lib\CQRS\Bus\CommandBusInterface;
+use App\Lib\Validation\ValidatorInterface;
 
 class UpdateProfileService
 {

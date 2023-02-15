@@ -3,8 +3,8 @@
 namespace App\Auth\Command\User\Save;
 
 use App\Auth\Entity\User;
-use App\CQRS\CommandHandlerInterface;
-use App\CQRS\CommandInterface;
+use App\Lib\CQRS\CommandHandlerInterface;
+use App\Lib\CQRS\CommandInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SaveUserHandler implements CommandHandlerInterface

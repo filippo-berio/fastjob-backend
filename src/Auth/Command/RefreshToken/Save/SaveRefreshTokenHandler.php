@@ -3,8 +3,8 @@
 namespace App\Auth\Command\RefreshToken\Save;
 
 use App\Auth\Entity\RefreshToken;
-use App\CQRS\CommandHandlerInterface;
-use App\CQRS\CommandInterface;
+use App\Lib\CQRS\CommandHandlerInterface;
+use App\Lib\CQRS\CommandInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SaveRefreshTokenHandler implements CommandHandlerInterface

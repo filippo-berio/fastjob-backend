@@ -2,11 +2,11 @@
 
 namespace App\Core\Domain\Service\Executor\NextExecutorService;
 
-use App\Core\Domain\Entity\Profile;
 use App\Core\Application\Exception\Task\TaskNotFoundException;
+use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Query\Task\FindWaitTaskByAuthor;
 use App\Core\Domain\Repository\NextExecutorRepositoryInterface;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 abstract class BaseNextExecutorService implements NextExecutorServiceInterface
 {

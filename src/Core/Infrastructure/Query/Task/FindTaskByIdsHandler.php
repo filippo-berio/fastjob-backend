@@ -2,9 +2,9 @@
 
 namespace App\Core\Infrastructure\Query\Task;
 
-use App\Core\Infrastructure\Entity\Task;
 use App\Core\Domain\Query\Task\FindTaskByIds;
-use App\CQRS\QueryInterface;
+use App\Core\Infrastructure\Entity\Task;
+use App\Lib\CQRS\QueryInterface;
 
 class FindTaskByIdsHandler extends BaseTaskQueryHandler
 {

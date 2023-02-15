@@ -5,7 +5,7 @@ namespace App\Core\Domain\Service\Task;
 use App\Core\Domain\Command\Task\Save\SaveTask;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
-use App\CQRS\Bus\CommandBusInterface;
+use App\Lib\CQRS\Bus\CommandBusInterface;
 
 class OfferTaskService
 {

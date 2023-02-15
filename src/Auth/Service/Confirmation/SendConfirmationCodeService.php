@@ -6,9 +6,9 @@ use App\Auth\Entity\ConfirmationToken;
 use App\Auth\Exception\ConfirmationTimeoutException;
 use App\Auth\Exception\PhoneBannedException;
 use App\Auth\Repository\BannedPhoneRepository;
-use App\Auth\Repository\ConfirmationTokenRepository;
 use App\Auth\Repository\ConfirmationTimeoutRepository;
-use App\Sms\UseCase\SendSmsUseCase;
+use App\Auth\Repository\ConfirmationTokenRepository;
+use App\Lib\Sms\UseCase\SendSmsUseCase;
 
 class SendConfirmationCodeService
 {

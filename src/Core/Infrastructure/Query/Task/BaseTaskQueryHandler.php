@@ -4,7 +4,7 @@ namespace App\Core\Infrastructure\Query\Task;
 
 use App\Core\Infrastructure\Entity\Task;
 use App\Core\Infrastructure\Entity\TaskOffer;
-use App\CQRS\QueryHandlerInterface;
+use App\Lib\CQRS\QueryHandlerInterface;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;

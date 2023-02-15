@@ -6,9 +6,9 @@ use App\Core\Domain\Command\Task\Save\SaveTask;
 use App\Core\Domain\Contract\EntityMapperInterface;
 use App\Core\Domain\DTO\Task\CreateTaskDTO;
 use App\Core\Domain\Entity\Task;
-use App\CQRS\Bus\CommandBusInterface;
+use App\Lib\CQRS\Bus\CommandBusInterface;
+use App\Lib\Validation\ValidatorInterface;
 use App\Location\UseCase\Address\CreateAddressUseCase;
-use App\Validation\ValidatorInterface;
 
 class CreateTaskService
 {

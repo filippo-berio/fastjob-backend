@@ -2,13 +2,13 @@
 
 namespace App\Core\Application\UseCase\Task;
 
+use App\Core\Application\Exception\Task\TaskNotFoundException;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
-use App\Core\Application\Exception\Task\TaskNotFoundException;
 use App\Core\Domain\Query\Profile\FindProfileById;
 use App\Core\Domain\Query\Task\FindTaskByAuthorAndId;
 use App\Core\Domain\Service\Task\OfferTaskService;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class OfferTaskUseCase
 {

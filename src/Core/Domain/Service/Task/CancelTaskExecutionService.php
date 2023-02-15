@@ -10,8 +10,8 @@ use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Exception\Task\TaskCancelException;
 use App\Core\Domain\Query\Profile\GetTaskExecutor;
 use App\Core\Domain\Repository\ExecutionCancelRepositoryInterface;
-use App\CQRS\Bus\CommandBusInterface;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\CommandBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class CancelTaskExecutionService
 {

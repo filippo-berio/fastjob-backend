@@ -3,11 +3,11 @@
 namespace App\Tests\Acceptance\Core\UseCase\Profile;
 
 use App\Core\Application\UseCase\Profile\CreateProfileUseCase;
-use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Exception\Profile\ProfileCreatedException;
+use App\Core\Infrastructure\Entity\Profile;
 use App\DataFixtures\Auth\UserFixtures;
+use App\Lib\Validation\Exception\ValidationException;
 use App\Tests\Acceptance\AcceptanceTest;
-use App\Validation\Exception\ValidationException;
 use DateTimeImmutable;
 
 class CreateProfileTest extends AcceptanceTest

@@ -5,7 +5,7 @@ namespace App\Core\Infrastructure\Query\Task;
 use App\Core\Domain\Query\Task\FindAvailableReviewTasksForExecutor;
 use App\Core\Infrastructure\Entity\Task;
 use App\Core\Infrastructure\Repository\ReviewRepository;
-use App\CQRS\QueryInterface;
+use App\Lib\CQRS\QueryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class FindAvailableReviewTasksForExecutorHandler extends BaseTaskQueryHandler

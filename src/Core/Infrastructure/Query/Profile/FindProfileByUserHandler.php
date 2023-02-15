@@ -2,9 +2,9 @@
 
 namespace App\Core\Infrastructure\Query\Profile;
 
-use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Domain\Query\Profile\FindProfileByUser;
-use App\CQRS\QueryInterface;
+use App\Core\Infrastructure\Entity\Profile;
+use App\Lib\CQRS\QueryInterface;
 
 class FindProfileByUserHandler extends BaseProfileQueryHandler
 {

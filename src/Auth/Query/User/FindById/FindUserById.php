@@ -2,7 +2,7 @@
 
 namespace App\Auth\Query\User\FindById;
 
-use App\CQRS\BaseQuery;
+use App\Lib\CQRS\BaseQuery;
 
 class FindUserById extends BaseQuery
 {

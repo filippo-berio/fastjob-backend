@@ -3,7 +3,7 @@
 namespace App\Api\Request\Auth;
 
 use App\Api\Request\RequestInterface;
-use App\Validation\Constraints\Phone;
+use App\Lib\Validation\Constraints\Phone;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SendConfirmCodeRequest implements RequestInterface

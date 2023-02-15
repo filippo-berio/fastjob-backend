@@ -20,12 +20,12 @@ services:
         App\Core\Domain\Event\EventHandlerInterface:
             tags: ['core.event_handler']
 
-        App\CQRS\QueryHandlerInterface:
+        App\Lib\CQRS\QueryHandlerInterface:
             tags: ['cqrs.query_handler']
-        App\CQRS\CommandHandlerInterface:
+        App\Lib\CQRS\CommandHandlerInterface:
             tags: ['cqrs.command_handler']
 
-        App\Sms\Service\Provider\SmsProviderInterface:
+        App\Lib\Sms\Service\Provider\SmsProviderInterface:
             tags: ['sms.provider']
 
     # makes classes in src/ available to be used as services
@@ -67,13 +67,13 @@ services:
         $minimalStack: '%env(NEXT_TASK_MINIMAL_STACK)%'
 
 
-    App\CQRS\MessageHandler\AsyncCommandMessageHandler:
+    App\Lib\CQRS\MessageHandler\AsyncCommandMessageHandler:
         $commandHandlers: !tagged_iterator 'cqrs.command_handler'
 
-    App\CQRS\MessageHandler\CommandMessageHandler:
+    App\Lib\CQRS\MessageHandler\CommandMessageHandler:
         $commandHandlers: !tagged_iterator 'cqrs.command_handler'
 
-    App\CQRS\MessageHandler\QueryMessageHandler:
+    App\Lib\CQRS\MessageHandler\QueryMessageHandler:
         $queryHandlers: !tagged_iterator 'cqrs.query_handler'
 
 
@@ -82,11 +82,11 @@ services:
             - { name: 'doctrine.fixtures.purger_factory', alias: 'my_purger' }
 
 
-    App\Sms\Service\Provider\SmsProviderFactory:
+    App\Lib\Sms\Service\Provider\SmsProviderFactory:
         $provider: '%env(SMS_PROVIDER)%'
         $providers: !tagged_iterator 'sms.provider'
 
-    App\Sms\Service\Provider\TelegramSmsProvider:
+    App\Lib\Sms\Service\Provider\TelegramSmsProvider:
         $botToken: '%env(TELEGRAM_BOT_TOKEN)%'
         $host: '%env(TELEGRAM_BOT_URL)%'
         $chatId: '%env(TELEGRAM_CHAT_ID)%'

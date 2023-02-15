@@ -5,7 +5,7 @@ namespace App\Core\Application\UseCase\Profile;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\User;
 use App\Core\Domain\Query\Profile\FindProfileByUser;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class FindProfileByUserUseCase
 {

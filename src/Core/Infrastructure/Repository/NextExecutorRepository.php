@@ -6,10 +6,10 @@ use App\Core\Domain\Entity\NextExecutor;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;
 use App\Core\Domain\Query\Task\FindWaitTaskByAuthor;
+use App\Core\Domain\Repository\NextExecutorRepositoryInterface;
 use App\Core\Infrastructure\Entity\Task;
 use App\Core\Infrastructure\Entity\TaskSwipe;
-use App\Core\Domain\Repository\NextExecutorRepositoryInterface;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManagerInterface;
 

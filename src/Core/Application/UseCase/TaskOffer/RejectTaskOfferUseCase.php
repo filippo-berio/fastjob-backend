@@ -6,7 +6,7 @@ use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Exception\TaskOffer\TaskOfferNotFoundException;
 use App\Core\Domain\Query\Task\FindTaskById;
 use App\Core\Domain\Service\TaskOffer\RejectTaskOfferService;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class RejectTaskOfferUseCase
 {

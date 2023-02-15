@@ -10,7 +10,7 @@ use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
 use App\Core\Domain\Query\Profile\FindProfileByUser;
 use App\Core\Domain\Service\Profile\UpdateProfileService;
 use App\Core\Infrastructure\Repository\CategoryRepository;
-use App\CQRS\Bus\QueryBusInterface;
+use App\Lib\CQRS\Bus\QueryBusInterface;
 use App\Location\Exception\CityNotFoundException;
 use App\Location\UseCase\City\GetCityByIdUseCase;
 

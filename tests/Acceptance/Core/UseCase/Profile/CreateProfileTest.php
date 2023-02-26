@@ -90,12 +90,16 @@ class CreateProfileTest extends AcceptanceTest
                 'Name-имя',
                 '2000-12-14',
             ],
-            // TODO
-//            [
-//                UserFixtures::USER_6,
-//                'Тест',
-//                '2000-12-14',
-//            ],
+            [
+                UserFixtures::USER_6,
+                'Гнилохмель',
+                '2000-12-14',
+            ],
+            [
+                UserFixtures::USER_6,
+                'Тест',
+                '2000-12-14',
+            ],
         ];
     }
 }

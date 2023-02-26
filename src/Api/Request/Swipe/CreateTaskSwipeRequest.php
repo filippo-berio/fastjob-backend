@@ -12,14 +12,14 @@ use Symfony\Component\Validator\Constraints\Type;
 class CreateTaskSwipeRequest implements RequestInterface
 {
     #[NotBlank]
-    #[Type('integer')]
+    #[Type('numeric')]
     public ?string $taskId = null;
 
     #[NotBlank]
     #[Choice(Swipe::TYPES)]
     public ?string $type = null;
 
-    #[Type('integer')]
+    #[Type('numeric')]
     #[GreaterThan(0)]
     public ?string $customPrice = null;
 }

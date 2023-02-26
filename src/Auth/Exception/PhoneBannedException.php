@@ -6,6 +6,6 @@ class PhoneBannedException extends BaseException
 {
     public function __construct()
     {
-        parent::__construct('Телефон заблокирован', 403);
+        parent::__construct('Вы превысили число попыток. Попробуйте позже.', 403, 51);
     }
 }

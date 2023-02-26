@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\Regex;
 class Name extends Regex
 {
     public $message = 'Некорректное имя';
-    public $pattern = '/^[\sA-zА-я-]*$/';
+    public $pattern = '/^[\sA-zА-яёЁ-]*$/u';
 
     public function __construct()
     {

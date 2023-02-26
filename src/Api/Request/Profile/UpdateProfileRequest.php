@@ -13,7 +13,7 @@ class UpdateProfileRequest implements RequestInterface
     public ?string $firstName = null;
 
     #[All([
-        new Type('integer')
+        new Type('numeric')
     ])]
     public array $categoryIds = [];
 
@@ -21,6 +21,6 @@ class UpdateProfileRequest implements RequestInterface
 
     public ?string $description = null;
 
-    #[Type('integer')]
+    #[Type('numeric')]
     public ?string $cityId = null;
 }

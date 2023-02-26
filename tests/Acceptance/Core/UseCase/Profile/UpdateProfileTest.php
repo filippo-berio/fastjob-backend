@@ -6,8 +6,6 @@ use App\Core\Application\UseCase\Profile\UpdateProfileUseCase;
 use App\Core\Domain\Entity\Category;
 use App\Core\Domain\Event\Task\GenerateNext\GenerateNextTaskEvent;
 use App\Core\Domain\Exception\Category\CategoryNotFoundException;
-use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
-use App\DataFixtures\Auth\UserFixtures;
 use App\DataFixtures\Core\CategoryFixtures;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Location\CityFixtures;
@@ -27,7 +25,7 @@ class UpdateProfileTest extends AcceptanceTest
         $useCase = $this->getDependency(UpdateProfileUseCase::class);
         $profile = $this->getCoreProfile(ProfileFixtures::PROFILE_1);
         $useCase->update(
-            $profile->getUser(),
+            $profile,
             $data['firstName'] ?? $profile->getFirstName(),
             $data['categories'] ?? array_map(
                 fn(Category $category) => $category->getId(),
@@ -51,36 +49,36 @@ class UpdateProfileTest extends AcceptanceTest
      * @dataProvider invalidData
      */
     public function testError(
-        string $exception,
-        int $userId,
-        string $firstName,
-        array $categoryIds = [],
+        string  $exception,
+        int     $profileId,
+        string  $firstName,
+        array   $categoryIds = [],
         ?string $lastName = null,
         ?string $description = null,
-        ?int $cityId = null,
+        ?int    $cityId = null,
     ) {
         $this->bootContainer();
         $useCase = $this->getDependency(UpdateProfileUseCase::class);
-        $user = $this->getCoreUser($userId);
+        $profile = $this->getCoreProfile($profileId);
         $this->expectException($exception);
-        $useCase->update($user, $firstName, $categoryIds, $lastName, $description, $cityId);
+        $useCase->update($profile, $firstName, $categoryIds, $lastName, $description, $cityId);
     }
 
     /**
      * @dataProvider validData
      */
     public function testSuccess(
-        int $userId,
-        string $firstName,
-        array $categoryIds = [],
+        int     $profileId,
+        string  $firstName,
+        array   $categoryIds = [],
         ?string $lastName = null,
         ?string $description = null,
-        ?int $cityId = null,
+        ?int    $cityId = null,
     ) {
         $this->bootContainer();
         $useCase = $this->getDependency(UpdateProfileUseCase::class);
-        $user = $this->getCoreUser($userId);
-        $profile = $useCase->update($user, $firstName, $categoryIds, $lastName, $description, $cityId);
+        $profile = $this->getCoreProfile($profileId);
+        $profile = $useCase->update($profile, $firstName, $categoryIds, $lastName, $description, $cityId);
 
         $this->assertEquals($firstName, $profile->getFirstName());
         $this->assertEquals($lastName, $lastName);
@@ -158,7 +156,7 @@ class UpdateProfileTest extends AcceptanceTest
     {
         return [
             [
-                UserFixtures::USER_2,
+                ProfileFixtures::PROFILE_2,
                 'Имя',
                 [],
                 'LastName',
@@ -166,7 +164,7 @@ class UpdateProfileTest extends AcceptanceTest
                 CityFixtures::CITY_1,
             ],
             [
-                UserFixtures::USER_2,
+                ProfileFixtures::PROFILE_2,
                 'Имя',
                 [
                     CategoryFixtures::CLEANING,
@@ -177,7 +175,7 @@ class UpdateProfileTest extends AcceptanceTest
                 CityFixtures::CITY_1,
             ],
             [
-                UserFixtures::USER_2,
+                ProfileFixtures::PROFILE_2,
                 'Имя',
                 [],
                 null,
@@ -185,12 +183,12 @@ class UpdateProfileTest extends AcceptanceTest
                 null,
             ],
             [
-                UserFixtures::USER_1,
+                ProfileFixtures::PROFILE_1,
                 'Имя',
                 [],
             ],
             [
-                UserFixtures::USER_2,
+                ProfileFixtures::PROFILE_2,
                 'Имя',
                 [
                     CategoryFixtures::COMPUTERS,
@@ -207,13 +205,8 @@ class UpdateProfileTest extends AcceptanceTest
     {
         return [
             [
-                ProfileNotFoundException::class,
-                UserFixtures::USER_6,
-                'Имя',
-            ],
-            [
                 CityNotFoundException::class,
-                UserFixtures::USER_2,
+                ProfileFixtures::PROFILE_2,
                 'Имя',
                 [
                     CategoryFixtures::COMPUTERS,
@@ -226,7 +219,7 @@ class UpdateProfileTest extends AcceptanceTest
             ],
             [
                 ValidationException::class,
-                UserFixtures::USER_2,
+                ProfileFixtures::PROFILE_2,
                 'Имя123',
                 [],
                 null,
@@ -235,7 +228,7 @@ class UpdateProfileTest extends AcceptanceTest
             ],
             [
                 ValidationException::class,
-                UserFixtures::USER_2,
+                ProfileFixtures::PROFILE_2,
                 'Имя',
                 [],
                 'LastName123',
@@ -244,7 +237,7 @@ class UpdateProfileTest extends AcceptanceTest
             ],
             [
                 CategoryNotFoundException::class,
-                UserFixtures::USER_2,
+                ProfileFixtures::PROFILE_2,
                 'Имя',
                 [
                     CategoryFixtures::NOT_EXIST_CATEGORY,
@@ -252,7 +245,7 @@ class UpdateProfileTest extends AcceptanceTest
             ],
             [
                 CategoryNotFoundException::class,
-                UserFixtures::USER_2,
+                ProfileFixtures::PROFILE_2,
                 'Имя',
                 [
                     CategoryFixtures::NOT_EXIST_CATEGORY,

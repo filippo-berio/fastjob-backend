@@ -4,13 +4,9 @@ namespace App\Core\Application\UseCase\Profile;
 
 use App\Core\Domain\DTO\Profile\UpdateProfileDTO;
 use App\Core\Domain\Entity\Profile;
-use App\Core\Domain\Entity\User;
 use App\Core\Domain\Exception\Category\CategoryNotFoundException;
-use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
-use App\Core\Domain\Query\Profile\FindProfileByUser;
 use App\Core\Domain\Service\Profile\UpdateProfileService;
 use App\Core\Infrastructure\Repository\CategoryRepository;
-use App\Lib\CQRS\Bus\QueryBusInterface;
 use App\Location\Exception\CityNotFoundException;
 use App\Location\UseCase\City\GetCityByIdUseCase;
 
@@ -18,24 +14,19 @@ class UpdateProfileUseCase
 {
     public function __construct(
         private UpdateProfileService $updateProfileService,
-        private QueryBusInterface $queryBus,
         private GetCityByIdUseCase $getCityByIdUseCase,
         private CategoryRepository $categoryRepository,
     ) {
     }
 
     public function update(
-        User    $user,
+        Profile $profile,
         string  $firstName,
         array   $categoryIds = [],
         ?string $lastName = null,
         ?string $description = null,
         ?int    $cityId = null,
     ): Profile {
-        if (!$profile = $this->queryBus->query(new FindProfileByUser($user))) {
-            throw new ProfileNotFoundException();
-        }
-
         if ($cityId) {
             $city = $this->getCityByIdUseCase->get($cityId);
             if (!$city) {

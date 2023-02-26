@@ -52,13 +52,13 @@ class ProfileController extends BaseController
 
     #[Route('/update', methods: ['PUT'])]
     public function update(
-        #[CurrentUser] User  $user,
+        #[CurrentUser] Profile $profile,
         UpdateProfileRequest $body,
         UpdateProfileUseCase $useCase,
     ): JsonResponse {
         $this->validator->validate($body);
         $useCase->update(
-            $user,
+            $profile,
             $body->firstName,
             $body->categoryIds,
             $body->lastName,

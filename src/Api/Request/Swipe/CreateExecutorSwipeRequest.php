@@ -11,11 +11,11 @@ use Symfony\Component\Validator\Constraints\Type;
 class CreateExecutorSwipeRequest implements RequestInterface
 {
     #[NotBlank]
-    #[Type('integer')]
+    #[Type('numeric')]
     public ?string $taskId = null;
 
     #[NotBlank]
-    #[Type('integer')]
+    #[Type('numeric')]
     public ?string $executorId = null;
 
     #[NotBlank]

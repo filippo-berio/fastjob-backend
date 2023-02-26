@@ -2,11 +2,11 @@
 
 namespace App\Api\EventListener;
 
+use App\Auth\Exception\BaseException as AuthException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 
 class ExceptionListener implements EventSubscriberInterface
 {
@@ -27,6 +27,12 @@ class ExceptionListener implements EventSubscriberInterface
     {
         $exception = $event->getThrowable();
 
+        $customCode = 1;
+
+        if ($exception instanceof AuthException) {
+            $customCode = $exception->customCode;
+        }
+
         if (method_exists($exception, 'getStatusCode')) {
             $code = $exception->getStatusCode();
         } else {
@@ -35,7 +41,8 @@ class ExceptionListener implements EventSubscriberInterface
 
         $event->setResponse(new JsonResponse([
             'success' => false,
-            'error' => $exception->getMessage(),
+            'error'   => $exception->getMessage(),
+            'code'    => $customCode,
         ], $code));
     }
 

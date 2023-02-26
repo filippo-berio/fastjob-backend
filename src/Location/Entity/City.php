@@ -7,19 +7,18 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use JsonSerializable;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[Entity]
-class City
+class City implements JsonSerializable
 {
     #[Id]
     #[GeneratedValue]
     #[Column]
-    #[Groups(['city_full'])]
     private ?int $id = null;
 
     #[Column]
-    #[Groups(['city_full'])]
     private string $title;
 
     #[ManyToOne]
@@ -31,6 +30,15 @@ class City
     ) {
         $this->title = $title;
         $this->region = $region;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id'  => $this->getId(),
+            'title' => $this->getTitle(),
+            'region' => $this->getRegion()->jsonSerialize()
+        ];
     }
 
     public function getId(): int

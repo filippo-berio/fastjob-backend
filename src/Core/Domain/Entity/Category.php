@@ -10,6 +10,9 @@ class Category
     protected string $title;
     protected bool $remote;
     protected ?Category $parent;
+    /** @var Category[] */
+    protected array $children;
+    protected string $icon;
 
     public function __construct(
         string $title,
@@ -20,9 +23,14 @@ class Category
             throw new Exception('У категории должен быть либо родитель, либо флаг remote');
         }
         $this->remote = $remote ?? $parent->isRemote();
-        $this->title = $title;
+        $this->title  = $title;
         $this->parent = $parent;
 
+    }
+
+    public function getChildren(): array
+    {
+        return $this->children;
     }
 
     public function isRemote(): bool
@@ -33,6 +41,11 @@ class Category
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getIcon(): string
+    {
+        return $this->icon;
     }
 
     public function getTitle(): string

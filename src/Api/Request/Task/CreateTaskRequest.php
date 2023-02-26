@@ -15,19 +15,19 @@ class CreateTaskRequest implements RequestInterface
     public ?string $title;
 
     #[All(
-        new Type('integer')
+        new Type('numeric')
     )]
     public array $categoryIds = [];
 
     public ?string $description = null;
 
-    #[Type('integer')]
+    #[Type('numeric')]
     public ?string $price = null;
 
     #[Collection([
         'cityId' => [
             new NotBlank(),
-            new Type('integer')
+            new Type('numeric')
         ],
         'title' => [
             new NotBlank()

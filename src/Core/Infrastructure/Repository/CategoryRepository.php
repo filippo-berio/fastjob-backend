@@ -26,4 +26,13 @@ class CategoryRepository implements CategoryRepositoryInterface
             ->getQuery()
             ->getResult();
     }
+
+    public function getTree(): array
+    {
+        return $this->entityManager->getRepository(Category::class)
+            ->createQueryBuilder('c')
+            ->andWhere('c.parent is null')
+            ->getQuery()
+            ->getResult();
+    }
 }

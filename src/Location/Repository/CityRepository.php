@@ -17,4 +17,9 @@ class CityRepository
     {
         return $this->em->getRepository(City::class)->find($id);
     }
+
+    public function findAll(): array
+    {
+        return $this->em->getRepository(City::class)->findAll();
+    }
 }

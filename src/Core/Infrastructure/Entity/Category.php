@@ -22,11 +22,11 @@ class Category extends DomainCategory
     #[Id]
     #[GeneratedValue]
     #[Column]
-    #[Groups(['category_full'])]
+    #[Groups(['category_full', 'category_short'])]
     protected ?int $id = null;
 
     #[Column]
-    #[Groups(['category_full'])]
+    #[Groups(['category_full', 'category_short'])]
     protected string $title;
 
     #[Column(type: 'smallint')]

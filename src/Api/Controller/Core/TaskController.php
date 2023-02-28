@@ -54,7 +54,7 @@ class TaskController extends BaseController
         GetProfileNextTaskUseCase $useCase,
     ): JsonResponse {
         $tasks = $useCase->get($profile);
-        return $this->json($tasks, context: ['task_full']);
+        return $this->json($tasks, context: ['task_full', 'category_short', 'profile_short']);
     }
 
     public function offer(

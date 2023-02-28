@@ -26,7 +26,7 @@ class SwipeController extends BaseController
         return $this->json(
             [
                 'success' => true,
-                'data' => $executorSwipe
+                'next' => $executorSwipe
             ],
             context: ['executor_swipe_short']
         );
@@ -45,7 +45,7 @@ class SwipeController extends BaseController
                 'success' => true,
                 'next' => $nextTask
             ],
-            context: ['task_swipe_short']
+            context: ['task_full', 'category_short', 'profile_short']
         );
     }
 }

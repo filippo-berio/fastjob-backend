@@ -30,14 +30,14 @@ class Profile extends DomainProfile implements UserInterface
     #[Id]
     #[GeneratedValue]
     #[Column]
-    #[Groups(['profile_full'])]
+    #[Groups(['profile_full', 'profile_short'])]
     protected ?int $id = null;
 
     #[Column]
     protected int $userId;
 
     #[Column]
-    #[Groups(['profile_full'])]
+    #[Groups(['profile_full', 'profile_short'])]
     protected string $firstName;
 
     #[Column]
@@ -45,7 +45,7 @@ class Profile extends DomainProfile implements UserInterface
     protected DateTimeImmutable $birthDate;
 
     #[Column(nullable: true)]
-    #[Groups(['profile_full'])]
+    #[Groups(['profile_full', 'profile_short'])]
     protected ?string $lastName = null;
 
     #[Column(nullable: true)]
@@ -53,7 +53,7 @@ class Profile extends DomainProfile implements UserInterface
     protected ?string $description = null;
 
     #[Column(nullable: true)]
-    #[Groups(['profile_full'])]
+    #[Groups(['profile_full', 'profile_short'])]
     protected ?string $photoPath = null;
 
     #[Groups(['profile_full'])]

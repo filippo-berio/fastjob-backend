@@ -49,8 +49,10 @@ class Task extends DomainTask
     #[Groups(['task_full'])]
     protected DateTimeImmutable $createdAt;
 
-    #[ManyToMany(targetEntity: Category::class)]
     #[Groups(['task_full'])]
+    protected array $categories;
+
+    #[ManyToMany(targetEntity: Category::class)]
     /** @var Collection<DomainCategory> $categories */
     protected Collection $doctrineCategories;
 
@@ -84,5 +86,10 @@ class Task extends DomainTask
     {
         $this->doctrineCategories = new ArrayCollection($categories);
         return parent::setCategories($categories);
+    }
+
+    public function getDoctrineCategories(): Collection
+    {
+        return $this->doctrineCategories;
     }
 }

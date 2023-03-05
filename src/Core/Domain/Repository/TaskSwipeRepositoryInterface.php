@@ -10,6 +10,7 @@ interface TaskSwipeRepositoryInterface
 {
     public function save(TaskSwipe $taskSwipe): TaskSwipe;
 
+    /** @return TaskSwipe[] */
     public function findByProfile(Profile $profile): array;
 
     public function findByProfileAndTask(Profile $profile, Task $task): ?TaskSwipe;

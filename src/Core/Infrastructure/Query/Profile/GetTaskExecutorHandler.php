@@ -17,6 +17,7 @@ class GetTaskExecutorHandler extends BaseProfileQueryHandler
      */
     public function handle(QueryInterface $query): ?Profile
     {
+        // TODO проверять что исполнитель не отказался от задачи
         /** @var ?TaskOffer $taskOffer */
         $taskOffer = $this->entityManager->getRepository(TaskOffer::class)
             ->createQueryBuilder('to')

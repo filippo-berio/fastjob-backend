@@ -46,4 +46,18 @@ class TaskOfferRepository implements TaskOfferRepositoryInterface
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findWaitOffersForExecutor(DomainProfile $profile): array
+    {
+        return $this->entityManager->getRepository(TaskOffer::class)
+            ->createQueryBuilder('to')
+            ->andWhere('identity(to.profile) = :profile')
+            ->setParameter('profile', $profile->getId())
+            ->andWhere('to.status in (:status)')
+            ->setParameter('status', [
+                TaskOffer::STATUS_WAIT,
+            ])
+            ->getQuery()
+            ->getResult();
+    }
 }

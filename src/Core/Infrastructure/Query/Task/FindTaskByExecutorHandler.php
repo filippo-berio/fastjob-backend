@@ -2,25 +2,23 @@
 
 namespace App\Core\Infrastructure\Query\Task;
 
-use App\Core\Domain\Query\Task\FindTaskByExecutorAndId;
+use App\Core\Domain\Query\Task\FindTaskByExecutor;
 use App\Core\Infrastructure\Entity\Task;
 use App\Lib\CQRS\QueryInterface;
 
-class FindTaskByExecutorAndIdHandler extends BaseTaskQueryHandler
+class FindTaskByExecutorHandler extends BaseTaskQueryHandler
 {
 
     /**
-     * @param FindTaskByExecutorAndId $query
-     * @return Task
+     * @param FindTaskByExecutor $query
+     * @return Task[]
      */
-    public function handle(QueryInterface $query): Task
+    public function handle(QueryInterface $query): array
     {
         $qb = $this->entityManager->getRepository(Task::class)
             ->createQueryBuilder('t');
         $this->joinAcceptedTaskOffers($qb);
         return $qb
-            ->andWhere('t.id = :id')
-            ->setParameter('id', $query->id)
             ->andWhere('identity(to.profile) = :profile')
             ->setParameter('profile', $query->executor->getId())
             ->getQuery()
@@ -29,6 +27,6 @@ class FindTaskByExecutorAndIdHandler extends BaseTaskQueryHandler
 
     public function getQueryClass(): string
     {
-        return FindTaskByExecutorAndId::class;
+        return FindTaskByExecutor::class;
     }
 }

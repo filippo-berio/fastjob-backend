@@ -28,7 +28,7 @@ class SwipeController extends BaseController
                 'success' => true,
                 'next' => $executorSwipe
             ],
-            context: ['executor_swipe_short']
+            context: ['task_short', 'profile_short']
         );
     }
 

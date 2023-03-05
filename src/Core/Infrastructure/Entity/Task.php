@@ -4,6 +4,7 @@ namespace App\Core\Infrastructure\Entity;
 
 use App\Core\Domain\Entity\Category as DomainCategory;
 use App\Core\Domain\Entity\Profile as DomainProfile;
+use App\Core\Domain\Entity\SwipeMatch;
 use App\Core\Domain\Entity\Task as DomainTask;
 use App\Location\Entity\Address;
 use DateTimeImmutable;
@@ -18,8 +19,10 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\PostLoad;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[Entity]
 #[HasLifecycleCallbacks]
@@ -39,6 +42,7 @@ class Task extends DomainTask
     protected string $title;
 
     #[Column]
+    #[Groups(['task_full'])]
     protected string $status;
 
     #[ManyToOne(targetEntity: Profile::class)]
@@ -76,10 +80,40 @@ class Task extends DomainTask
     #[Groups(['task_full'])]
     protected bool $remote;
 
+    #[Groups(['task_private'])]
+    protected ?DomainProfile $executor = null;
+
+    #[Groups(['task_private'])]
+    #[MaxDepth(2)]
+    protected array $matches;
+
+    #[Groups(['task_private'])]
+    #[MaxDepth(2)]
+    protected array $offers;
+
+    /** @var Collection<TaskOffer>  */
+    #[OneToMany(mappedBy: 'task', targetEntity: TaskOffer::class)]
+    protected Collection $doctrineOffers;
+
     #[PostLoad]
     public function initCategories()
     {
         $this->categories = $this->doctrineCategories->toArray();
+    }
+
+    #[PostLoad]
+    public function initOffers()
+    {
+        $this->offers = $this->doctrineOffers->toArray();
+    }
+
+    /**
+     * @param SwipeMatch[] $matches
+     * @return void
+     */
+    public function setMatches(array $matches): void
+    {
+        $this->matches = $matches;
     }
 
     protected function setCategories(array $categories)
@@ -91,5 +125,10 @@ class Task extends DomainTask
     public function getDoctrineCategories(): Collection
     {
         return $this->doctrineCategories;
+    }
+
+    public function setExecutor(?DomainProfile $executor): void
+    {
+        $this->executor = $executor;
     }
 }

@@ -30,6 +30,8 @@ abstract class BaseController extends AbstractController
         $context = (new ObjectNormalizerContextBuilder())
             ->withContext($contextBuilder)
             ->withGroups($context)
+            ->withEnableMaxDepth(true)
+            ->withCircularReferenceLimit(3)
             ->toArray();
 
         $headers = [

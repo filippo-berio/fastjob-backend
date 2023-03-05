@@ -4,7 +4,6 @@ namespace App\Core\Domain\Entity;
 
 use App\Core\Domain\Entity\Trait\EventDispatcherEntityTrait;
 use App\Core\Domain\Event\Task\Offer\TaskOfferEvent;
-use App\Core\Domain\Exception\TaskOffer\TaskOfferExistsException;
 use App\Location\Entity\Address;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -13,12 +12,19 @@ class Task
 {
     use EventDispatcherEntityTrait;
 
+    const STATUS_REVIEW = 'review';
     const STATUS_WAIT = 'wait';
     const STATUS_OFFERED = 'offered';
     const STATUS_WORK = 'work';
     const STATUS_CANCELED = 'canceled';
     const STATUS_FINISHED = 'finished';
     const STATUS_DELETED = 'deleted';
+
+    const EXECUTOR_STATUSES = [
+        self::STATUS_OFFERED,
+        self::STATUS_WORK,
+        self::STATUS_FINISHED,
+    ];
 
     protected ?int $id = null;
     protected string $title;
@@ -32,6 +38,11 @@ class Task
     protected bool $remote;
     /** @var Category[] */
     protected array $categories;
+    protected ?Profile $executor;
+    /** @var SwipeMatch[] */
+    protected array $matches;
+    /** @var TaskOffer[] */
+    protected array $offers;
 
     public function __construct(
         string             $title,
@@ -46,13 +57,31 @@ class Task
         $this->title = $title;
         $this->author = $author;
         $this->createdAt = new DateTimeImmutable();
-        $this->resetStatus();
+        $this->status = self::STATUS_WAIT;
         $this->setCategories($categories);
         $this->price = $price;
         $this->address = $address;
         $this->deadline = $deadline;
         $this->description = $description;
         $this->remote = $remote;
+
+        $this->matches = [];
+        $this->offers = [];
+    }
+
+    public function getOffers(): array
+    {
+        return $this->offers;
+    }
+
+    public function getExecutor(): ?Profile
+    {
+        return $this->executor;
+    }
+
+    public function getMatches(): array
+    {
+        return $this->matches;
     }
 
     public function isRemote(): bool
@@ -130,9 +159,6 @@ class Task
 
     public function offer(Profile $executor)
     {
-        if ($this->isOffered()) {
-            throw new TaskOfferExistsException();
-        }
         $this->dispatch(new TaskOfferEvent($this, $executor));
         $this->status = self::STATUS_OFFERED;
     }

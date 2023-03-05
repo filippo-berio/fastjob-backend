@@ -4,6 +4,7 @@ namespace App\Api\Controller\Core;
 
 use App\Api\Controller\BaseController;
 use App\Api\Request\Task\CreateTaskRequest;
+use App\Api\Request\Task\MakeOfferRequest;
 use App\Core\Application\UseCase\Review\CreateExecutorReviewUseCase;
 use App\Core\Application\UseCase\Review\GetAvailableReviewTargetsUseCase;
 use App\Core\Application\UseCase\Review\GetProfileReviewsUseCase;
@@ -57,12 +58,16 @@ class TaskController extends BaseController
         return $this->json($tasks, context: ['task_full', 'category_short', 'profile_short']);
     }
 
+    #[Route('/offer', methods: ['POST'])]
     public function offer(
-        #[CurrentUser] Profile    $profile,
+        #[CurrentUser] Profile $profile,
+        MakeOfferRequest $body,
         OfferTaskUseCase $useCase,
     ): JsonResponse {
-        $tasks = $useCase->get($profile);
-        return $this->json($tasks, context: ['task_full']);
+        $useCase->offer($profile, $body->taskId, $body->executorId);
+        return $this->json([
+            'success' => true
+        ]);
     }
 
     public function acceptOffer(

@@ -2,7 +2,9 @@
 
 namespace App\Core\Domain\Entity;
 
-class NextExecutor
+use JsonSerializable;
+
+class NextExecutor implements JsonSerializable
 {
     public function __construct(
         private Task       $task,
@@ -24,5 +26,13 @@ class NextExecutor
     public function getTaskSwipe(): ?TaskSwipe
     {
         return $this->taskSwipe;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'task' => $this->task,
+            'profile' => $this->executor,
+        ];
     }
 }

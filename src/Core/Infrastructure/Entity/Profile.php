@@ -41,7 +41,7 @@ class Profile extends DomainProfile implements UserInterface
     protected string $firstName;
 
     #[Column]
-    #[Groups(['profile_full'])]
+    #[Groups(['profile_full', 'profile_short'])]
     protected DateTimeImmutable $birthDate;
 
     #[Column(nullable: true)]

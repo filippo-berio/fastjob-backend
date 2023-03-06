@@ -10,4 +10,6 @@ when@test:
     flysystem:
         storages:
             local.storage:
-                adapter: 'memory'
+                adapter: 'local'
+                options:
+                    directory: '%kernel.project_dir%/var/cache/test'

@@ -33,13 +33,12 @@ class SendConfirmationCodeService
 
         $current = $this->confirmationTokenRepository->findByPhone($phone);
         $code = rand(1111, 9999);
-        $code = 1111;
 
         $this->confirmationTokenRepository->save(
             $current?->setConfirmationCode($code) ?? new ConfirmationToken($phone, $code, self::RETRIES)
         );
         $this->confirmationTimeoutRepository->setPhoneTimeout($phone);
 
-//        $this->sendSmsUseCase->send($phone, $code);
+        $this->sendSmsUseCase->send($phone, $code);
     }
 }

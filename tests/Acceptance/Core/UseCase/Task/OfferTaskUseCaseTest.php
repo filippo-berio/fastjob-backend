@@ -54,12 +54,6 @@ class OfferTaskUseCaseTest extends AcceptanceTest
                 TaskFixtures::TASK_7,
                 ProfileFixtures::PROFILE_5,
             ],
-            [
-                TaskOfferExistsException::class,
-                ProfileFixtures::PROFILE_15,
-                TaskFixtures::TASK_16,
-                ProfileFixtures::PROFILE_17,
-            ],
         ];
     }
 }

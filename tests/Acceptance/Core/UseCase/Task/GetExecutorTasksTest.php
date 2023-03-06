@@ -13,5 +13,6 @@ class GetExecutorTasksTest extends AcceptanceTest
         $useCase = $this->getDependency(GetExecutorTasksUseCase::class);
         $profile = $this->getCoreProfile(ProfileFixtures::PROFILE_16);
         $tasks = $useCase->get($profile);
+        $this->assertNotEmpty($tasks);
     }
 }

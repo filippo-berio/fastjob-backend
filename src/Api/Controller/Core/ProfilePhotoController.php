@@ -4,6 +4,7 @@ namespace App\Api\Controller\Core;
 
 use App\Api\Controller\BaseController;
 use App\Core\Application\UseCase\Profile\Photo\GetProfilePhotosUseCase;
+use App\Core\Application\UseCase\Profile\Photo\MakeProfilePhotoMainUseCase;
 use App\Core\Application\UseCase\Profile\Photo\UploadProfilePhotoUseCase;
 use App\Core\Domain\Entity\Profile;
 use Symfony\Component\HttpFoundation\File\File;
@@ -48,7 +49,9 @@ class ProfilePhotoController extends BaseController
     public function makeMain(
         #[CurrentUser] Profile $profile,
         int $id,
+        MakeProfilePhotoMainUseCase $useCase,
     ): JsonResponse {
-
+        $useCase->set($profile, $id);
+        return $this->json();
     }
 }

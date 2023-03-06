@@ -18,7 +18,9 @@ abstract class BaseController extends AbstractController
     }
 
     public function json(
-        mixed $data,
+        mixed $data = [
+            'success' => true
+        ],
         int $status = 200,
         array $headers = [],
         array $context = []

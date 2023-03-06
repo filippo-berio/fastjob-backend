@@ -5,11 +5,13 @@ namespace App\Core\Domain\Event\ProfilePhoto\SetMainPhoto;
 use App\Core\Domain\Contract\ProfilePhotoStorageInterface;
 use App\Core\Domain\Event\EventHandlerInterface;
 use App\Core\Domain\Event\EventInterface;
+use App\Core\Domain\Repository\ProfilePhotoRepositoryInterface;
 
 class SetMainPhotoEventHandler implements EventHandlerInterface
 {
     public function __construct(
         private ProfilePhotoStorageInterface $photoStorage,
+        private ProfilePhotoRepositoryInterface $photoRepository,
     ) {
     }
 
@@ -35,5 +37,6 @@ class SetMainPhotoEventHandler implements EventHandlerInterface
                 $photo->setMain(false);
             }
         }
+        $this->photoRepository->save($event->photo);
     }
 }

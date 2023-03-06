@@ -23,6 +23,15 @@ class ProfilePhotoRepository implements ProfilePhotoRepositoryInterface
             ]);
     }
 
+    public function find(Profile $profile, int $id): ?DomainProfilePhoto
+    {
+        return $this->entityManager->getRepository(ProfilePhoto::class)
+            ->findOneBy([
+                'profile' => $profile,
+                'id' => $id,
+            ]);
+    }
+
     public function save(DomainProfilePhoto $photo): DomainProfilePhoto
     {
         $this->entityManager->persist($photo);

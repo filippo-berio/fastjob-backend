@@ -149,12 +149,12 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
             ),
             $profile16 = new Profile(
                 $this->getCoreUser(UserFixtures::USER_16),
-                'Филлимон',
+                'Филадей',
                 new DateTimeImmutable('10.10.2000'),
             ),
             $profile17 = new Profile(
                 $this->getCoreUser(UserFixtures::USER_17),
-                'Филлимон',
+                'Мефедор',
                 new DateTimeImmutable('10.10.2000'),
             ),
         ], $manager);

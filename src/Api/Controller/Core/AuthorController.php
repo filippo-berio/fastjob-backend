@@ -3,7 +3,9 @@
 namespace App\Api\Controller\Core;
 
 use App\Api\Controller\BaseController;
+use App\Api\Request\Author\CreateExecutorSwipeRequest;
 use App\Api\Request\Author\FinishTaskRequest;
+use App\Core\Application\UseCase\Swipe\CreateExecutorSwipeUseCase;
 use App\Core\Application\UseCase\Task\FinishTaskUseCase;
 use App\Core\Application\UseCase\Task\GetProfileTasksUseCase;
 use App\Core\Infrastructure\Entity\Profile;
@@ -31,7 +33,7 @@ class AuthorController extends BaseController
         );
     }
 
-    #[Route('/finish-task', methods: ['GET'])]
+    #[Route('/finish-task', methods: ['POST'])]
     public function finishTask(
         #[CurrentUser] Profile $profile,
         FinishTaskUseCase $useCase,
@@ -52,6 +54,22 @@ class AuthorController extends BaseController
                 'match',
             ]
         );
+    }
 
+    #[Route('/swipe', methods: ['POST'])]
+    public function createExecutorSwipe(
+        #[CurrentUser] Profile $profile,
+        CreateExecutorSwipeUseCase $useCase,
+        CreateExecutorSwipeRequest $body,
+    ): JsonResponse {
+        $this->validator->validate($body);
+        $executorSwipe = $useCase->create($profile, $body->taskId, $body->executorId, $body->type);
+        return $this->json(
+            [
+                'success' => true,
+                'next' => $executorSwipe
+            ],
+            context: ['category_short', 'profile_short', 'task_full']
+        );
     }
 }

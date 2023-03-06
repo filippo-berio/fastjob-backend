@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Request\Swipe;
+namespace App\Api\Request\Author;
 
 use App\Api\Request\RequestInterface;
 use App\Core\Domain\Entity\Swipe;

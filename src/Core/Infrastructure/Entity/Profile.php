@@ -4,6 +4,7 @@ namespace App\Core\Infrastructure\Entity;
 
 use App\Core\Domain\DTO\Profile\UpdateProfileDTO;
 use App\Core\Domain\Entity\Profile as DomainProfile;
+use App\Core\Domain\Entity\ProfilePhoto;
 use App\Core\Domain\Entity\User;
 use App\Core\Domain\Entity\User as DomainUser;
 use App\Location\Entity\City;
@@ -66,6 +67,9 @@ class Profile extends DomainProfile implements UserInterface
     #[ManyToOne]
     #[Groups(['profile_full'])]
     protected ?City $city = null;
+
+    #[Groups(['profile_full'])]
+    protected array $photos;
 
     #[PostLoad]
     public function init()

@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Tests\Acceptance\Core\UseCase\Profile;
+
+use App\Core\Application\UseCase\Profile\UploadProfilePhotoUseCase;
+use App\DataFixtures\Core\ProfileFixtures;
+use App\Storage\Service\StorageInterface;
+use App\Tests\Acceptance\AcceptanceTest;
+
+class UploadPhotoTest extends AcceptanceTest
+{
+    private const FILE_PATH = '/app/tests/Stubs/Files/ProfilePhoto/profile-photo.';
+
+    /** @dataProvider extensions */
+    public function testUploadFile(string $extension)
+    {
+        $profile = $this->getCoreProfile(ProfileFixtures::PROFILE_1);
+        $useCase = $this->getDependency(UploadProfilePhotoUseCase::class);
+        $file = self::FILE_PATH . $extension;
+        $photo = $useCase->upload($profile, file_get_contents($file), $extension);
+        $this->assertStringContainsString('http://storage-endpoint/', $photo->getPath());
+        $this->assertTrue($photo->isMain());
+
+        // todo useCase
+        $shortPath = str_replace('http://storage-endpoint/', '', $photo->getPath());
+        $storage = $this->getDependency(StorageInterface::class);
+        $actualFile = $storage->getFile($shortPath);
+
+        $this->assertEquals(file_get_contents($file), $actualFile);
+    }
+
+    private function extensions()
+    {
+        return [
+            ['jpg'],
+            ['png'],
+        ];
+    }
+}

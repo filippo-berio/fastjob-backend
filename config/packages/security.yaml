@@ -10,6 +10,9 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        storage:
+            pattern: ^/storage/.+
+            security: false
         profile:
             pattern: ^/api/profile(/register)?$
             stateless: true

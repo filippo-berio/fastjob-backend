@@ -30,6 +30,11 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Review/Infrastructure/Entity'
                 prefix: 'App\Review\Infrastructure\Entity'
                 alias: Review
+            storage:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Storage/Entity'
+                prefix: 'App\Storage\Entity'
+                alias: Storage
 
 when@test:
     doctrine:

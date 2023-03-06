@@ -16,3 +16,7 @@ admin:
     resource: ../../src/Api/Controller/Admin
     prefix: '/admin'
     type: annotation
+
+storage:
+    resource: ../../src/Api/Controller/Storage
+    type: annotation

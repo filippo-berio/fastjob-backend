@@ -66,6 +66,8 @@ services:
     App\Core\Domain\Service\Task\NextTask\GetProfileNextTaskService:
         $minimalStack: '%env(NEXT_TASK_MINIMAL_STACK)%'
 
+    App\Core\Infrastructure\Event\Listener\EntityLifecycle\ProfilePhotoListener:
+        $storageEndpoint: '%env(STORAGE_ENDPOINT)%'
 
     App\Lib\CQRS\MessageHandler\AsyncCommandMessageHandler:
         $commandHandlers: !tagged_iterator 'cqrs.command_handler'
@@ -90,9 +92,6 @@ services:
         $botToken: '%env(TELEGRAM_BOT_TOKEN)%'
         $host: '%env(TELEGRAM_BOT_URL)%'
         $chatId: '%env(TELEGRAM_CHAT_ID)%'
-
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
 
 when@test:
     services:

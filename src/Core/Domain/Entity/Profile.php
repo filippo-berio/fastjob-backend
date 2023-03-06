@@ -19,6 +19,8 @@ class Profile
     protected ?string $photoPath = null;
     protected array $categories = [];
     protected ?City $city = null;
+    /** @var ProfilePhoto[] */
+    protected array $photos;
 
     public function __construct(
         User $user,
@@ -28,6 +30,12 @@ class Profile
         $this->user = $user;
         $this->firstName = $firstName;
         $this->birthDate = $birthDate;
+        $this->photos = [];
+    }
+
+    public function getPhotos(): array
+    {
+        return $this->photos;
     }
 
     /**

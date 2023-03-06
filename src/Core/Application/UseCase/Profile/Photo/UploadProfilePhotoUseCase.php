@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Application\UseCase\Profile;
+namespace App\Core\Application\UseCase\Profile\Photo;
 
 use App\Core\Domain\Contract\ProfilePhotoStorageInterface;
 use App\Core\Domain\Entity\Profile;

@@ -24,6 +24,9 @@ class ProfilePhoto extends DomainProfilePhotos
     #[Column(type: 'smallint')]
     protected bool $main;
 
+    #[Column]
+    protected string $path;
+
     public function __construct(DomainProfile $profile, string $path, bool $main = false)
     {
         $this->profile = $profile;
@@ -34,5 +37,10 @@ class ProfilePhoto extends DomainProfilePhotos
     public function setPathPrefix(string $prefix)
     {
         $this->path = "$prefix$this->path";
+    }
+
+    public function removePathPrefix(string $prefix)
+    {
+        $this->path = str_replace($prefix, '', $this->path);
     }
 }

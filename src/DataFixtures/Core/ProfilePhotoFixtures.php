@@ -12,6 +12,14 @@ class ProfilePhotoFixtures extends \App\DataFixtures\BaseFixtures implements \Do
     const FILE_PATH = '/app/tests/Stubs/Files/ProfilePhoto/profile-photo.';
     const TEST_PATH = '/app/var/cache/test/profile-photo';
 
+    const PROFILE_5_PHOTO_1 = 1;
+    const PROFILE_5_PHOTO_2 = 2;
+
+    const PROFILE_5_PHOTOS = [
+        self::PROFILE_5_PHOTO_1,
+        self::PROFILE_5_PHOTO_2,
+    ];
+
     protected function getEntity(): string
     {
         return ProfilePhoto::class;

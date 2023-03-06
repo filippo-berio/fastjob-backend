@@ -12,6 +12,7 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
             $redisHost: '%env(REDIS_HOST)%'
+            $storageEndpoint: '%env(STORAGE_ENDPOINT)%'
             $taskStackLimit: '%env(NEXT_TASK_STACK_LIMIT)%'
 
     _instanceof:
@@ -66,8 +67,6 @@ services:
     App\Core\Domain\Service\Task\NextTask\GetProfileNextTaskService:
         $minimalStack: '%env(NEXT_TASK_MINIMAL_STACK)%'
 
-    App\Core\Infrastructure\Event\Listener\EntityLifecycle\ProfilePhotoListener:
-        $storageEndpoint: '%env(STORAGE_ENDPOINT)%'
 
     App\Lib\CQRS\MessageHandler\AsyncCommandMessageHandler:
         $commandHandlers: !tagged_iterator 'cqrs.command_handler'

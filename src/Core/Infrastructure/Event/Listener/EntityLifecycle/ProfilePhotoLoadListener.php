@@ -10,7 +10,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 #[AsEntityListener(event: Events::postLoad, entity: ProfilePhoto::class)]
 #[AsEntityListener(event: Events::postPersist, entity: ProfilePhoto::class)]
-class ProfilePhotoListener
+class ProfilePhotoLoadListener
 {
     public function __construct(
         private string $storageEndpoint,

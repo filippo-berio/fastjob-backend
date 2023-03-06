@@ -2,7 +2,7 @@
 
 namespace App\Tests\Acceptance\Core\UseCase\Profile;
 
-use App\Core\Application\UseCase\Profile\UploadProfilePhotoUseCase;
+use App\Core\Application\UseCase\Profile\Photo\UploadProfilePhotoUseCase;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Core\ProfilePhotoFixtures;
 use App\Storage\Service\StorageInterface;

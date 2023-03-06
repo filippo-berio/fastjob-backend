@@ -3,7 +3,8 @@
 namespace App\Api\Controller\Core;
 
 use App\Api\Controller\BaseController;
-use App\Core\Application\UseCase\Profile\UploadProfilePhotoUseCase;
+use App\Core\Application\UseCase\Profile\Photo\GetProfilePhotosUseCase;
+use App\Core\Application\UseCase\Profile\Photo\UploadProfilePhotoUseCase;
 use App\Core\Domain\Entity\Profile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,6 +25,15 @@ class ProfilePhotoController extends BaseController
         $file = $request->files->all()[0];
         $photo = $useCase->upload($profile, $file->getContent(), $file->getExtension());
         return $this->json($photo);
+    }
+
+    #[Route('', methods: ['GET'])]
+    public function getPhotos(
+        #[CurrentUser] Profile $profile,
+        GetProfilePhotosUseCase $useCase,
+    ): JsonResponse {
+        $photos = $useCase->get($profile);
+        return $this->json($photos);
     }
 
     #[Route('/{id}', methods: ['DELETE'])]

@@ -15,14 +15,6 @@ class ProfilePhotoRepository implements ProfilePhotoRepositoryInterface
     ) {
     }
 
-    public function findForProfile(Profile $profile): array
-    {
-        return $this->entityManager->getRepository(ProfilePhoto::class)
-            ->findBy([
-                'profile' => $profile,
-            ]);
-    }
-
     public function find(Profile $profile, int $id): ?DomainProfilePhoto
     {
         return $this->entityManager->getRepository(ProfilePhoto::class)
@@ -37,5 +29,19 @@ class ProfilePhotoRepository implements ProfilePhotoRepositoryInterface
         $this->entityManager->persist($photo);
         $this->entityManager->flush();
         return $photo;
+    }
+
+    public function delete(DomainProfilePhoto $profilePhoto)
+    {
+        $this->entityManager->remove($profilePhoto);
+        $this->entityManager->flush();
+    }
+
+    public function findForProfile(Profile $profile): array
+    {
+        return $this->entityManager->getRepository(ProfilePhoto::class)
+            ->findBy([
+                'profile' => $profile,
+            ]);
     }
 }

@@ -11,4 +11,6 @@ interface ProfilePhotoStorageInterface
     public function getForProfile(Profile $profile): array;
 
     public function store(Profile $profile, string $file): ProfilePhoto;
+
+    public function delete(ProfilePhoto $profilePhoto);
 }

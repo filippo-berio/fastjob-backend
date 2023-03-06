@@ -32,6 +32,22 @@ class ProfilePhotoStorage implements ProfilePhotoStorageInterface
         return $photo;
     }
 
+    public function delete(ProfilePhoto $profilePhoto)
+    {
+        if ($profilePhoto->isMain()) {
+            $photos = $this->getForProfile($profilePhoto->getProfile());
+            foreach ($photos as $otherPhoto) {
+                if ($otherPhoto->getId() !== $profilePhoto->getId()) {
+                    $otherPhoto->setMain(true);
+                    break;
+                }
+            }
+        }
+
+        $this->photoRepository->delete($profilePhoto);
+        $this->storage->deleteFile($profilePhoto->getPath());
+    }
+
     private function buildPath(Profile $profile): string
     {
         return 'profile_photos/' . $profile->getId() . '/' . uniqid();

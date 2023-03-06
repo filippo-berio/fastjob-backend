@@ -3,6 +3,7 @@
 namespace App\Api\Controller\Core;
 
 use App\Api\Controller\BaseController;
+use App\Core\Application\UseCase\Profile\Photo\DeleteProfilePhotoUseCase;
 use App\Core\Application\UseCase\Profile\Photo\GetProfilePhotosUseCase;
 use App\Core\Application\UseCase\Profile\Photo\MakeProfilePhotoMainUseCase;
 use App\Core\Application\UseCase\Profile\Photo\UploadProfilePhotoUseCase;
@@ -41,8 +42,10 @@ class ProfilePhotoController extends BaseController
     public function delete(
         #[CurrentUser] Profile $profile,
         int $id,
+        DeleteProfilePhotoUseCase $useCase,
     ): JsonResponse {
-
+        $useCase->delete($profile, $id);
+        return $this->json();
     }
 
     #[Route('/{id}/make-main', methods: ['POST'])]

@@ -19,4 +19,9 @@ class Storage implements StorageInterface
     {
         $this->localStorage->write($path, $file);
     }
+
+    public function deleteFile(string $path)
+    {
+        $this->localStorage->delete($path);
+    }
 }

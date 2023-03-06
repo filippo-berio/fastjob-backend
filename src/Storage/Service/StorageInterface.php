@@ -8,4 +8,6 @@ interface StorageInterface
     public function getFile(string $path): string;
 
     public function storeFile(string $path, string $file);
+
+    public function deleteFile(string $path);
 }

@@ -4,6 +4,7 @@ namespace App\Api\Controller\Storage;
 
 use App\Api\Controller\BaseController;
 use App\Storage\Service\StorageInterface;
+use finfo;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,6 +17,9 @@ class StorageController extends BaseController
         StorageInterface $storageService,
     ): Response {
         $file = $storageService->getFile($path);
-        return new Response($file);
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        return new Response($file, headers: [
+            'Content-Type' => $finfo->buffer($file),
+        ]);
     }
 }

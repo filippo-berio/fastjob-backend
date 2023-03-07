@@ -16,7 +16,6 @@ class Profile
     protected DateTimeImmutable $birthDate;
     protected ?string $lastName = null;
     protected ?string $description = null;
-    protected ?string $photoPath = null;
     protected array $categories = [];
     protected ?City $city = null;
     /** @var ProfilePhoto[] */
@@ -82,11 +81,6 @@ class Profile
     public function getDescription(): ?string
     {
         return $this->description;
-    }
-
-    public function getPhotoPath(): ?string
-    {
-        return $this->photoPath;
     }
 
     public function getCity(): ?City

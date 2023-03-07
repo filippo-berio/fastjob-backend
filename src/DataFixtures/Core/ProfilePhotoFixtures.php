@@ -11,6 +11,7 @@ class ProfilePhotoFixtures extends \App\DataFixtures\BaseFixtures implements \Do
 {
     const FILE_PATH = '/app/tests/Stubs/Files/ProfilePhoto/profile-photo.';
     const TEST_PATH = '/app/var/cache/test/profile-photo';
+    const ACTUAL_PATH = '/app/var/storage/profile-photo';
 
     const PROFILE_5_PHOTO_1 = 1;
     const PROFILE_5_PHOTO_2 = 2;
@@ -46,6 +47,8 @@ class ProfilePhotoFixtures extends \App\DataFixtures\BaseFixtures implements \Do
         ], $manager);
 
         copy(self::FILE_PATH . 'jpg', self::TEST_PATH . '1.jpg');
+        copy(self::FILE_PATH . 'jpg', self::ACTUAL_PATH . '1.jpg');
         copy(self::FILE_PATH . 'png', self::TEST_PATH . '2.png');
+        copy(self::FILE_PATH . 'png', self::ACTUAL_PATH . '2.png');
     }
 }

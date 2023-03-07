@@ -4,7 +4,6 @@ namespace App\Core\Infrastructure\Entity;
 
 use App\Core\Domain\DTO\Profile\UpdateProfileDTO;
 use App\Core\Domain\Entity\Profile as DomainProfile;
-use App\Core\Domain\Entity\ProfilePhoto;
 use App\Core\Domain\Entity\User;
 use App\Core\Domain\Entity\User as DomainUser;
 use App\Location\Entity\City;
@@ -19,6 +18,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\PostLoad;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -53,10 +53,6 @@ class Profile extends DomainProfile implements UserInterface
     #[Groups(['profile_full'])]
     protected ?string $description = null;
 
-    #[Column(nullable: true)]
-    #[Groups(['profile_full', 'profile_short'])]
-    protected ?string $photoPath = null;
-
     #[Groups(['profile_full'])]
     protected array $categories;
 
@@ -71,10 +67,15 @@ class Profile extends DomainProfile implements UserInterface
     #[Groups(['profile_full'])]
     protected array $photos;
 
+    /** @var Collection<ProfilePhoto> */
+    #[OneToMany(mappedBy: 'profile', targetEntity: ProfilePhoto::class)]
+    protected Collection $doctrinePhotos;
+
     #[PostLoad]
     public function init()
     {
         $this->categories = $this->doctrineCategories->toArray();
+        $this->photos = $this->doctrinePhotos->toArray();
     }
 
     public function __construct(DomainUser $user, string $firstName, DateTimeImmutable $birthDate)

@@ -38,7 +38,8 @@ RUN docker-php-ext-install opcache
 RUN docker-php-ext-install \
         pdo \
         pdo_pgsql \
-        zip
+        zip \
+        fileinfo
 
 RUN wget https://getcomposer.org/installer -O - -q | php -- --install-dir=/bin --filename=composer --quiet
 RUN echo "memory_limit=4G" >> /usr/local/etc/php/php.ini

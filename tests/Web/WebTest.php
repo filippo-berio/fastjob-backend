@@ -43,12 +43,12 @@ abstract class WebTest extends WebTestCase
 
     protected function getResponse()
     {
-        return $this->client->getResponse()->getContent();
+        return $this->client->getResponse();
     }
 
     protected function getJsonResponse()
     {
-        return json_decode($this->getResponse(), true);
+        return json_decode($this->getResponse()->getContent(), true);
     }
 
     private function makeAccessToken(int $userId)

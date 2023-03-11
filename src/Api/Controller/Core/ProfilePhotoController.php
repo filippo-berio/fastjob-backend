@@ -29,15 +29,6 @@ class ProfilePhotoController extends BaseController
         return $this->json($photo);
     }
 
-    #[Route('', methods: ['GET'])]
-    public function getPhotos(
-        #[CurrentUser] Profile $profile,
-        GetProfilePhotosUseCase $useCase,
-    ): JsonResponse {
-        $photos = $useCase->get($profile);
-        return $this->json($photos);
-    }
-
     #[Route('/{id}', methods: ['DELETE'])]
     public function delete(
         #[CurrentUser] Profile $profile,

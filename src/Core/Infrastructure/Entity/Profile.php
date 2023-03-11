@@ -50,10 +50,10 @@ class Profile extends DomainProfile implements UserInterface
     protected ?string $lastName = null;
 
     #[Column(nullable: true)]
-    #[Groups(['profile_full'])]
+    #[Groups(['profile_full', 'profile_short'])]
     protected ?string $description = null;
 
-    #[Groups(['profile_full'])]
+    #[Groups(['profile_full', 'profile_short'])]
     protected array $categories;
 
     #[ManyToMany(targetEntity: Category::class)]
@@ -61,10 +61,10 @@ class Profile extends DomainProfile implements UserInterface
     protected Collection $doctrineCategories;
 
     #[ManyToOne]
-    #[Groups(['profile_full'])]
+    #[Groups(['profile_full', 'profile_short'])]
     protected ?City $city = null;
 
-    #[Groups(['profile_full'])]
+    #[Groups(['profile_full', 'profile_short'])]
     protected array $photos;
 
     /** @var Collection<ProfilePhoto> */

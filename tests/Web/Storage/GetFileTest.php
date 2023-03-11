@@ -12,7 +12,7 @@ class GetFileTest extends WebTest
     public function testGettingFile()
     {
         $this->client->request('GET', '/storage/profile-photo1.jpg');
-        $file = $this->client->getResponse()->getContent();
+        $file = $this->getResponse()->getContent();
         $this->assertEquals(file_get_contents(self::EXPECTED), $file);
     }
 }

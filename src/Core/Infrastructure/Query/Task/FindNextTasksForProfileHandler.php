@@ -40,7 +40,7 @@ class FindNextTasksForProfileHandler extends BaseTaskQueryHandler
     public function handle(QueryInterface $query): array
     {
         $queryBuilder = $this->entityManager->getRepository(Task::class)->createQueryBuilder('t');
-        $this->filterStatus($queryBuilder);
+        $this->filterFreeTaskStatus($queryBuilder);
         $this->filterDeadlineNotExpired($queryBuilder);
         $this->categories($queryBuilder, $query->profile);
         $this->city($queryBuilder, $query->profile);

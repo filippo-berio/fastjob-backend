@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Infrastructure\Event\Listener\EntityLifecycle;
+namespace App\Core\Infrastructure\Event\Listener\EntityLifecycle\ProfilePhoto;
 
 use App\Core\Infrastructure\Entity\ProfilePhoto;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;

@@ -9,9 +9,10 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use JsonSerializable;
 
 #[Entity]
-class Address
+class Address implements JsonSerializable
 {
     #[Id]
     #[GeneratedValue]
@@ -55,5 +56,14 @@ class Address
     public function getCoordinates(): Coordinates
     {
         return $this->coordinates;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'title' => $this->getTitle(),
+            'city' => $this->getCity(),
+            'coordinates' => $this->getCoordinates(),
+        ];
     }
 }

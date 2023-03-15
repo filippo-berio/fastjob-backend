@@ -29,6 +29,7 @@ class AuthorController extends BaseController
                 'profile_short',
                 'task_offer_short',
                 'match',
+                'category_short',
             ]
         );
     }

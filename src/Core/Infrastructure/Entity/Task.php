@@ -7,7 +7,7 @@ use App\Core\Domain\Entity\Profile as DomainProfile;
 use App\Core\Domain\Entity\SwipeMatch;
 use App\Core\Domain\Entity\Task as DomainTask;
 use App\Location\Entity\Address;
-use DateTimeImmutable;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,8 +21,10 @@ use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\PostLoad;
+use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[Entity]
 #[HasLifecycleCallbacks]
@@ -49,9 +51,10 @@ class Task extends DomainTask
     #[Groups(['task_full'])]
     protected DomainProfile $author;
 
-    #[Column]
+    #[Column(type: 'datetime')]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => DateTime::ATOM])]
     #[Groups(['task_full'])]
-    protected DateTimeImmutable $createdAt;
+    protected DateTimeInterface $createdAt;
 
     #[Groups(['task_full'])]
     protected array $categories;
@@ -95,15 +98,14 @@ class Task extends DomainTask
     #[OneToMany(mappedBy: 'task', targetEntity: TaskOffer::class)]
     protected Collection $doctrineOffers;
 
-    #[PostLoad]
-    public function initCategories()
-    {
-        $this->categories = $this->doctrineCategories->toArray();
-    }
+    #[Groups(['task_full'])]
+    #[Column(type: 'array', nullable: true)]
+    protected array $photos;
 
     #[PostLoad]
-    public function initOffers()
+    public function postLoad()
     {
+        $this->categories = $this->doctrineCategories->toArray();
         $this->offers = $this->doctrineOffers->toArray();
     }
 
@@ -130,5 +132,19 @@ class Task extends DomainTask
     public function setExecutor(?DomainProfile $executor): void
     {
         $this->executor = $executor;
+    }
+
+    public function addPhotoPrefix(string $prefix)
+    {
+        foreach ($this->photos as &$photo) {
+            $photo = "$prefix$photo";
+        }
+    }
+
+    public function removePhotoPrefix(string $prefix)
+    {
+        foreach ($this->photos as &$photo) {
+            $photo = str_replace($prefix, '', $photo);
+        }
     }
 }

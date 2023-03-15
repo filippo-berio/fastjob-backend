@@ -4,9 +4,10 @@ namespace App\Location\Entity\ValueObject;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Embeddable;
+use JsonSerializable;
 
 #[Embeddable]
-class Coordinates
+class Coordinates implements JsonSerializable
 {
     #[Column]
     private string $latitude;
@@ -28,5 +29,13 @@ class Coordinates
     public function getLongitude(): string
     {
         return $this->longitude;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+        ];
     }
 }

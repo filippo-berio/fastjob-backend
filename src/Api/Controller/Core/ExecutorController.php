@@ -43,7 +43,8 @@ class ExecutorController extends BaseController
     ): JsonResponse {
         return $this->json($useCase->get($profile), context: [
             'profile_short',
-            'task_full'
+            'task_full',
+            'category_short',
         ]);
     }
 

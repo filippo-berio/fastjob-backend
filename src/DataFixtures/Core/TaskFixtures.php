@@ -53,6 +53,26 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
         );
         $task2->delete();
 
+        $task6 = new Task(
+            'Выгулять пса',
+            $this->getReference(ProfileFixtures::PROFILE_1, Profile::class),
+            [
+                $this->getReference(CategoryFixtures::PETS, Category::class),
+            ],
+            false,
+            500,
+            address: $this->getReference(AddressFixtures::ADDRESS_2, Address::class)
+        );
+        $task6->addPhoto('profile-photo1.jpg');
+        $task6->addPhoto('profile-photo1.jpg');
+        $task6->addPhoto('profile-photo1.jpg');
+        $task6->addPhoto('profile-photo1.jpg');
+        $task6->addPhoto('profile-photo1.jpg');
+        $task6->addPhoto('profile-photo1.jpg');
+        $task6->addPhoto('profile-photo1.jpg');
+        $task6->addPhoto('profile-photo1.jpg');
+        $task6->addPhoto('profile-photo1.jpg');
+
         $task16 = new Task(
             'Task 16 title',
             $this->getReference(ProfileFixtures::PROFILE_15, Profile::class),
@@ -135,16 +155,7 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 true,
                 address: $this->getReference(AddressFixtures::ADDRESS_3, Address::class),
             ),
-            $task6 = new Task(
-                'Выгулять пса',
-                $this->getReference(ProfileFixtures::PROFILE_1, Profile::class),
-                [
-                    $this->getReference(CategoryFixtures::PETS, Category::class),
-                ],
-                false,
-                500,
-                address: $this->getReference(AddressFixtures::ADDRESS_2, Address::class)
-            ),
+            $task6,
             $task7 = new Task(
                 'Проконсультировать типа по собаке',
                 $this->getReference(ProfileFixtures::PROFILE_2, Profile::class),

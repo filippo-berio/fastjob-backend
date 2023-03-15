@@ -19,7 +19,7 @@ class FindWaitTaskByAuthorHandler extends BaseTaskQueryHandler
             ->createQueryBuilder('t')
             ->andWhere('t.author = :author')
             ->setParameter('author', $query->profile);
-        $this->filterStatus($qb);
+        $this->filterFreeTaskStatus($qb);
         return $qb
             ->getQuery()
             ->getResult();

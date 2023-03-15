@@ -30,7 +30,7 @@ class Task
     protected string $title;
     protected string $status;
     protected Profile $author;
-    protected DateTimeImmutable $createdAt;
+    protected DateTimeInterface $createdAt;
     protected ?int $price;
     protected ?Address $address;
     protected ?DateTimeInterface $deadline;
@@ -43,6 +43,7 @@ class Task
     protected array $matches;
     /** @var TaskOffer[] */
     protected array $offers;
+    protected array $photos;
 
     public function __construct(
         string             $title,
@@ -67,6 +68,17 @@ class Task
 
         $this->matches = [];
         $this->offers = [];
+        $this->photos = [];
+    }
+
+    public function addPhoto(string $path)
+    {
+        $this->photos[] = $path;
+    }
+
+    public function getPhotos(): array
+    {
+        return $this->photos;
     }
 
     public function getOffers(): array
@@ -114,7 +126,7 @@ class Task
         return $this->id;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): DateTimeInterface
     {
         return $this->createdAt;
     }

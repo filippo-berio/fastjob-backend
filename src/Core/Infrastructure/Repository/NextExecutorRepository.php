@@ -36,10 +36,7 @@ class NextExecutorRepository implements NextExecutorRepositoryInterface
 
     public function getSuggestedNextExecutor(Profile $author): ?NextExecutor
     {
-        $tasks = $this->queryBus->query(new FindWaitTaskByAuthor($author));
 
-        $qb = $this->entityManager->getRepository(Profile::class)
-            ->createQueryBuilder('p');
     }
 
     private function getNextTaskSwipe(Profile $author): ?TaskSwipe

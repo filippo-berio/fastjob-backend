@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Infrastructure\Event\Listener\EntityLifecycle;
+namespace App\Core\Infrastructure\Event\Listener\EntityLifecycle\Task;
 
 use App\Core\Domain\Event\EventDispatcherInterface;
 use App\Core\Domain\Query\Profile\GetTaskExecutor;
@@ -17,7 +17,8 @@ class TaskPostLoadListener
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
         private QueryBusInterface $queryBus,
-        protected SwipeMatchRepositoryInterface $matchRepository,
+        private SwipeMatchRepositoryInterface $matchRepository,
+        private string $storageEndpoint,
     ) {
     }
 
@@ -30,5 +31,6 @@ class TaskPostLoadListener
         }
         $matches = $this->matchRepository->findForTask($task);
         $task->setMatches($matches);
+        $task->addPhotoPrefix($this->storageEndpoint);
     }
 }

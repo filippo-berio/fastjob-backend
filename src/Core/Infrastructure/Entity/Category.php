@@ -30,7 +30,7 @@ class Category extends DomainCategory
     protected string $title;
 
     #[Column(type: 'smallint')]
-    #[Groups(['category_full'])]
+    #[Groups(['category_full', 'category_short'])]
     protected bool $remote;
 
     #[ManyToOne(targetEntity: Category::class)]

@@ -3,11 +3,9 @@
 namespace App\Core\Domain\Repository;
 
 use App\Core\Domain\Entity\NextExecutor;
-use App\Core\Domain\Entity\Profile;
+use App\Core\Domain\Entity\Task;
 
 interface NextExecutorRepositoryInterface
 {
-    public function nextSwipedExecutor(Profile $author): ?NextExecutor;
-
-    public function getSuggestedNextExecutor(Profile $author): ?NextExecutor;
+    public function nextSwipedExecutor(Task $task): ?NextExecutor;
 }

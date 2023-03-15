@@ -21,12 +21,7 @@ abstract class BaseTaskQueryHandler implements QueryHandlerInterface
     {
         return $queryBuilder
             ->andWhere('t.status not in (:takenStatuses)')
-            ->setParameter('takenStatuses', [
-                Task::STATUS_FINISHED,
-                Task::STATUS_DELETED,
-                Task::STATUS_REVIEW,
-                Task::STATUS_WORK,
-            ]);
+            ->setParameter('takenStatuses', Task::STATUSES_NO_SWIPES);
     }
 
     protected function filterDeadlineNotExpired(QueryBuilder $queryBuilder): QueryBuilder

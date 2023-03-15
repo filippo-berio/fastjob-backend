@@ -5,7 +5,6 @@ namespace App\Api\Controller\Core;
 use App\Api\Controller\BaseController;
 use App\Api\Request\Executor\AcceptOfferRequest;
 use App\Core\Application\UseCase\Executor\GetSwipedNextExecutorUseCase;
-use App\Core\Application\UseCase\Executor\SuggestNextExecutorUseCase;
 use App\Core\Application\UseCase\Task\GetExecutorTasksUseCase;
 use App\Core\Application\UseCase\TaskOffer\AcceptOfferUseCase;
 use App\Core\Domain\Entity\Profile;
@@ -23,17 +22,6 @@ class ExecutorController extends BaseController
     ): JsonResponse {
         $executor = $useCase->get($profile);
         return $this->json($executor, context: ['category_short', 'profile_short', 'task_full']);
-    }
-
-    #[Route('/next/suggest', methods: ['GET'])]
-    public function suggestNext(
-        #[CurrentUser] Profile       $profile,
-        SuggestNextExecutorUseCase   $useCase,
-    ): JsonResponse {
-        $executor = $useCase->suggest($profile);
-        return $this->json([
-            'next' => $executor,
-        ], context: []);
     }
 
     #[Route('/tasks', methods: ['GET'])]

@@ -5,6 +5,7 @@ namespace App\Core\Infrastructure\Repository;
 use App\Core\Domain\Entity\NextExecutor;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;
+use App\Core\Domain\Entity\Task as DomainTask;
 use App\Core\Domain\Query\Task\FindWaitTaskByAuthor;
 use App\Core\Domain\Repository\NextExecutorRepositoryInterface;
 use App\Core\Infrastructure\Entity\Task;
@@ -21,9 +22,9 @@ class NextExecutorRepository implements NextExecutorRepositoryInterface
     ) {
     }
 
-    public function nextSwipedExecutor(Profile $author): ?NextExecutor
+    public function nextSwipedExecutor(DomainTask $task): ?NextExecutor
     {
-        $taskSwipe = $this->getNextTaskSwipe($author);
+        $taskSwipe = $this->getNextTaskSwipe($task);
         if (!$taskSwipe) {
             return null;
         }
@@ -34,31 +35,21 @@ class NextExecutorRepository implements NextExecutorRepositoryInterface
         );
     }
 
-    public function getSuggestedNextExecutor(Profile $author): ?NextExecutor
-    {
-
-    }
-
-    private function getNextTaskSwipe(Profile $author): ?TaskSwipe
+    private function getNextTaskSwipe(DomainTask $task): ?TaskSwipe
     {
         $qb = $this->entityManager->getRepository(TaskSwipe::class)
             ->createQueryBuilder('ts')
             ->andWhere('ts.type = :acceptType')
             ->setParameter('acceptType', Swipe::TYPE_ACCEPT)
-
-            ->innerJoin('ts.task', 't')
-            ->andWhere('t.author = :author')
-            ->setParameter('author', $author)
-            ->andWhere('t.status = :waitStatus')
-            ->setParameter('waitStatus', Task::STATUS_WAIT)
-
+            ->andWhere('identity(ts.task) = :taskId')
+            ->setParameter('taskId', $task->getId())
             ->orderBy('ts.id', 'ASC');
 
         $executorSwipesSql = $this->executorSwipesSql();
         $sql = "select id from task_swipe where (task_id, profile_id) in ($executorSwipesSql)";
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->bindValue('authorId', $author->getId(), ParameterType::INTEGER);
+        $stmt->bindValue('taskId', $task->getId(), ParameterType::INTEGER);
         $excludeTaskSwipes = $stmt->executeQuery()->fetchFirstColumn();
 
         if ($excludeTaskSwipes) {
@@ -75,7 +66,7 @@ class NextExecutorRepository implements NextExecutorRepositoryInterface
         return '
             select es.task_id, es.profile_id from executor_swipe es
             inner join task t on t.id = es.task_id
-            where t.author_id = :authorId
+            where t.id = :taskId
         ';
     }
 }

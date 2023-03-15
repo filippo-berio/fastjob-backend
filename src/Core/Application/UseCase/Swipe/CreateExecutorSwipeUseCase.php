@@ -9,8 +9,7 @@ use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
 use App\Core\Domain\Query\Profile\FindProfileById;
 use App\Core\Domain\Query\Task\FindTaskByAuthorAndId;
-use App\Core\Domain\Service\Executor\NextExecutorService\GetSwipedNextExecutorService;
-use App\Core\Domain\Service\Executor\NextExecutorService\NextExecutorServiceFactory;
+use App\Core\Domain\Service\Executor\GetSwipedNextExecutorService;
 use App\Core\Domain\Service\ExecutorSwipe\CreateExecutorSwipeService;
 use App\Lib\CQRS\Bus\QueryBusInterface;
 
@@ -19,7 +18,7 @@ class CreateExecutorSwipeUseCase
     public function __construct(
         private QueryBusInterface $queryBus,
         private CreateExecutorSwipeService $createExecutorSwipeService,
-        private NextExecutorServiceFactory $nextExecutorServiceFactory,
+        private GetSwipedNextExecutorService $swipedNextExecutorService,
     ) {
     }
 
@@ -28,14 +27,11 @@ class CreateExecutorSwipeUseCase
         int     $taskId,
         int     $executorId,
         string  $type,
-        ?string  $nextExecutorType = GetSwipedNextExecutorService::TYPE,
     ): ?NextExecutor {
         $task = $this->getTask($profile, $taskId);
         $executor = $this->getProfile($executorId);
         $this->createExecutorSwipeService->create($profile, $task, $executor, $type);
-        return $nextExecutorType
-            ? $this->nextExecutorServiceFactory->getService($nextExecutorType)->get($profile)
-            : null;
+        return $this->swipedNextExecutorService->get($task);
     }
 
     private function getTask(Profile $profile, int $id): Task

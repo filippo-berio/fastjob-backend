@@ -16,8 +16,6 @@ services:
             $taskStackLimit: '%env(NEXT_TASK_STACK_LIMIT)%'
 
     _instanceof:
-        App\Core\Domain\Service\Executor\NextExecutorService\NextExecutorServiceInterface:
-            tags: ['core.next_executor_service']
         App\Core\Domain\Event\EventHandlerInterface:
             tags: ['core.event_handler']
 
@@ -60,9 +58,6 @@ services:
 
     App\Core\Infrastructure\Event\EventHandlerFactory:
         $handlers: !tagged_iterator 'core.event_handler'
-
-    App\Core\Domain\Service\Executor\NextExecutorService\NextExecutorServiceFactory:
-        $services: !tagged_iterator 'core.next_executor_service'
 
     App\Core\Domain\Service\Task\NextTask\GetProfileNextTaskService:
         $minimalStack: '%env(NEXT_TASK_MINIMAL_STACK)%'

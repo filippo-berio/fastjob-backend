@@ -26,6 +26,13 @@ class Task
         self::STATUS_FINISHED,
     ];
 
+    const STATUSES_NO_SWIPES = [
+        self::STATUS_WORK,
+        self::STATUS_FINISHED,
+        self::STATUS_DELETED,
+        self::STATUS_REVIEW,
+    ];
+
     protected ?int $id = null;
     protected string $title;
     protected string $status;

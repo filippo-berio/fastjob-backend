@@ -83,12 +83,14 @@ class FindNextTasksForProfileHandler extends BaseTaskQueryHandler
             $swipedTasks
         );
         $profileTasks = $this->queryBus->query(new FindTaskByAuthor($profile));
+        $pending = $this->pendingTaskRepository->get($profile);
 
-        $exclude = [...$generatedTasks, ...$swipedTasks, ...$profileTasks];
-
-        if ($pending = $this->pendingTaskRepository->get($profile)) {
-            $exclude[] = $pending;
-        }
+        $exclude = [
+            ...$generatedTasks,
+            ...$swipedTasks,
+            ...$profileTasks,
+            ...$pending,
+        ];
 
         return array_map(
             fn(Task $task) => $task->getId(),

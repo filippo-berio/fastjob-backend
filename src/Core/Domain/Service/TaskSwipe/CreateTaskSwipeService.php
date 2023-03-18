@@ -37,7 +37,7 @@ class CreateTaskSwipeService
             throw new TaskUnavailableToSwipe();
         }
 
-        $this->pendingTaskRepository->clear($profile);
+        $this->pendingTaskRepository->pop($profile);
 
         $entity = $this->entityMapper->persistenceEntity(TaskSwipe::class);
         $taskSwipe = new $entity($task, $profile, $type, $customPrice);

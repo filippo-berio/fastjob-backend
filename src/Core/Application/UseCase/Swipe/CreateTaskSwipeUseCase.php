@@ -19,12 +19,19 @@ class CreateTaskSwipeUseCase
     ) {
     }
 
+    /**
+     * @param Profile $profile
+     * @param int $taskId
+     * @param string $type
+     * @param int|null $customPrice
+     * @return Task[]
+     */
     public function create(
         Profile $profile,
         int     $taskId,
         string  $type,
         ?int    $customPrice = null
-    ): ?Task {
+    ): array {
         $task = $this->queryBus->query(new FindTaskById($taskId));
         if (!$task) {
             throw new TaskNotFoundException();

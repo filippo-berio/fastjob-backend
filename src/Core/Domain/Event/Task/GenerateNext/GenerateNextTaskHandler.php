@@ -37,6 +37,6 @@ class GenerateNextTaskHandler implements EventHandlerInterface
     {
         $profile = $this->queryBus->query(new FindProfileById($event->profileId));
         $tasks = $this->nextTaskGenerator->generateForProfile($profile, $event->count ?? $this->taskStackLimit);
-        $this->nextTaskRepository->add($profile, $tasks);
+        $this->nextTaskRepository->push($profile, $tasks);
     }
 }

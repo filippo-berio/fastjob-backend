@@ -11,17 +11,9 @@ interface ProfileNextTaskRepositoryInterface
      * @param Profile $profile
      * @param Task[] $tasks
      */
-    public function add(Profile $profile, array $tasks);
+    public function push(Profile $profile, array $tasks);
 
-    /**
-     * @param Profile $profile
-     * @return Task[]
-     */
-    public function get(Profile $profile): array;
-
-    public function pop(Profile $profile): ?Task;
-
-    public function count(Profile $profile): int;
+    public function popAll(Profile $profile): array;
 
     public function clear(Profile $profile);
 }

@@ -59,10 +59,6 @@ services:
     App\Core\Infrastructure\Event\EventHandlerFactory:
         $handlers: !tagged_iterator 'core.event_handler'
 
-    App\Core\Domain\Service\Task\NextTask\GetProfileNextTaskService:
-        $minimalStack: '%env(NEXT_TASK_MINIMAL_STACK)%'
-
-
     App\Lib\CQRS\MessageHandler\AsyncCommandMessageHandler:
         $commandHandlers: !tagged_iterator 'cqrs.command_handler'
 

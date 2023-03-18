@@ -8,9 +8,17 @@ use App\Core\Domain\Entity\Task;
 # таски, не свайпнутые исполнителями
 interface PendingTaskRepositoryInterface
 {
-    public function set(Profile $profile, Task $task);
+    /**
+     * @param Profile $profile
+     * @param Task[] $tasks
+     */
+    public function push(Profile $profile, array $tasks);
 
-    public function get(Profile $profile): ?Task;
+    /**
+     * @param Profile $profile
+     * @return Task[]
+     */
+    public function get(Profile $profile): array;
 
-    public function clear(Profile $profile);
+    public function pop(Profile $profile): ?Task;
 }

@@ -16,7 +16,6 @@ use App\Tests\Acceptance\AcceptanceTest;
 
 class GetProfileNextTasksTest extends AcceptanceTest
 {
-    private const MINIMAL_STACK = 2;
     private const STACK_LIMIT = 3;
 
     // таски 1 -> 4 -> 5 -> 11 -> 12
@@ -26,43 +25,37 @@ class GetProfileNextTasksTest extends AcceptanceTest
         $useCase = $this->getDependency(GetProfileNextTaskUseCase::class);
         $nextTaskRepo = $this->getDependency(ProfileNextTaskRepositoryInterface::class);
 
-        $useCase->get($profile);
+        $nextTasks = $useCase->get($profile);
+        $this->assertCount(self::STACK_LIMIT, $nextTasks);
 
         $this->processGenerateNextTaskMessage($profile->getId());
-        $this->assertEquals(self::STACK_LIMIT, $nextTaskRepo->count($profile));
 
-        $task1 = $useCase->get($profile);
-        $this->assertEquals(TaskFixtures::TASK_1, $task1->getId());
-
-        $task4 = $this->createTaskSwipe($profile->getId(), $task1->getId());
-        $this->assertEquals(TaskFixtures::TASK_4, $task4->getId());
-
-        $this->assertEquals(self::MINIMAL_STACK, $nextTaskRepo->count($profile));
-        $this->messenger()->queue()->assertContains(EventMessage::class, 0);
-
-        $task5 = $this->createTaskSwipe($profile->getId(), $task4->getId());
-        $this->assertEquals(TaskFixtures::TASK_5, $task5->getId());
-        $this->assertEquals(self::MINIMAL_STACK - 1, $nextTaskRepo->count($profile));
-
-        $this->processGenerateNextTaskMessage($profile->getId());
         $this->assertEquals(2, $nextTaskRepo->count($profile));
 
-        $task11 = $this->createTaskSwipe($profile->getId(), $task5->getId());
-        $this->assertEquals(TaskFixtures::TASK_11, $task11->getId());
+        $nextTasks = $useCase->get($profile);
+        $this->assertEquals(TaskFixtures::TASK_1, $nextTasks[0]->getId());
 
-        $this->assertEquals(1, $nextTaskRepo->count($profile));
-        $this->processGenerateNextTaskMessage($profile->getId());
-        $this->assertEquals(1, $nextTaskRepo->count($profile));
+        $nextTasks = $this->createTaskSwipe($profile->getId(), TaskFixtures::TASK_1);
+        $this->assertEquals(TaskFixtures::TASK_4, $nextTasks[0]->getId());
 
-        $task12 = $this->createTaskSwipe($profile->getId(), $task11->getId());
-        $this->assertEquals(TaskFixtures::TASK_12, $task12->getId());
+        $this->assertEquals(2, $nextTaskRepo->count($profile));
+        $this->messenger()->queue()->assertContains(EventMessage::class, 0);
 
-        $this->processGenerateNextTaskMessage($profile->getId());
+        $nextTasks = $this->createTaskSwipe($profile->getId(), TaskFixtures::TASK_4);
+        $this->assertEquals(TaskFixtures::TASK_5, $nextTasks[0]->getId());
+
+        $nextTasks = $this->createTaskSwipe($profile->getId(), TaskFixtures::TASK_5);
+        $this->assertEquals(TaskFixtures::TASK_11, $nextTasks[0]->getId());
 
         $this->assertEquals(0, $nextTaskRepo->count($profile));
+        $this->processGenerateNextTaskMessage($profile->getId());
+        $this->assertEquals(0, $nextTaskRepo->count($profile));
 
-        $nextTask = $this->createTaskSwipe($profile->getId(), $task12->getId());
-        $this->assertNull($nextTask);
+        $nextTasks = $this->createTaskSwipe($profile->getId(), TaskFixtures::TASK_11);
+        $this->assertEquals(TaskFixtures::TASK_12, $nextTasks[0]->getId());
+
+        $nextTasks = $this->createTaskSwipe($profile->getId(), TaskFixtures::TASK_12);
+        $this->assertEmpty($nextTasks);
     }
 
     /**
@@ -73,21 +66,11 @@ class GetProfileNextTasksTest extends AcceptanceTest
         $profile = $this->getEntity(Profile::class, $profileId);
         $useCase = $this->getDependency(GetProfileNextTaskUseCase::class);
 
-        $task = $useCase->get($profile);
-        $this->assertEquals($expectedTasks[0], $task->getId());
-
-        $this->processGenerateNextTaskMessage($profileId);
-
-        $task = $useCase->get($profile);
-        $this->assertEquals($expectedTasks[0], $task->getId());
-
-        for ($i = 1; $i < count($expectedTasks); $i++) {
-            $task = $this->createTaskSwipe($profileId, $task->getId());
-            $this->assertEquals($expectedTasks[$i], $task->getId());
-        }
-
-        $task = $this->createTaskSwipe($profileId, $task->getId());
-        $this->assertNull($task);
+        $nextTasks = $useCase->get($profile);
+        $this->assertEquals($expectedTasks, array_map(
+            fn(Task $task) => $task->getId(),
+            $nextTasks
+        ));
     }
 
     private function processGenerateNextTaskMessage(int $profileId)
@@ -103,7 +86,12 @@ class GetProfileNextTasksTest extends AcceptanceTest
         $this->messenger()->process();
     }
 
-    private function createTaskSwipe(int $profileId, int $taskId): ?Task
+    /**
+     * @param int $profileId
+     * @param int $taskId
+     * @return Task[]
+     */
+    private function createTaskSwipe(int $profileId, int $taskId): array
     {
         $swipeUseCase = $this->getDependency(CreateTaskSwipeUseCase::class);
         $profile = $this->getEntity(Profile::class, $profileId);
@@ -119,17 +107,7 @@ class GetProfileNextTasksTest extends AcceptanceTest
                     TaskFixtures::TASK_6,
                     TaskFixtures::TASK_7,
                 ],
-            ],
-            [
-                ProfileFixtures::PROFILE_5,
-                [
-                    TaskFixtures::TASK_1,
-                    TaskFixtures::TASK_4,
-                    TaskFixtures::TASK_5,
-                    TaskFixtures::TASK_11,
-                    TaskFixtures::TASK_12,
-                ],
-            ],
+            ]
         ];
     }
 }

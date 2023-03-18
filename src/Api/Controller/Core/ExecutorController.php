@@ -5,6 +5,7 @@ namespace App\Api\Controller\Core;
 use App\Api\Controller\BaseController;
 use App\Api\Request\Executor\AcceptOfferRequest;
 use App\Core\Application\UseCase\Task\GetExecutorTasksUseCase;
+use App\Core\Application\UseCase\Task\GetProfileNextTaskUseCase;
 use App\Core\Application\UseCase\TaskOffer\AcceptOfferUseCase;
 use App\Core\Domain\Entity\Profile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,6 +25,14 @@ class ExecutorController extends BaseController
             'task_full',
             'category_short',
         ]);
+    }
+    #[Route('/next-tasks', methods: ['GET'])]
+    public function getNext(
+        #[CurrentUser] Profile    $profile,
+        GetProfileNextTaskUseCase $useCase,
+    ): JsonResponse {
+        $tasks = $useCase->get($profile);
+        return $this->json($tasks, context: ['task_full', 'category_short', 'profile_short']);
     }
 
     #[Route('/accept-offer', methods: ['POST'])]

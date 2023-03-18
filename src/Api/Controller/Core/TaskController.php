@@ -11,7 +11,6 @@ use App\Core\Application\UseCase\Review\GetProfileReviewsUseCase;
 use App\Core\Application\UseCase\Task\CancelTaskExecutionUseCase;
 use App\Core\Application\UseCase\Task\CreateTaskUseCase;
 use App\Core\Application\UseCase\Task\FinishTaskUseCase;
-use App\Core\Application\UseCase\Task\GetProfileNextTaskUseCase;
 use App\Core\Application\UseCase\Task\OfferTaskUseCase;
 use App\Core\Application\UseCase\TaskOffer\AcceptOfferUseCase;
 use App\Core\Application\UseCase\TaskOffer\RejectTaskOfferUseCase;
@@ -49,14 +48,6 @@ class TaskController extends BaseController
         ]);
     }
 
-    #[Route('/next', methods: ['GET'])]
-    public function getNext(
-        #[CurrentUser] Profile    $profile,
-        GetProfileNextTaskUseCase $useCase,
-    ): JsonResponse {
-        $tasks = $useCase->get($profile);
-        return $this->json($tasks, context: ['task_full', 'category_short', 'profile_short']);
-    }
 
     #[Route('/offer', methods: ['POST'])]
     public function offer(

@@ -13,7 +13,11 @@ class GetProfileNextTaskUseCase
     ) {
     }
 
-    public function get(Profile $profile): ?Task
+    /**
+     * @param Profile $profile
+     * @return Task[]
+     */
+    public function get(Profile $profile): array
     {
         return $this->getProfileNextTasksService->get($profile);
     }

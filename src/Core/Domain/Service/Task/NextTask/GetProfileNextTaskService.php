@@ -17,35 +17,36 @@ class GetProfileNextTaskService
         private CategoryNextTaskGenerator          $nextTaskGenerator,
         private PendingTaskRepositoryInterface     $pendingTaskRepository,
         private EventDispatcherInterface           $eventDispatcher,
-        private int                                $minimalStack,
         private int                                $taskStackLimit,
     ) {
     }
 
-    public function get(Profile $profile): ?Task
+    /**
+     * @param Profile $profile
+     * @return Task[]
+     */
+    public function get(Profile $profile): array
     {
         if ($pending = $this->pendingTaskRepository->get($profile)) {
             return $pending;
         }
 
-        $task = $this->nextTaskRepository->pop($profile);
-
-        if ($task) {
-            $stackCount = $this->nextTaskRepository->count($profile);
-            if ($stackCount < $this->minimalStack) {
-                $this->eventDispatcher->dispatch(new GenerateNextTaskEvent($profile->getId(), $this->taskStackLimit));
-            }
-            $this->pendingTaskRepository->set($profile, $task);
-            return $task;
-        }
-
-        $generatedTasks = $this->nextTaskGenerator->generateForProfile($profile);
-        if (empty($generatedTasks)) {
-            return null;
+        $tasks = $this->prepareNextTasks($profile);
+        if (!empty($tasks)) {
+            $this->pendingTaskRepository->push($profile, $tasks);
         }
 
         $this->eventDispatcher->dispatch(new GenerateNextTaskEvent($profile->getId(), $this->taskStackLimit));
-        $this->pendingTaskRepository->set($profile, $generatedTasks[0]);
-        return $generatedTasks[0];
+
+        return $tasks;
+    }
+
+    private function prepareNextTasks(Profile $profile): array
+    {
+        $tasks = $this->nextTaskRepository->popAll($profile);
+        if (empty($tasks)) {
+            $tasks = $this->nextTaskGenerator->generateForProfile($profile, $this->taskStackLimit);
+        }
+        return $tasks;
     }
 }

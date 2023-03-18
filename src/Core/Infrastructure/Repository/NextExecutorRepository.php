@@ -2,15 +2,10 @@
 
 namespace App\Core\Infrastructure\Repository;
 
-use App\Core\Domain\Entity\NextExecutor;
-use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Swipe;
 use App\Core\Domain\Entity\Task as DomainTask;
-use App\Core\Domain\Query\Task\FindWaitTaskByAuthor;
 use App\Core\Domain\Repository\NextExecutorRepositoryInterface;
-use App\Core\Infrastructure\Entity\Task;
 use App\Core\Infrastructure\Entity\TaskSwipe;
-use App\Lib\CQRS\Bus\QueryBusInterface;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -18,24 +13,10 @@ class NextExecutorRepository implements NextExecutorRepositoryInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private QueryBusInterface $queryBus,
     ) {
     }
 
-    public function nextSwipedExecutor(DomainTask $task): ?NextExecutor
-    {
-        $taskSwipe = $this->getNextTaskSwipe($task);
-        if (!$taskSwipe) {
-            return null;
-        }
-        return new NextExecutor(
-            $taskSwipe->getTask(),
-            $taskSwipe->getProfile(),
-            $taskSwipe
-        );
-    }
-
-    private function getNextTaskSwipe(DomainTask $task): ?TaskSwipe
+    public function nextSwipedExecutor(DomainTask $task, int $limit): array
     {
         $qb = $this->entityManager->getRepository(TaskSwipe::class)
             ->createQueryBuilder('ts')
@@ -43,6 +24,7 @@ class NextExecutorRepository implements NextExecutorRepositoryInterface
             ->setParameter('acceptType', Swipe::TYPE_ACCEPT)
             ->andWhere('identity(ts.task) = :taskId')
             ->setParameter('taskId', $task->getId())
+            ->setMaxResults($limit)
             ->orderBy('ts.id', 'ASC');
 
         $executorSwipesSql = $this->executorSwipesSql();
@@ -58,7 +40,7 @@ class NextExecutorRepository implements NextExecutorRepositoryInterface
                 ->setParameter('exclude', $excludeTaskSwipes);
         }
 
-        return $qb->getQuery()->getResult()[0] ?? null;
+        return $qb->getQuery()->getResult();
     }
 
     private function executorSwipesSql()

@@ -2,10 +2,15 @@
 
 namespace App\Core\Domain\Repository;
 
-use App\Core\Domain\Entity\NextExecutor;
 use App\Core\Domain\Entity\Task;
+use App\Core\Domain\Entity\TaskSwipe;
 
 interface NextExecutorRepositoryInterface
 {
-    public function nextSwipedExecutor(Task $task): ?NextExecutor;
+    /**
+     * @param Task $task
+     * @param int $limit
+     * @return TaskSwipe[]
+     */
+    public function nextSwipedExecutor(Task $task, int $limit): array;
 }

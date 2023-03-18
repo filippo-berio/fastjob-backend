@@ -3,11 +3,10 @@
 namespace App\Tests\Acceptance\Core\UseCase\NextExecutor;
 
 use App\Core\Application\UseCase\Executor\GetSwipedNextExecutorUseCase;
-use App\Core\Application\UseCase\Swipe\CreateExecutorSwipeUseCase;
 use App\Core\Application\Exception\Task\TaskNotFoundException;
+use App\Core\Domain\Entity\TaskSwipe;
 use App\Core\Domain\Exception\Task\TaskUnavailableToSwipe;
 use App\Core\Infrastructure\Entity\Profile;
-use App\Core\Domain\Entity\Swipe;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Core\TaskFixtures;
 use App\Tests\Acceptance\AcceptanceTest;
@@ -35,21 +34,14 @@ class GetNextSwipedExecutorTest extends AcceptanceTest
      */
     public function testSuccess(int $authorId, int $taskId, array $expected)
     {
-        $createExecutorSwipeUseCase = $this->getDependency(CreateExecutorSwipeUseCase::class);
         $useCase = $this->getDependency(GetSwipedNextExecutorUseCase::class);
         $profile = $this->getEntity(Profile::class, $authorId);
 
-        $nextExecutor = $useCase->get($profile, $taskId);
-
-        foreach ($expected as $expectedExecutor) {
-            $this->assertEquals($expectedExecutor, $nextExecutor->getExecutor()->getId());
-            $nextExecutor = $createExecutorSwipeUseCase->create(
-                $profile,
-                $nextExecutor->getTask()->getId(),
-                $nextExecutor->getExecutor()->getId(),
-                Swipe::TYPE_ACCEPT,
-            );
-        }
+        $nextExecutors = $useCase->get($profile, $taskId);
+        $this->assertEquals($expected, array_map(
+            fn(TaskSwipe $swipe) => $swipe->getProfile()->getId(),
+            $nextExecutors
+        ));
     }
 
     /**
@@ -60,8 +52,8 @@ class GetNextSwipedExecutorTest extends AcceptanceTest
         $useCase = $this->getDependency(GetSwipedNextExecutorUseCase::class);
         $profile = $this->getEntity(Profile::class, $authorId);
 
-        $nextExecutor = $useCase->get($profile, $taskId);
-        $this->assertNull($nextExecutor);
+        $nextExecutors = $useCase->get($profile, $taskId);
+        $this->assertEmpty($nextExecutors);
     }
 
     private function successData()

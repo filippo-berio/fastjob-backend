@@ -32,6 +32,7 @@ class TaskSwipe extends DomainTaskSwipe
     protected DomainTask $task;
 
     #[ManyToOne(targetEntity: Profile::class)]
+    #[Groups(['task_swipe_short'])]
     protected DomainProfile $profile;
 
     #[Column(nullable: true)]

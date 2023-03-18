@@ -64,13 +64,13 @@ class AuthorController extends BaseController
         CreateExecutorSwipeRequest $body,
     ): JsonResponse {
         $this->validator->validate($body);
-        $executorSwipe = $useCase->create($profile, $body->taskId, $body->executorId, $body->type);
+        $nextExecutor = $useCase->create($profile, $body->taskId, $body->executorId, $body->type);
         return $this->json(
             [
                 'success' => true,
-                'next' => $executorSwipe
+                'next' => $nextExecutor
             ],
-            context: ['category_short', 'profile_short', 'task_full']
+            context: ['task_swipe_short', 'category_short', 'profile_short', 'task_full']
         );
     }
 }

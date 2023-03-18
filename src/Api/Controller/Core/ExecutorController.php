@@ -21,8 +21,8 @@ class ExecutorController extends BaseController
         GetSwipedNextExecutorUseCase $useCase,
         int $taskId,
     ): JsonResponse {
-        $executor = $useCase->get($profile, $taskId);
-        return $this->json($executor, context: ['category_short', 'profile_short', 'task_full']);
+        $profiles = $useCase->get($profile, $taskId);
+        return $this->json($profiles, context: ['task_swipe_short', 'category_short', 'profile_short', 'task_full']);
     }
 
     #[Route('/tasks', methods: ['GET'])]

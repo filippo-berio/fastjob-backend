@@ -27,8 +27,6 @@ class CreateExecutorSwipeTest extends AcceptanceTest
         int    $executorId,
         string $type
     ) {
-        $this->bootContainer();
-
         $useCase = $this->getUseCase();
         $this->expectException($exception);
 
@@ -45,8 +43,6 @@ class CreateExecutorSwipeTest extends AcceptanceTest
         int $executorId,
         string $type
     ) {
-        $this->bootContainer();
-
         $em = $this->getEm();
         $repo = $em->getRepository(ExecutorSwipe::class);
         $before = $repo->findAll();
@@ -58,6 +54,16 @@ class CreateExecutorSwipeTest extends AcceptanceTest
 
         $after = $repo->findAll();
         $this->assertCount(count($before) + 1, $after);
+    }
+
+    public function testReturnsNextExecutor()
+    {
+        $useCase = $this->getUseCase();
+        $profile = $this->getEntity(Profile::class, ProfileFixtures::PROFILE_2);
+        $next = $useCase->create($profile, TaskFixtures::TASK_7, ProfileFixtures::PROFILE_8,  Swipe::TYPE_ACCEPT);
+        $this->assertEquals(ProfileFixtures::PROFILE_10, $next->getProfile()->getId());
+        $next = $useCase->create($profile, TaskFixtures::TASK_7, ProfileFixtures::PROFILE_10,  Swipe::TYPE_ACCEPT);
+        $this->assertNull($next);
     }
 
     private function successData()

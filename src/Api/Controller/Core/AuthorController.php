@@ -5,6 +5,7 @@ namespace App\Api\Controller\Core;
 use App\Api\Controller\BaseController;
 use App\Api\Request\Author\CreateExecutorSwipeRequest;
 use App\Api\Request\Author\FinishTaskRequest;
+use App\Core\Application\UseCase\Author\GetSwipedNextExecutorUseCase;
 use App\Core\Application\UseCase\Swipe\CreateExecutorSwipeUseCase;
 use App\Core\Application\UseCase\Task\FinishTaskUseCase;
 use App\Core\Application\UseCase\Task\GetProfileTasksUseCase;
@@ -16,6 +17,16 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 #[Route('/author')]
 class AuthorController extends BaseController
 {
+    #[Route('/executors/{taskId}', methods: ['GET'])]
+    public function nextTask(
+        #[CurrentUser] Profile $profile,
+        GetSwipedNextExecutorUseCase $useCase,
+        int $taskId,
+    ): JsonResponse {
+        $profiles = $useCase->get($profile, $taskId);
+        return $this->json($profiles, context: ['task_swipe_short', 'category_short', 'profile_short', 'task_full']);
+    }
+
     #[Route('/tasks', methods: ['GET'])]
     public function getTasks(
         #[CurrentUser] Profile $profile,

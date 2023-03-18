@@ -2,8 +2,8 @@
 
 namespace App\Tests\Acceptance\Core\UseCase\NextExecutor;
 
-use App\Core\Application\UseCase\Executor\GetSwipedNextExecutorUseCase;
 use App\Core\Application\Exception\Task\TaskNotFoundException;
+use App\Core\Application\UseCase\Author\GetSwipedNextExecutorUseCase;
 use App\Core\Domain\Entity\TaskSwipe;
 use App\Core\Domain\Exception\Task\TaskUnavailableToSwipe;
 use App\Core\Infrastructure\Entity\Profile;

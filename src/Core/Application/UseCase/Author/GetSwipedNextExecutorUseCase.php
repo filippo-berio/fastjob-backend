@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Application\UseCase\Executor;
+namespace App\Core\Application\UseCase\Author;
 
 use App\Core\Application\Exception\Task\TaskNotFoundException;
 use App\Core\Domain\Entity\Profile;

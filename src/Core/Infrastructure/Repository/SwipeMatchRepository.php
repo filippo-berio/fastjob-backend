@@ -89,10 +89,7 @@ class SwipeMatchRepository implements SwipeMatchRepositoryInterface
         return $queryBuilder
             ->innerJoin('ts.task', 't')
             ->andWhere('identity(ts.task) = :taskId')
-            ->setParameter('taskId', $task->getId())
-            ->innerJoin(TaskOffer::class, 'to', Join::WITH, 'identity(to.task) = t.id')
-            ->andWhere('to.status = :waitStatus')
-            ->setParameter('waitStatus', TaskOffer::STATUS_WAIT);
+            ->setParameter('taskId', $task->getId());
     }
 
     private function createTaskSwipeQueryBuilder(): QueryBuilder

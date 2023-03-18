@@ -15,12 +15,13 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 #[Route('/executor')]
 class ExecutorController extends BaseController
 {
-    #[Route('/next', methods: ['GET'])]
+    #[Route('/next/{taskId}', methods: ['GET'])]
     public function nextTask(
         #[CurrentUser] Profile       $profile,
         GetSwipedNextExecutorUseCase $useCase,
+        int $taskId,
     ): JsonResponse {
-        $executor = $useCase->get($profile);
+        $executor = $useCase->get($profile, $taskId);
         return $this->json($executor, context: ['category_short', 'profile_short', 'task_full']);
     }
 

@@ -11,19 +11,19 @@ class CategoryNextTaskGenerator
 {
     public function __construct(
         private QueryBusInterface $queryBus,
+        private int $taskStackLimit,
     ) {
     }
 
     /**
      * @param Profile $profile
-     * @param int $count
      * @return Task[]
      */
-    public function generateForProfile(Profile $profile, int $count = 1): array
+    public function generateForProfile(Profile $profile): array
     {
         return $this->queryBus->query(new FindNextTasksForProfile(
             $profile,
-            $count
+            $this->taskStackLimit,
         ));
     }
 }

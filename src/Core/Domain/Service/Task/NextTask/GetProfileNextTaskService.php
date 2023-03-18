@@ -12,12 +12,13 @@ use App\Core\Domain\Service\Task\NextTask\Generator\CategoryNextTaskGenerator;
 
 class GetProfileNextTaskService
 {
+    const MINIMAL_PENDING_STACK = 3;
+
     public function __construct(
         private ProfileNextTaskRepositoryInterface $nextTaskRepository,
         private CategoryNextTaskGenerator          $nextTaskGenerator,
         private PendingTaskRepositoryInterface     $pendingTaskRepository,
         private EventDispatcherInterface           $eventDispatcher,
-        private int                                $taskStackLimit,
     ) {
     }
 
@@ -28,25 +29,22 @@ class GetProfileNextTaskService
     public function get(Profile $profile): array
     {
         if ($pending = $this->pendingTaskRepository->get($profile)) {
+            if (count($pending) < self::MINIMAL_PENDING_STACK) {
+                $this->eventDispatcher->dispatch(new GenerateNextTaskEvent($profile->getId()));
+            }
             return $pending;
         }
 
-        $tasks = $this->prepareNextTasks($profile);
-        if (!empty($tasks)) {
+        $tasks = $this->nextTaskRepository->popAll($profile) ?:
+            $this->nextTaskGenerator->generateForProfile($profile);
+
+        if ($tasks) {
             $this->pendingTaskRepository->push($profile, $tasks);
+            $this->eventDispatcher->dispatch(new GenerateNextTaskEvent($profile->getId()));
         }
 
-        $this->eventDispatcher->dispatch(new GenerateNextTaskEvent($profile->getId(), $this->taskStackLimit));
 
         return $tasks;
     }
 
-    private function prepareNextTasks(Profile $profile): array
-    {
-        $tasks = $this->nextTaskRepository->popAll($profile);
-        if (empty($tasks)) {
-            $tasks = $this->nextTaskGenerator->generateForProfile($profile, $this->taskStackLimit);
-        }
-        return $tasks;
-    }
 }

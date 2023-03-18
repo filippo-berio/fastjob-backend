@@ -9,7 +9,8 @@ use App\Core\Domain\Event\Task\GenerateNext\GenerateNextTaskEvent;
 use App\Core\Domain\Repository\ProfileNextTaskRepositoryInterface;
 use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Infrastructure\Entity\Task;
-use App\Core\Infrastructure\Message\Event\EventMessage;
+use App\Core\Infrastructure\Repository\PendingTaskRepository;
+use App\Core\Infrastructure\Repository\ProfileNextTaskRepository;
 use App\DataFixtures\Core\ProfileFixtures;
 use App\DataFixtures\Core\TaskFixtures;
 use App\Tests\Acceptance\AcceptanceTest;
@@ -23,7 +24,8 @@ class GetProfileNextTasksTest extends AcceptanceTest
     {
         $profile = $this->getEntity(Profile::class, ProfileFixtures::PROFILE_5);
         $useCase = $this->getDependency(GetProfileNextTaskUseCase::class);
-        $nextTaskRepo = $this->getDependency(ProfileNextTaskRepositoryInterface::class);
+        $pendingRepo = $this->getDependency(PendingTaskRepository::class);
+        $nextTaskRepo = $this->getDependency(ProfileNextTaskRepository::class);
 
         $nextTasks = $useCase->get($profile);
         $this->assertCount(self::STACK_LIMIT, $nextTasks);
@@ -35,27 +37,40 @@ class GetProfileNextTasksTest extends AcceptanceTest
         $nextTasks = $useCase->get($profile);
         $this->assertEquals(TaskFixtures::TASK_1, $nextTasks[0]->getId());
 
+        $this->assertAsyncEventNotDispatched(GenerateNextTaskEvent::class);
+
         $nextTasks = $this->createTaskSwipe($profile->getId(), TaskFixtures::TASK_1);
         $this->assertEquals(TaskFixtures::TASK_4, $nextTasks[0]->getId());
 
+        $this->assertCount(2, $pendingRepo->get($profile));
+        $this->processGenerateNextTaskMessage($profile->getId());
         $this->assertEquals(2, $nextTaskRepo->count($profile));
-        $this->messenger()->queue()->assertContains(EventMessage::class, 0);
 
         $nextTasks = $this->createTaskSwipe($profile->getId(), TaskFixtures::TASK_4);
         $this->assertEquals(TaskFixtures::TASK_5, $nextTasks[0]->getId());
 
+        $this->assertCount(1, $pendingRepo->get($profile));
+        $this->processGenerateNextTaskMessage($profile->getId());
+        $this->assertEquals(2, $nextTaskRepo->count($profile));
+
         $nextTasks = $this->createTaskSwipe($profile->getId(), TaskFixtures::TASK_5);
         $this->assertEquals(TaskFixtures::TASK_11, $nextTasks[0]->getId());
 
-        $this->assertEquals(0, $nextTaskRepo->count($profile));
+        $this->assertCount(2, $pendingRepo->get($profile));
         $this->processGenerateNextTaskMessage($profile->getId());
         $this->assertEquals(0, $nextTaskRepo->count($profile));
 
         $nextTasks = $this->createTaskSwipe($profile->getId(), TaskFixtures::TASK_11);
+        $this->assertEquals(0, $nextTaskRepo->count($profile));
+
+        $this->processGenerateNextTaskMessage($profile->getId());
         $this->assertEquals(TaskFixtures::TASK_12, $nextTasks[0]->getId());
 
         $nextTasks = $this->createTaskSwipe($profile->getId(), TaskFixtures::TASK_12);
         $this->assertEmpty($nextTasks);
+
+        $this->assertCount(0, $pendingRepo->get($profile));
+        $this->assertAsyncEventNotDispatched(GenerateNextTaskEvent::class);
     }
 
     /**
@@ -75,14 +90,8 @@ class GetProfileNextTasksTest extends AcceptanceTest
 
     private function processGenerateNextTaskMessage(int $profileId)
     {
-        $this->messenger()->queue()->assertContains(EventMessage::class, 1);
-        /** @var EventMessage $message */
-        $message = $this->messenger()->queue()->first(EventMessage::class)->getMessage();
-        /** @var GenerateNextTaskEvent $event */
-        $event = $message->event;
-        $this->assertInstanceOf(GenerateNextTaskEvent::class, $message->event);
+        $event = $this->assertAsyncEventDispatched(GenerateNextTaskEvent::class);
         $this->assertEquals($profileId, $event->profileId);
-        $this->assertEquals(self::STACK_LIMIT, $event->count);
         $this->messenger()->process();
     }
 

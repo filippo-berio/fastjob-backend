@@ -34,6 +34,7 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
     const PROFILE_15 = 14;
     const PROFILE_16 = 15;
     const PROFILE_17 = 16;
+    const PROFILE_18 = 17;
 
     const NOT_EXIST_PROFILE = 999;
 
@@ -157,6 +158,11 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
                 'Мефедор',
                 new DateTimeImmutable('10.10.2000'),
             ),
+            $profile18 = new Profile(
+                $this->getCoreUser(UserFixtures::USER_18),
+                'Анубис',
+                new DateTimeImmutable('10.10.2000'),
+            ),
         ], $manager);
 
         $this->addReference(self::PROFILE_1, $profile1);
@@ -175,6 +181,7 @@ class ProfileFixtures extends BaseFixtures implements DependentFixtureInterface
         $this->addReference(self::PROFILE_15, $profile15);
         $this->addReference(self::PROFILE_16, $profile16);
         $this->addReference(self::PROFILE_17, $profile17);
+        $this->addReference(self::PROFILE_18, $profile18);
     }
 
     public function getDependencies()

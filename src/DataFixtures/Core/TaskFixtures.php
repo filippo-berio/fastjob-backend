@@ -72,6 +72,7 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
         $task6->addPhoto('profile-photo1.jpg');
         $task6->addPhoto('profile-photo1.jpg');
         $task6->addPhoto('profile-photo1.jpg');
+        $task6->approve();
 
         $task16 = new Task(
             'Task 16 title',
@@ -120,15 +121,15 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
         $task20->finish();
 
         $this->save([
-            $task1 = new Task(
+            $task1 = (new Task(
                 'Научить языку с++',
                 $this->getReference(ProfileFixtures::PROFILE_3, Profile::class),
                 [$this->getReference(CategoryFixtures::CPLUS, Category::class)],
                 true,
                 1500,
-            ),
+            ))->approve(),
             $task2,
-            $task3 = new Task(
+            $task3 = (new Task(
                 'Починить кран',
                 $this->getReference(ProfileFixtures::PROFILE_2, Profile::class),
                 [$this->getReference(CategoryFixtures::PLUMBING, Category::class)],
@@ -136,16 +137,16 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 3000,
                 $this->getReference(AddressFixtures::ADDRESS_1, Address::class),
                 deadline: (new DateTimeImmutable())->modify('+1 day')
-            ),
-            $task4 = new Task(
+            ))->approve(),
+            $task4 = (new Task(
                 'Написать курсач по плюсам',
                 $this->getReference(ProfileFixtures::PROFILE_3, Profile::class),
                 [
                     $this->getReference(CategoryFixtures::CPLUS, Category::class),
                 ],
                 true,
-            ),
-            $task5 = new Task(
+            ))->approve(),
+            $task5 = (new Task(
                 'Написать алгоритм для станка',
                 $this->getReference(ProfileFixtures::PROFILE_3, Profile::class),
                 [
@@ -154,9 +155,9 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 ],
                 true,
                 address: $this->getReference(AddressFixtures::ADDRESS_3, Address::class),
-            ),
+            ))->approve(),
             $task6,
-            $task7 = new Task(
+            $task7 = (new Task(
                 'Проконсультировать типа по собаке',
                 $this->getReference(ProfileFixtures::PROFILE_2, Profile::class),
                 [
@@ -164,8 +165,8 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 ],
                 true,
                 500,
-            ),
-            $task8 = new Task(
+            ))->approve(),
+            $task8 = (new Task(
                 'Кастрировать кота',
                 $this->getReference(ProfileFixtures::PROFILE_5, Profile::class),
                 [
@@ -173,24 +174,24 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 ],
                 false,
                 address: $this->getReference(AddressFixtures::ADDRESS_4, Address::class),
-            ),
-            $task9 = new Task(
+            ))->approve(),
+            $task9 = (new Task(
                 'Какое-нибудь удаленное задание по животным',
                 $this->getReference(ProfileFixtures::PROFILE_5, Profile::class),
                 [
                     $this->getReference(CategoryFixtures::PETS, Category::class),
                 ],
                 true,
-            ),
-            $task10 = new Task(
+            ))->approve(),
+            $task10 = (new Task(
                 'Другое удаленное задание по животным',
                 $this->getReference(ProfileFixtures::PROFILE_7, Profile::class),
                 [
                     $this->getReference(CategoryFixtures::PETS, Category::class),
                 ],
                 true,
-            ),
-            $task11 = new Task(
+            ))->approve(),
+            $task11 = (new Task(
                 'Поаутсорсить чуток',
                 $this->getReference(ProfileFixtures::PROFILE_1, Profile::class),
                 [
@@ -200,8 +201,8 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 true,
                 15000,
                 address: $this->getReference(AddressFixtures::ADDRESS_4, Address::class),
-            ),
-            $task12 = new Task(
+            ))->approve(),
+            $task12 = (new Task(
                 'Поаутсорсить чуток, совсем чуть чуть',
                 $this->getReference(ProfileFixtures::PROFILE_1, Profile::class),
                 [
@@ -211,8 +212,8 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 true,
                 150000,
                 address: $this->getReference(AddressFixtures::ADDRESS_4, Address::class),
-            ),
-            $task13 = new Task(
+            ))->approve(),
+            $task13 = (new Task(
                 '',
                 $this->getReference(ProfileFixtures::PROFILE_4, Profile::class),
                 [
@@ -221,8 +222,8 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 false,
                 2000,
                 $this->getReference(AddressFixtures::ADDRESS_3, Address::class),
-            ),
-            $task14 = new Task(
+            ))->approve(),
+            $task14 = (new Task(
                 'Замерить скорость ветра пальцем',
                 $this->getReference(ProfileFixtures::PROFILE_11, Profile::class),
                 [
@@ -230,8 +231,8 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 ],
                 false,
                 price: 1000,
-            ),
-            $task15 = new Task(
+            ))->approve(),
+            $task15 = (new Task(
                 'Замерить скорость ветра, но без помощи пальца',
                 $this->getReference(ProfileFixtures::PROFILE_11, Profile::class),
                 [
@@ -239,11 +240,11 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 ],
                 false,
                 price: 7000,
-            ),
+            ))->approve(),
             $task16,
             $task17,
             $task18,
-            $task19 = new Task(
+            $task19 = (new Task(
                 'Замерить скорость ветра сверхточно',
                 $this->getReference(ProfileFixtures::PROFILE_17, Profile::class),
                 [
@@ -251,8 +252,26 @@ class TaskFixtures extends BaseFixtures implements DependentFixtureInterface
                 ],
                 false,
                 price: 7000,
-            ),
+            ))->approve(),
             $task20,
+            $task21 = new Task(
+                'Благоприятная задача на ревью',
+                $this->getReference(ProfileFixtures::PROFILE_18, Profile::class),
+                [
+                    $this->getReference(CategoryFixtures::SUM_STUPID_SHIT, Category::class)
+                ],
+                false,
+                price: 7000,
+            ),
+            $task22 = new Task(
+                'Хуйня от конкурентов',
+                $this->getReference(ProfileFixtures::PROFILE_18, Profile::class),
+                [
+                    $this->getReference(CategoryFixtures::SUM_STUPID_SHIT, Category::class)
+                ],
+                false,
+                price: 7000,
+            ),
         ], $manager);
 
         $this->addReference(self::TASK_1, $task1);

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Api\Controller\Admin;
+namespace App\Admin\Controller;
 
-use App\Core\Domain\Entity\Category;
+use App\Core\Infrastructure\Entity\Category;
+use App\Core\Infrastructure\Entity\Task;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -17,7 +18,7 @@ class DashboardController extends AbstractDashboardController
     ) {
     }
 
-    #[Route('/admin', name: 'admin')]
+    #[Route('', name: 'admin')]
     public function index(): Response
     {
         $url = $this->adminUrlGenerator->setController(CategoryCrudController::class)->generateUrl();
@@ -34,5 +35,6 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Главная', 'fa fa-home');
         yield MenuItem::linkToCrud('Категории', 'fas fa-list', Category::class);
+        yield MenuItem::linkToCrud('Задачи', 'fas fa-list', Task::class);
     }
 }

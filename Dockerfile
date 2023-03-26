@@ -33,6 +33,16 @@ RUN apt-get install -y \
     && pecl install mongodb \
     && echo "extension=mongodb.so" >> /usr/local/etc/php/php.ini
 
+
+
+#intl
+
+RUN apt-get -y update \
+    && apt-get install -y libicu-dev \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install intl
+
+
 RUN docker-php-ext-install opcache
 
 RUN docker-php-ext-install \

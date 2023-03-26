@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Api\Controller\Admin;
+namespace App\Admin\Controller;
 
-use App\Core\Domain\Entity\Category;
+use App\Core\Infrastructure\Entity\Category;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class CategoryCrudController extends AbstractCrudController

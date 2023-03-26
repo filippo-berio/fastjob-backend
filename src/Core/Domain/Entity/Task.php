@@ -16,9 +16,21 @@ class Task
     const STATUS_WAIT = 'wait';
     const STATUS_OFFERED = 'offered';
     const STATUS_WORK = 'work';
+    const STATUS_REJECTED = 'rejected';
     const STATUS_CANCELED = 'canceled';
     const STATUS_FINISHED = 'finished';
     const STATUS_DELETED = 'deleted';
+
+    const STATUSES = [
+        self::STATUS_REVIEW,
+        self::STATUS_WAIT,
+        self::STATUS_OFFERED,
+        self::STATUS_WORK,
+        self::STATUS_REJECTED,
+        self::STATUS_CANCELED,
+        self::STATUS_FINISHED,
+        self::STATUS_DELETED,
+    ];
 
     const EXECUTOR_STATUSES = [
         self::STATUS_OFFERED,
@@ -28,6 +40,7 @@ class Task
 
     const STATUSES_NO_SWIPES = [
         self::STATUS_WORK,
+        self::STATUS_REJECTED,
         self::STATUS_FINISHED,
         self::STATUS_DELETED,
         self::STATUS_REVIEW,
@@ -65,7 +78,7 @@ class Task
         $this->title = $title;
         $this->author = $author;
         $this->createdAt = new DateTimeImmutable();
-        $this->status = self::STATUS_WAIT;
+        $this->status = self::STATUS_REVIEW;
         $this->setCategories($categories);
         $this->price = $price;
         $this->address = $address;
@@ -76,6 +89,11 @@ class Task
         $this->matches = [];
         $this->offers = [];
         $this->photos = [];
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
     }
 
     public function addPhoto(string $path)
@@ -144,6 +162,17 @@ class Task
     public function getCategories(): array
     {
         return $this->categories;
+    }
+
+    public function approve()
+    {
+        $this->status = self::STATUS_WAIT;
+        return $this;
+    }
+
+    public function reject()
+    {
+        $this->status = self::STATUS_REJECTED;
     }
 
     public function getAuthor(): Profile

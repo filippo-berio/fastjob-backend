@@ -13,7 +13,7 @@ auth:
     type: annotation
 
 admin:
-    resource: ../../src/Api/Controller/Admin
+    resource: ../../src/Admin/Controller
     prefix: '/admin'
     type: annotation
 

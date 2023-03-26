@@ -31,7 +31,7 @@ class CreateExecutorSwipeUseCase
         $task = $this->getTask($profile, $taskId);
         $executor = $this->getProfile($executorId);
         $this->createExecutorSwipeService->create($profile, $task, $executor, $type);
-        return $this->swipedNextExecutorService->get($task, 1)[0] ?? null;
+        return $this->swipedNextExecutorService->get($profile, 1, $task)[0] ?? null;
     }
 
     private function getTask(Profile $profile, int $id): Task

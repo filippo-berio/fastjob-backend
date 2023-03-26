@@ -19,15 +19,18 @@ class GetSwipedNextExecutorUseCase
 
     /**
      * @param Profile $profile
-     * @param int $taskId
+     * @param int|null $taskId
      * @return TaskSwipe[]
      */
-    public function get(Profile $profile, int $taskId): array
+    public function get(Profile $profile, ?int $taskId = null): array
     {
-        $task = $this->queryBus->query(new FindTaskByAuthorAndId($profile, $taskId));
-        if (!$task) {
-            throw new TaskNotFoundException();
+        $task = null;
+        if ($taskId) {
+            $task = $this->queryBus->query(new FindTaskByAuthorAndId($profile, $taskId));
+            if (!$task) {
+                throw new TaskNotFoundException();
+            }
         }
-        return $this->getSwipedNextExecutorService->get($task, 2);
+        return $this->getSwipedNextExecutorService->get($profile, 2, $task);
     }
 }

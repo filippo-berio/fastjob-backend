@@ -11,20 +11,21 @@ use App\Core\Application\UseCase\Task\FinishTaskUseCase;
 use App\Core\Application\UseCase\Task\GetProfileTasksUseCase;
 use App\Core\Infrastructure\Entity\Profile;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route('/author')]
 class AuthorController extends BaseController
 {
-    #[Route('/executors/{taskId}', methods: ['GET'])]
+    #[Route('/executors', methods: ['GET'])]
     public function nextTask(
         #[CurrentUser] Profile $profile,
+        Request $request,
         GetSwipedNextExecutorUseCase $useCase,
-        int $taskId,
     ): JsonResponse {
-        $profiles = $useCase->get($profile, $taskId);
-        return $this->json($profiles, context: ['task_swipe_short', 'category_short', 'profile_short', 'task_full']);
+        $taskSwipes = $useCase->get($profile, $request->get('taskId'));
+        return $this->json($taskSwipes, context: ['task_swipe_short', 'category_short', 'profile_short', 'task_full']);
     }
 
     #[Route('/tasks', methods: ['GET'])]

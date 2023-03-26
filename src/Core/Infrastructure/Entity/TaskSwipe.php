@@ -25,10 +25,10 @@ class TaskSwipe extends DomainTaskSwipe
     #[Id]
     #[GeneratedValue]
     #[Column]
-    #[Groups(['task_swipe_short'])]
     protected ?int $id = null;
 
     #[ManyToOne(targetEntity: Task::class)]
+    #[Groups(['task_swipe_short'])]
     protected DomainTask $task;
 
     #[ManyToOne(targetEntity: Profile::class)]

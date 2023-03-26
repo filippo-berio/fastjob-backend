@@ -13,6 +13,22 @@ use App\Tests\Acceptance\AcceptanceTest;
 
 class GetNextSwipedExecutorTest extends AcceptanceTest
 {
+    public function testNoTaskPassed()
+    {
+        $useCase = $this->getDependency(GetSwipedNextExecutorUseCase::class);
+        $profile = $this->getEntity(Profile::class, ProfileFixtures::PROFILE_2);
+        $next = $useCase->get($profile);
+        $this->assertEquals(TaskFixtures::TASK_3, $next[0]->getTask()->getId());
+
+        $this->assertEquals([
+            ProfileFixtures::PROFILE_10,
+            ProfileFixtures::PROFILE_7,
+        ], array_map(
+            fn(TaskSwipe $swipe) => $swipe->getProfile()->getId(),
+            $next
+        ));
+    }
+
     public function testNoWaitTasks()
     {
         $useCase = $this->getDependency(GetSwipedNextExecutorUseCase::class);

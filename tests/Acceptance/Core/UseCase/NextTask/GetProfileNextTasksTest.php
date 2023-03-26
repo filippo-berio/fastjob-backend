@@ -6,7 +6,6 @@ use App\Core\Application\UseCase\Swipe\CreateTaskSwipeUseCase;
 use App\Core\Application\UseCase\Task\GetProfileNextTaskUseCase;
 use App\Core\Domain\Entity\Swipe;
 use App\Core\Domain\Event\Task\GenerateNext\GenerateNextTaskEvent;
-use App\Core\Domain\Repository\ProfileNextTaskRepositoryInterface;
 use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Infrastructure\Entity\Task;
 use App\Core\Infrastructure\Repository\PendingTaskRepository;

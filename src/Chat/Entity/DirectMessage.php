@@ -2,6 +2,7 @@
 
 namespace App\Chat\Entity;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping\Column;
@@ -23,6 +24,7 @@ class DirectMessage
     protected int $id;
 
     #[Column]
+    #[Encrypted]
     protected string $content;
 
     #[Column]
@@ -54,6 +56,11 @@ class DirectMessage
     public function read()
     {
         $this->read = true;
+    }
+
+    public function setContent(string $content): void
+    {
+        $this->content = $content;
     }
 
     public function getContent(): string

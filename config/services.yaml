@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
 
+ambta_doctrine_encrypt:
+    encryptor_class: Halite
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -14,6 +16,7 @@ services:
             $redisHost: '%env(REDIS_HOST)%'
             $storageEndpoint: '%env(STORAGE_ENDPOINT)%'
             $taskStackLimit: '%env(NEXT_TASK_STACK_LIMIT)%'
+
 
     _instanceof:
         App\Core\Domain\Event\EventHandlerInterface:

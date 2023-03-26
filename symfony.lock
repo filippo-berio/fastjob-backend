@@ -93,6 +93,9 @@
             "config/packages/lexik_jwt_authentication.yaml"
         ]
     },
+    "michaeldegroot/doctrine-encrypt-bundle": {
+        "version": "v5.1.0"
+    },
     "nelmio/cors-bundle": {
         "version": "2.2",
         "recipe": {

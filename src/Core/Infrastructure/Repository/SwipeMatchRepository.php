@@ -77,6 +77,28 @@ class SwipeMatchRepository implements SwipeMatchRepositoryInterface
         return new SwipeMatch($task, $profile, $taskSwipe->getCustomPrice());
     }
 
+    public function countByCompanions(DomainProfile $profileA, DomainProfile $profileB): int
+    {
+        // TODO нормальный запрос
+        return $this->countByAuthorAndExecutor($profileA, $profileB) ?:
+            $this->countByAuthorAndExecutor($profileB, $profileA);
+    }
+
+    private function countByAuthorAndExecutor(DomainProfile $author, DomainProfile $executor): int
+    {
+        $qb = $this->createTaskSwipeQueryBuilder();
+        $this->queryExecutor($qb, $executor);
+        $qb
+            ->innerJoin('ts.task', 't')
+            ->andWhere('identity(t.author) = :author')
+            ->setParameter('author', $author->getId())
+            ->select('count(ts.id)');
+        ;
+
+        return $qb->getQuery()->getSingleScalarResult();
+
+    }
+
     private function queryExecutor(QueryBuilder $queryBuilder, DomainProfile $profile): QueryBuilder
     {
         return $queryBuilder

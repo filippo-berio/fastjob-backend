@@ -32,7 +32,7 @@ class Profile extends DomainProfile implements UserInterface
     #[GeneratedValue]
     #[Column]
     #[Groups(['profile_full', 'profile_short'])]
-    protected ?int $id = null;
+    protected int $id;
 
     #[Column]
     protected int $userId;

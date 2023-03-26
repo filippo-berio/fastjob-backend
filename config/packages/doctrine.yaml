@@ -9,6 +9,8 @@ doctrine:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
+        resolve_target_entities:
+            App\Chat\Entity\PersonInterface: App\Core\Infrastructure\Entity\Profile
         mappings:
             auth:
                 is_bundle: false
@@ -35,6 +37,11 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Storage/Entity'
                 prefix: 'App\Storage\Entity'
                 alias: Storage
+            chat:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Chat/Entity'
+                prefix: 'App\Chat\Entity'
+                alias: Chat
 
 when@test:
     doctrine:

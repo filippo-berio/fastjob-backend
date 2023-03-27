@@ -64,4 +64,11 @@ class DirectChat
     {
         return $this->personB;
     }
+
+    public function getCompanionOf(PersonInterface $person): PersonInterface
+    {
+        return $person->getId() === $this->getPersonA()->getId() ?
+            $this->getPersonB() :
+            $this->getPersonA();
+    }
 }

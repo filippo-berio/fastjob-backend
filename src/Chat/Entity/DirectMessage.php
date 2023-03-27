@@ -10,12 +10,13 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use JsonSerializable;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[Entity]
-class DirectMessage
+class DirectMessage implements JsonSerializable
 {
 
     #[Id]
@@ -81,5 +82,15 @@ class DirectMessage
     public function getAuthor(): PersonInterface
     {
         return $this->author;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'content' => $this->content,
+            'createdAt' => $this->createdAt,
+            'read' => $this->read,
+            'author' => $this->author,
+        ];
     }
 }

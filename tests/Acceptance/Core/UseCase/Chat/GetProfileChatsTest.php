@@ -16,10 +16,10 @@ class GetProfileChatsTest extends AcceptanceTest
         $profile16 = $this->getCoreProfile(ProfileFixtures::PROFILE_16);
 
         $profile1Chats = $useCase->get($profile15);
-        $this->assertEquals(DirectChatFixtures::CHAT_1, $profile1Chats[0]->chat->getId());
+        $this->assertEquals(DirectChatFixtures::CHAT_1, $profile1Chats[0]->chatId);
 
         $profile2Chats = $useCase->get($profile16);
-        $this->assertEquals(DirectChatFixtures::CHAT_1, $profile2Chats[0]->chat->getId());
+        $this->assertEquals(DirectChatFixtures::CHAT_1, $profile2Chats[0]->chatId);
     }
 
     public function testProfileHasNoChats()

@@ -22,7 +22,8 @@ class ChatController extends BaseController
     ): JsonResponse {
         $chats = $useCase->get($profile);
         return $this->json($chats, context: [
-            'chat_short'
+            'chat_short',
+            'chat_person'
         ]);
     }
 

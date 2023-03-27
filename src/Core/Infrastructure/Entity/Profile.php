@@ -31,7 +31,7 @@ class Profile extends DomainProfile implements UserInterface
     #[Id]
     #[GeneratedValue]
     #[Column]
-    #[Groups(['profile_full', 'profile_short'])]
+    #[Groups(['profile_full', 'profile_short', 'chat_person'])]
     protected int $id;
 
     #[Column]
@@ -117,5 +117,17 @@ class Profile extends DomainProfile implements UserInterface
     public function getUserIdentifier(): string
     {
         return $this->userId;
+    }
+
+    #[Groups('chat_person')]
+    public function getName(): string
+    {
+        return parent::getName();
+    }
+
+    #[Groups('chat_person')]
+    public function getPhotoPath(): ?string
+    {
+        return $this->getMainPhoto()?->getPath();
     }
 }

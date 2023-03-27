@@ -11,4 +11,6 @@ interface MethodInterface
     public function buildJson(): ?array;
 
     public function buildQuery(): ?array;
+
+    public function buildMultipartData(): ?array;
 }

@@ -13,4 +13,9 @@ abstract class Method implements MethodInterface
     {
         return null;
     }
+
+    public function buildMultipartData(): ?array
+    {
+        return null;
+    }
 }

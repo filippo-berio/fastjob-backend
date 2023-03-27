@@ -5,8 +5,6 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
 
-ambta_doctrine_encrypt:
-    encryptor_class: Halite
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -70,6 +68,10 @@ services:
 
     App\Lib\CQRS\MessageHandler\QueryMessageHandler:
         $queryHandlers: !tagged_iterator 'cqrs.query_handler'
+
+
+    App\Lib\NsfwFilterService\NsfwFilterService:
+        $host: '%env(NSFW_FILTER_ENDPOINT)%'
 
 
     App\DataFixtures\Purger\PurgerFactory:

@@ -25,8 +25,8 @@ class ProfilePhotoController extends BaseController
     ): JsonResponse {
         /** @var File $file */
         $file = $request->files->all()[0];
-        $photo = $useCase->upload($profile, $file->getContent(), $file->getExtension());
-        return $this->json($photo);
+        $useCase->upload($profile, $file->getContent());
+        return $this->json();
     }
 
     #[Route('/{id}', methods: ['DELETE'])]

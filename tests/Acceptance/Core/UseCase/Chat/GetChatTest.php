@@ -24,6 +24,9 @@ class GetChatTest extends AcceptanceTest
         $this->assertEquals(DirectChatFixtures::CHAT_1, $chat->getId());
 
         $this->assertCount(2, $chat->getMessages());
+        foreach ($chat->getMessages() as $message) {
+            $this->assertTrue($message->isRead());
+        }
     }
 
     public function testChatDidNotExist()

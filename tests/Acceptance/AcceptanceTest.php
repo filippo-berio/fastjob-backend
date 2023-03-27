@@ -77,9 +77,9 @@ abstract class AcceptanceTest extends KernelTestCase
         return $em->getRepository($class)->findBy($criteria);
     }
 
-    protected function createWireMockClient(): WireMock
+    protected function createWireMockClient(string $host = self::WIREMOCK_HOST): WireMock
     {
-        $wireMock = WireMock::create(self::WIREMOCK_HOST);
+        $wireMock = WireMock::create($host);
         $this->assertTrue($wireMock->isAlive());
         return $wireMock;
     }

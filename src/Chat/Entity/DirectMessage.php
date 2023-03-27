@@ -68,6 +68,11 @@ class DirectMessage
         return $this->content;
     }
 
+    public function isRead(): bool
+    {
+        return $this->read;
+    }
+
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;

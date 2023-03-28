@@ -2,7 +2,7 @@
 
 namespace App\Core\Application\UseCase\Chat;
 
-use App\Chat\Entity\DirectChat;
+use App\Chat\DTO\UserChat;
 use App\Chat\Service\Direct\GetDirectChatService;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Exception\Profile\ProfileNotFoundException;
@@ -20,7 +20,7 @@ class GetChatUseCase
     ) {
     }
 
-    public function get(Profile $profile, int $companionId): DirectChat
+    public function get(Profile $profile, int $companionId): UserChat
     {
         $companion = $this->queryBus->query(new FindProfileById($companionId));
         if (!$companion) {

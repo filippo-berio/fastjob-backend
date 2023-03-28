@@ -17,14 +17,14 @@ class GetChatTest extends AcceptanceTest
         $profile16 = $this->getCoreProfile(ProfileFixtures::PROFILE_16);
 
         $chat = $useCase->get($profile15, $profile16->getId());
-        $this->assertEquals(DirectChatFixtures::CHAT_1, $chat->getId());
+        $this->assertEquals(DirectChatFixtures::CHAT_1, $chat->id);
 
         // меняем порядок чуваков
         $chat = $useCase->get($profile16, $profile15->getId());
-        $this->assertEquals(DirectChatFixtures::CHAT_1, $chat->getId());
+        $this->assertEquals(DirectChatFixtures::CHAT_1, $chat->id);
 
-        $this->assertCount(2, $chat->getMessages());
-        foreach ($chat->getMessages() as $message) {
+        $this->assertCount(2, $chat->messages);
+        foreach ($chat->messages as $message) {
             $this->assertTrue($message->isRead());
         }
     }
@@ -35,7 +35,7 @@ class GetChatTest extends AcceptanceTest
         $profile15 = $this->getCoreProfile(ProfileFixtures::PROFILE_15);
         $profile16 = $this->getCoreProfile(ProfileFixtures::PROFILE_17);
         $chat = $useCase->get($profile15, $profile16->getId());
-        $this->assertNotNull($chat->getId());
+        $this->assertNotNull($chat->id);
    }
 
     /**

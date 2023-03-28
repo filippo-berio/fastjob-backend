@@ -2,7 +2,7 @@
 
 namespace App\Chat\Service\Direct;
 
-use App\Chat\DTO\UserChat;
+use App\Chat\DTO\UserChatListItem;
 use App\Chat\Entity\DirectChat;
 use App\Chat\Entity\PersonInterface;
 use App\Chat\Repository\DirectChatRepositoryInterface;
@@ -16,7 +16,7 @@ class GetPersonChatsService
 
     /**
      * @param PersonInterface $person
-     * @return UserChat[]
+     * @return UserChatListItem[]
      */
     public function get(PersonInterface $person): array
     {
@@ -29,10 +29,12 @@ class GetPersonChatsService
                 }
             }
 
-            return new UserChat(
+            $messages = $chat->getMessages();
+
+            return new UserChatListItem(
                 $chat->getId(),
                 $chat->getCompanionOf($person),
-                $chat->getMessages()[0],
+                array_shift($messages),
                 $unreadCount,
             );
         }, $chats);

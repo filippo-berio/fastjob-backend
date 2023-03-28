@@ -5,15 +5,13 @@ namespace App\Chat\Entity;
 use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use JsonSerializable;
-use Symfony\Component\Serializer\Annotation\Context;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[Entity]
 class DirectMessage implements JsonSerializable
@@ -28,10 +26,8 @@ class DirectMessage implements JsonSerializable
     #[Encrypted]
     protected string $content;
 
-    #[Column]
-    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => DateTime::ATOM])]
-    #[Groups(['task_full'])]
-    protected DateTimeImmutable $createdAt;
+    #[Column(type: 'datetime')]
+    protected DateTimeInterface $createdAt;
 
     #[ManyToOne]
     protected PersonInterface $author;
@@ -74,7 +70,7 @@ class DirectMessage implements JsonSerializable
         return $this->read;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -88,7 +84,7 @@ class DirectMessage implements JsonSerializable
     {
         return [
             'content' => $this->content,
-            'createdAt' => $this->createdAt,
+            'createdAt' => $this->createdAt->format(DateTime::ATOM),
             'read' => $this->read,
             'author' => $this->author,
         ];

@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[Entity]
@@ -18,11 +19,13 @@ class DirectChat
     #[Id]
     #[GeneratedValue]
     #[Column]
-    #[Groups(['chat_short'])]
+    #[Groups(['chat_short', 'chat_full'])]
     protected int $id;
 
     /** @var Collection<DirectMessage> */
     #[OneToMany(mappedBy: 'chat', targetEntity: DirectMessage::class)]
+    #[Groups('chat_full')]
+    #[OrderBy(["id" => "desc"])]
     protected Collection $messages;
 
     #[ManyToOne(targetEntity: PersonInterface::class)]

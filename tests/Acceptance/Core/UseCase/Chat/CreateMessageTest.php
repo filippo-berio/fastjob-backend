@@ -21,10 +21,10 @@ class CreateMessageTest extends AcceptanceTest
         $useCase->create($profile15, DirectChatFixtures::CHAT_1, 'Тест!');
 
         $chat = $getChatUseCase->get($profile15, ProfileFixtures::PROFILE_16);
-        $messages = $chat->getMessages();
+        $messages = $chat->messages;
         $this->assertCount(3, $messages);
         /** @var DirectMessage $lastMessage */
-        $lastMessage = array_pop($messages);
+        $lastMessage = array_shift($messages);
         $this->assertEquals($content, $lastMessage->getContent());
     }
 

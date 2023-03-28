@@ -2,29 +2,27 @@
 
 namespace App\Chat\DTO;
 
+use App\Chat\Entity\DirectMessage;
 use App\Chat\Entity\PersonInterface;
 use JsonSerializable;
 
-readonly class UserChat implements JsonSerializable
+readonly class UserChatListItem implements JsonSerializable
 {
     public function __construct(
-        public int $id,
-        public array $messages,
+        public int             $chatId,
         public PersonInterface $companion,
-        public PersonInterface $person,
-        public int $unreadCount
-    )
-    {
+        public DirectMessage   $lastMessage,
+        public int             $unreadCount,
+    ) {
     }
 
     public function jsonSerialize(): array
     {
         return [
+            'chatId' => $this->chatId,
             'companion' => $this->companion,
-            'person' => $this->person,
-            'messages' => $this->messages,
             'unreadCount' => $this->unreadCount,
-            'id' => $this->id,
+            'lastMessage' => $this->lastMessage,
         ];
     }
 }

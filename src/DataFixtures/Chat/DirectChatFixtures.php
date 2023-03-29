@@ -20,11 +20,13 @@ class DirectChatFixtures extends BaseFixtures implements DependentFixtureInterfa
 
     public function load(ObjectManager $manager)
     {
+        $profile11 = $this->getReference(ProfileFixtures::PROFILE_11, Profile::class);
         $profile15 = $this->getReference(ProfileFixtures::PROFILE_15, Profile::class);
         $profile16 = $this->getReference(ProfileFixtures::PROFILE_16, Profile::class);
 
         $this->save([
-            $chat1 = new DirectChat($profile15, $profile16)
+            $chat1 = new DirectChat($profile15, $profile16),
+            $chat2 = new DirectChat($profile11, $profile15),
         ], $manager);
 
         $this->addReference(self::CHAT_1, $chat1);

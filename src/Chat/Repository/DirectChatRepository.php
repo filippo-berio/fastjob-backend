@@ -18,8 +18,10 @@ class DirectChatRepository implements DirectChatRepositoryInterface
     {
         $qb = $this->em->getRepository(DirectChat::class)->createQueryBuilder('dc');
 
-        return $this
-            ->joinPerson($qb, $person)
+        return $qb
+            ->andWhere('identity(dc.personA) = :id or identity(dc.personB) = :id')
+            ->setParameter('id', $person->getId())
+            ->innerJoin('dc.messages', 'm')
             ->getQuery()
             ->getResult();
     }
@@ -28,8 +30,11 @@ class DirectChatRepository implements DirectChatRepositoryInterface
     {
         $qb = $this->em->getRepository(DirectChat::class)->createQueryBuilder('dc');
 
-        $this->joinPerson($qb, $personA);
-        $this->joinPerson($qb, $personB);
+        $qb
+            ->andWhere('identity(dc.personA) = :p1 and identity(dc.personB) = :p2
+                or identity(dc.personA) = :p2 and identity(dc.personB) = :p1')
+            ->setParameter('p1', $personA->getId())
+            ->setParameter('p2', $personB->getId());
 
         return $qb
             ->getQuery()

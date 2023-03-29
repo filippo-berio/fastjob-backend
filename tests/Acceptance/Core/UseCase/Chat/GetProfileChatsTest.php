@@ -30,4 +30,12 @@ class GetProfileChatsTest extends AcceptanceTest
         $chats = $useCase->get($profile1);
         $this->assertEmpty($chats);
     }
+
+    public function testOnlyChatsWithMessagesAreShown()
+    {
+        $useCase = $this->getDependency(GetProfileChatsUseCase::class);
+        $profile15 = $this->getCoreProfile(ProfileFixtures::PROFILE_15);
+        $chats = $useCase->get($profile15);
+        $this->assertCount(1, $chats);
+    }
 }

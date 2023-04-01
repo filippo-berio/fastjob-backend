@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Application\UseCase\Review;
+namespace App\Core\Domain\Service\Review;
 
 use App\Core\Domain\Contract\EntityMapperInterface;
 use App\Core\Domain\DTO\Review\CreateReviewDTO;

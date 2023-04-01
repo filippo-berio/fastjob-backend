@@ -3,8 +3,10 @@
 namespace App\Api\Controller\Core;
 
 use App\Api\Controller\BaseController;
+use App\Api\Request\Author\FinishTaskRequest;
 use App\Api\Request\Executor\AcceptOfferRequest;
 use App\Api\Request\Swipe\CreateTaskSwipeRequest;
+use App\Core\Application\UseCase\Review\CreateExecutorReviewUseCase;
 use App\Core\Application\UseCase\Swipe\CreateTaskSwipeUseCase;
 use App\Core\Application\UseCase\Task\GetExecutorTasksUseCase;
 use App\Core\Application\UseCase\Task\GetProfileNextTaskUseCase;
@@ -67,5 +69,15 @@ class ExecutorController extends BaseController
             ],
             context: ['task_full', 'category_short', 'profile_short']
         );
+    }
+
+    #[Route('/review', methods: ['POST'])]
+    public function createTaskAuthorReview(
+        #[CurrentUser] Profile $profile,
+        CreateExecutorReviewUseCase $useCase,
+        FinishTaskRequest $body,
+    ): JsonResponse {
+        $useCase->create($profile, $body->taskId, $body->rating, $body->comment);
+        return $this->json();
     }
 }

@@ -5,7 +5,6 @@ namespace App\Chat\Repository;
 use App\Chat\Entity\DirectChat;
 use App\Chat\Entity\PersonInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
 
 class DirectChatRepository implements DirectChatRepositoryInterface
 {
@@ -22,6 +21,7 @@ class DirectChatRepository implements DirectChatRepositoryInterface
             ->andWhere('identity(dc.personA) = :id or identity(dc.personB) = :id')
             ->setParameter('id', $person->getId())
             ->innerJoin('dc.messages', 'm')
+            ->orderBy('dc.id', 'desc')
             ->getQuery()
             ->getResult();
     }
@@ -51,12 +51,5 @@ class DirectChatRepository implements DirectChatRepositoryInterface
         $this->em->persist($chat);
         $this->em->flush();
         return $chat;
-    }
-
-    private function joinPerson(QueryBuilder $qb, PersonInterface $person): QueryBuilder
-    {
-        return $qb
-            ->andWhere('identity(dc.personA) = :id or identity(dc.personB) = :id')
-            ->setParameter('id', $person->getId());
     }
 }

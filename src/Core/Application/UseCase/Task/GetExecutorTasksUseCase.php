@@ -3,16 +3,18 @@
 namespace App\Core\Application\UseCase\Task;
 
 use App\Core\Domain\DTO\Task\ExecutorTaskList;
+use App\Core\Domain\DTO\Task\FinishedTask;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\SwipeMatch;
 use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Entity\TaskOffer;
 use App\Core\Domain\Entity\TaskSwipe;
+use App\Core\Domain\Query\Task\FindFinishedTaskByExecutor;
 use App\Core\Domain\Query\Task\FindTaskByExecutor;
+use App\Core\Domain\Repository\ReviewRepositoryInterface;
 use App\Core\Domain\Repository\SwipeMatchRepositoryInterface;
 use App\Core\Domain\Repository\TaskOfferRepositoryInterface;
 use App\Core\Domain\Repository\TaskSwipeRepositoryInterface;
-use App\Core\Infrastructure\Query\Task\FindTaskByExecutorHandler;
 use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class GetExecutorTasksUseCase
@@ -22,6 +24,7 @@ class GetExecutorTasksUseCase
         private SwipeMatchRepositoryInterface $swipeMatchRepository,
         private TaskSwipeRepositoryInterface $taskSwipeRepository,
         private QueryBusInterface $queryBus,
+        private ReviewRepositoryInterface $reviewRepository,
     ) {
     }
 
@@ -49,11 +52,18 @@ class GetExecutorTasksUseCase
             }
         }
 
+        $finished = $this->queryBus->query(new FindFinishedTaskByExecutor($profile));
+        $finished = array_map(function (Task $task) use ($profile) {
+            $review = $this->reviewRepository->findForTaskAndExecutor($task, $profile);
+            return new FinishedTask($task, $review);
+        }, $finished);
+
         return new ExecutorTaskList(
             array_values($priority[0]),
             array_values($priority[1]),
             array_values($priority[2]),
             array_values($priority[3]),
+            $finished,
         );
     }
 

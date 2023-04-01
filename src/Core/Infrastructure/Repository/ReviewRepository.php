@@ -44,11 +44,7 @@ class ReviewRepository implements ReviewRepositoryInterface
         );
     }
 
-    /**
-     * @param Task $task
-     * @return DomainReview[]
-     */
-    public function findForTask(Task $task): array
+    public function findForTaskAndExecutor(Task $task, Profile $executor): ?Review
     {
         $reviews = $this->entityManager->getRepository(Review::class)
             ->createQueryBuilder('r')
@@ -56,10 +52,16 @@ class ReviewRepository implements ReviewRepositoryInterface
             ->setParameter('task', $task->getId())
             ->getQuery()
             ->getResult();
-        return array_map(
+        $reviews = array_map(
             fn(Review $review) => $this->fillFromExternal($review),
             $reviews
         );
+        foreach ($reviews as $review) {
+            if ($review->getAuthor()->getId() === $executor->getId()) {
+                return $review;
+            }
+        }
+        return null;
     }
 
     private function fillFromExternal(Review $review): Review

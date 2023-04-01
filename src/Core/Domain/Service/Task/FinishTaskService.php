@@ -2,13 +2,13 @@
 
 namespace App\Core\Domain\Service\Task;
 
-use App\Core\Application\UseCase\Review\CreateReviewService;
 use App\Core\Domain\Command\Task\Save\SaveTask;
 use App\Core\Domain\DTO\Review\CreateReviewDTO;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Exception\Task\TaskNotInWorkException;
 use App\Core\Domain\Query\Profile\GetTaskExecutor;
+use App\Core\Domain\Service\Review\CreateReviewService;
 use App\Lib\CQRS\Bus\CommandBusInterface;
 use App\Lib\CQRS\Bus\QueryBusInterface;
 

@@ -12,12 +12,14 @@ class ExecutorTaskList implements JsonSerializable
      * @param Task[] $offers
      * @param Task[] $matches
      * @param Task[] $swipes
+     * @param FinishedTask[] $finished
      */
     public function __construct(
         public array $work,
         public array $offers,
         public array $matches,
         public array $swipes,
+        public array $finished,
     ) {
     }
 
@@ -28,6 +30,7 @@ class ExecutorTaskList implements JsonSerializable
             'offers' => $this->offers,
             'matches' => $this->matches,
             'swipes' => $this->swipes,
+            'finished' => $this->finished,
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Core\Domain\Service\Review;
 
-use App\Core\Application\UseCase\Review\CreateReviewService;
 use App\Core\Domain\DTO\Review\CreateReviewDTO;
 use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;

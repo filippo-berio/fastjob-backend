@@ -6,12 +6,14 @@ use App\Core\Domain\Entity\Profile;
 use App\Core\Domain\Entity\Task;
 use App\Core\Domain\Query\Task\FindAvailableReviewTasksForExecutor;
 use App\Core\Domain\Query\Task\FindFinishedTaskByExecutor;
+use App\Core\Domain\Repository\ReviewRepositoryInterface;
 use App\Lib\CQRS\Bus\QueryBusInterface;
 
 class CanLeaveReviewService
 {
     public function __construct(
         private QueryBusInterface $queryBus,
+        private ReviewRepositoryInterface $reviewRepository,
     ) {
     }
 
@@ -21,7 +23,7 @@ class CanLeaveReviewService
         $tasks = $this->queryBus->query(new FindFinishedTaskByExecutor($profile));
         foreach ($tasks as $finishedTask) {
             if ($finishedTask->getId() === $task->getId()) {
-                return $task->getCanLeaveReview();
+                return !$this->reviewRepository->findForTaskAndExecutor($task, $profile);
             }
         }
         return false;

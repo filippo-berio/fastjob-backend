@@ -7,7 +7,6 @@ use App\Api\Request\Task\CreateTaskRequest;
 use App\Api\Request\Task\MakeOfferRequest;
 use App\Core\Application\UseCase\Review\CreateExecutorReviewUseCase;
 use App\Core\Application\UseCase\Review\GetAvailableReviewTargetsUseCase;
-use App\Core\Application\UseCase\Review\GetProfileReviewsUseCase;
 use App\Core\Application\UseCase\Task\CancelTaskExecutionUseCase;
 use App\Core\Application\UseCase\Task\CreateTaskUseCase;
 use App\Core\Application\UseCase\Task\FinishTaskUseCase;
@@ -66,7 +65,6 @@ class TaskController extends BaseController
         AcceptOfferUseCase $useCase,
         RejectTaskOfferUseCase $rejectTaskOfferUseCase,
         FinishTaskUseCase $finishTaskUseCase,
-        GetProfileReviewsUseCase $getProfileReviewsUseCase,
         CancelTaskExecutionUseCase $cancelTaskExecutionUseCase,
         GetAvailableReviewTargetsUseCase $getAvailableReviewTargetsUseCase,
         CreateExecutorReviewUseCase $createExecutorReviewUseCase,

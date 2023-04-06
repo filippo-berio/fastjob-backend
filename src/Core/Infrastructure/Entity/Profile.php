@@ -22,6 +22,7 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\PostLoad;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[Entity]
 #[HasLifecycleCallbacks]
@@ -70,6 +71,10 @@ class Profile extends DomainProfile implements UserInterface
     /** @var Collection<ProfilePhoto> */
     #[OneToMany(mappedBy: 'profile', targetEntity: ProfilePhoto::class)]
     protected Collection $doctrinePhotos;
+
+    #[Groups(['profile_full', 'profile_short'])]
+    #[MaxDepth(2)]
+    protected array $reviews;
 
     #[PostLoad]
     public function init()
@@ -129,5 +134,10 @@ class Profile extends DomainProfile implements UserInterface
     public function getPhotoPath(): ?string
     {
         return $this->getMainPhoto()?->getPath();
+    }
+
+    public function setReviews(array $reviews): void
+    {
+        $this->reviews = $reviews;
     }
 }

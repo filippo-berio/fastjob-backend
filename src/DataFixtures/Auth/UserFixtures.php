@@ -18,7 +18,7 @@ class UserFixtures extends BaseFixtures
     const USER_8_PHONE = '+79888888888';
     const USER_9_PHONE = '+79999999999';
     const USER_10_PHONE = '+79111111110';
-    const USER_11_PHONE = '+79111111111';
+    const USER_11_PHONE = '+79222222211';
     const USER_12_PHONE = '+79111111112';
     const USER_13_PHONE = '+79111111113';
     const USER_14_PHONE = '+79111111114';

@@ -21,6 +21,8 @@ class Profile implements ChatPersonInterface
     protected ?City $city = null;
     /** @var ProfilePhoto[] */
     protected array $photos;
+    /** @var Review[] */
+    protected array $reviews;
 
     public function __construct(
         User $user,
@@ -31,6 +33,7 @@ class Profile implements ChatPersonInterface
         $this->firstName = $firstName;
         $this->birthDate = $birthDate;
         $this->photos = [];
+        $this->reviews = [];
     }
 
     public function getPhotos(): array
@@ -107,5 +110,10 @@ class Profile implements ChatPersonInterface
     public function getPhotoPath(): ?string
     {
         return $this->getMainPhoto()?->getPath();
+    }
+
+    public function getReviews(): array
+    {
+        return $this->reviews;
     }
 }

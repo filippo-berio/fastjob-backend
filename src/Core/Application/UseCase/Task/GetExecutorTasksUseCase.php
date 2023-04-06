@@ -73,7 +73,13 @@ class GetExecutorTasksUseCase
      */
     private function getWorkTasks(Profile $profile): array
     {
+        /** @var Task[] $work */
         $work = $this->queryBus->query(new FindTaskByExecutor($profile));
+        foreach ($work as $i => $task) {
+            if ($task->getStatus() === Task::STATUS_FINISHED) {
+                unset($work[$i]);
+            }
+        }
         return $this->combineTaskIds($work);
     }
 

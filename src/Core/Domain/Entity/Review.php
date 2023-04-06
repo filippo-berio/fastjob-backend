@@ -2,7 +2,9 @@
 
 namespace App\Core\Domain\Entity;
 
-class Review
+use JsonSerializable;
+
+class Review implements JsonSerializable
 {
     public function __construct(
         protected Task $task,
@@ -36,5 +38,14 @@ class Review
     public function getRating(): int
     {
         return $this->rating;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'rating' => $this->rating,
+            'comment' => $this->comment,
+            'author' => $this->author,
+        ];
     }
 }

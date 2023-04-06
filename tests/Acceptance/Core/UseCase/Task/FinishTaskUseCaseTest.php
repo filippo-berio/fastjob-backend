@@ -2,7 +2,6 @@
 
 namespace App\Tests\Acceptance\Core\UseCase\Task;
 
-use App\Core\Application\UseCase\Review\GetProfileReviewsUseCase;
 use App\Core\Application\UseCase\Task\FinishTaskUseCase;
 use App\Core\Application\UseCase\TaskOffer\AcceptOfferUseCase;
 use App\Core\Domain\Entity\Review;
@@ -20,14 +19,12 @@ class FinishTaskUseCaseTest extends AcceptanceTest
     private Task $task;
     private AcceptOfferUseCase $acceptOfferUseCase;
     private Profile $author;
-    private GetProfileReviewsUseCase $getProfileReviewsUseCase;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->finishTaskUseCase = $this->getDependency(FinishTaskUseCase::class);
         $this->acceptOfferUseCase = $this->getDependency(AcceptOfferUseCase::class);
-        $this->getProfileReviewsUseCase = $this->getDependency(GetProfileReviewsUseCase::class);
         $this->profile = $this->getCoreProfile(ProfileFixtures::PROFILE_16);
         $this->author = $this->getCoreProfile(ProfileFixtures::PROFILE_15);
         $this->task = $this->getEntity(Task::class, TaskFixtures::TASK_16);
@@ -35,10 +32,10 @@ class FinishTaskUseCaseTest extends AcceptanceTest
 
     public function testSuccess()
     {
-        $before = $this->getProfileReviewsUseCase->get($this->profile->getId());
+        $before = $this->profile->getReviews();
         $this->acceptOffer();
         $this->finishTaskUseCase->finish($this->author, $this->task->getId(), 4, 'comment3');
-        $after = $this->getProfileReviewsUseCase->get($this->profile->getId());
+        $after = $this->getCoreProfile(ProfileFixtures::PROFILE_16)->getReviews();
         $this->assertCount(count($before) + 1, $after);
         /** @var Review $review */
         $review = array_pop($after);

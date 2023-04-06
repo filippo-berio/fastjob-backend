@@ -61,6 +61,7 @@ abstract class AcceptanceTest extends KernelTestCase
      */
     protected function getEntity(string $class, mixed $id)
     {
+        $this->clearEntityManager();
         $em = $this->getDependency(EntityManagerInterface::class);
         return $em->getRepository($class)->find($id);
     }
@@ -73,6 +74,7 @@ abstract class AcceptanceTest extends KernelTestCase
      */
     protected function getEntityBy(string $class, array $criteria)
     {
+        $this->clearEntityManager();
         $em = $this->getDependency(EntityManagerInterface::class);
         return $em->getRepository($class)->findBy($criteria);
     }
@@ -136,5 +138,10 @@ abstract class AcceptanceTest extends KernelTestCase
                 }
             }
         }
+    }
+
+    protected function clearEntityManager()
+    {
+        $this->getDependency(EntityManagerInterface::class)->clear();
     }
 }

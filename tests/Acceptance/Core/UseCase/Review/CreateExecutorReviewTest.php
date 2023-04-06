@@ -3,7 +3,6 @@
 namespace App\Tests\Acceptance\Core\UseCase\Review;
 
 use App\Core\Application\UseCase\Review\CreateExecutorReviewUseCase;
-use App\Core\Application\UseCase\Review\GetProfileReviewsUseCase;
 use App\Core\Domain\Exception\Review\ReviewUnavailableException;
 use App\Core\Infrastructure\Entity\Profile;
 use App\Core\Infrastructure\Entity\Review;
@@ -15,22 +14,22 @@ class CreateExecutorReviewTest extends AcceptanceTest
 {
     private Profile $profile;
     private CreateExecutorReviewUseCase $useCase;
-    private GetProfileReviewsUseCase $getProfileReviewsUseCase;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->profile = $this->getCoreProfile(ProfileFixtures::PROFILE_16);
         $this->useCase = $this->getDependency(CreateExecutorReviewUseCase::class);
-        $this->getProfileReviewsUseCase = $this->getDependency(GetProfileReviewsUseCase::class);
     }
 
     public function testSuccess()
     {
-        $before = $this->getProfileReviewsUseCase->get(ProfileFixtures::PROFILE_17);
+        $before = $this->getCoreProfile(ProfileFixtures::PROFILE_17)->getReviews();
         $this->useCase->create($this->profile, TaskFixtures::TASK_18, 5, 'comment');
-        $after = $this->getProfileReviewsUseCase->get(ProfileFixtures::PROFILE_17);
+
+        $after = $this->getCoreProfile(ProfileFixtures::PROFILE_17)->getReviews();
         $this->assertCount(count($before) + 1, $after);
+
         /** @var Review $review */
         $review = array_pop($after);
         $this->assertEquals($this->profile->getId(), $review->getAuthor()->getId());
